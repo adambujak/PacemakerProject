@@ -1,0 +1,1 @@
+Directory for all project resources (requirements, datasheets, project outline, etc).
