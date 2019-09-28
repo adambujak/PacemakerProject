@@ -5,6 +5,8 @@
 
 
 import tkinter as tk
+from src.dcm_constants import *
+
 
 #############################################################
 ############### GUI Abstraction Layer Class #################
@@ -19,7 +21,7 @@ class GUIAL:
 
     # Initialize GUI #
     def initGUI(self):
-        w = tk.Label(self.instance, text="Hello Tkinter!")
+        w = tk.Label(self.instance, text = C_INTRO_TEXT)
         w.pack()
 
         self.instance.update()
