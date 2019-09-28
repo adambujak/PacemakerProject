@@ -1,7 +1,7 @@
 # Author: Adam Bujak
 # Date Created: Thurdsay, September 26, 2019
 # Description: GUI Abstraction Layer Source File
-# Filename: guic.py
+# Filename: guial.py
 
 
 import tkinter as tk
