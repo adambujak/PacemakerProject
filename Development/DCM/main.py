@@ -3,10 +3,16 @@
 # Description: Main Application Source File
 # Filename: main.py
 
-from GUIC.guic import *
+from DCMGraphicalUserInterface.guic import *
+from DCMSession.dsc                 import *
+import time
+
 
 def main():
-    guiController = GUIC()
-    guiController.updateGUI()
-    input()
+    sessionController = DSC()   # Init session controller - handles user sessions
+    guiController = GUIC()      # Init GUI controller
+    guiController.updateGUI()   # Update GUI
+    while 1:
+        guiController.updateGUI()
+        time.sleep(0.01)
 main()
