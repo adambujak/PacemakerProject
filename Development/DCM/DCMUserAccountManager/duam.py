@@ -1,7 +1,7 @@
 # Author: Adam Bujak
 # Date Created: Saturday, September 28, 2019
-# Description: DCM Session Controller Source File
-# Filename: dsc.py
+# Description: DCM User Account Manager Source File
+# Filename: duam.py
 
 from src.dcm_constants import *
 from DCMDatabase.dbpm  import *
@@ -28,9 +28,9 @@ class SessionStates(Enum):
 ################# Session Controller Class ##################
 #############################################################
 
-class DSC:
+class DUAM:
 
-    # Initialize DSC #
+    # Initialize DUAM #
     def __init__(self):
         # Start Database Manager #
         self.dbManager = DBPM()
@@ -47,16 +47,13 @@ class DSC:
             password = self.dbManager.getUserPassword(p_username)
             print (password)
             if verify_password(password, p_password):
-                #sign in
+                # Set permissions
+                # return true
+                return True
             else:
-                returnFalse
-            # Set permissions
-            # return true
-            return True
+                return False
         else:
             return False
-
-
 
  
 def hash_password(password):

@@ -4,14 +4,14 @@
 # Filename: main.py
 
 from DCMGraphicalUserInterface.guic import *
-from DCMSession.dsc                 import *
+from DCMUserAccountManager.duam     import *
 import time
 
 
 def main():
-    sessionController = DSC()   # Init session controller - handles user sessions
-    guiController = GUIC()      # Init GUI controller
-    guiController.updateGUI()   # Update GUI
+    sessionController = DUAM()   # Init session controller - handles user sessions
+    guiController = GUIC()       # Init GUI controller
+    guiController.updateGUI()    # Update GUI
     while 1:
         guiController.updateGUI()
         time.sleep(0.01)
