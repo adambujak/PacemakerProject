@@ -3,8 +3,10 @@
 # Description: DCM Database Peewee Manager Source File
 # Filename: dbpm.py
 
-from src.dcm_constants import *
-from peewee            import *
+from src.dcm_constants           import *
+from peewee                      import *
+
+from DCMUserAccountManager.duam  import * 
 
 
 database = SqliteDatabase(C_DATABASE_PATH, pragmas={
@@ -38,9 +40,11 @@ class DBPM:
         self.User.create(username = p_username, password = p_password, role = p_role)
 
     def userExists(self, p_username):
-        # Check if user exists in database
-        query = self.User.select().order_by(self.User.username)
-        query = query.where(self.User.username.contains(p_username))
+        """Checks if user exits, 
+        true = exists,
+        false = does not exist
+        """
+        query = self.User.select().where(self.User.username.contains(p_username))
         # Loop through users in query
         for user in query:
             # If found exact match, return true
@@ -49,16 +53,27 @@ class DBPM:
         # Return false if exact match not found
         return False
 
-    def getUserPassword(self, p_username):
+    def getUserData(self, p_username):
         query = self.User.select().where(self.User.username.contains(p_username))
         # Loop through users in query
         for user in query:
             # If found exact match, return true
             if user.username == p_username:
-                return user.password
-        # Return false if exact match not found
+                return User(user.password, user.password, user.role)
+        # Return None if exact match not found
         return None
 
+    def changeUserPassword(self, p_username, p_password):
+        # query = self.User.select().where(self.User.username.contains(p_username))
+        # # Loop through users in query
+        # for user in query:
+        #     # If found exact match, return true
+        #     if user.username == p_username:
+        #         return User(user.password, user.password, user.role)
+        # # Return None if exact match not found
+        # return None
+#ToDo: Implement
+        pass
 
     # Private Methods #
     def p_createDataTables(self):

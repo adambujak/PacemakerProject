@@ -9,7 +9,7 @@ import time
 
 
 def main():
-    sessionController = DUAM()   # Init session controller - handles user sessions
+    accountController = DUAM()   # Init session controller - handles user sessions
     guiController = GUIC()       # Init GUI controller
     guiController.updateGUI()    # Update GUI
     while 1:
