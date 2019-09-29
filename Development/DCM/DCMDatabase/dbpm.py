@@ -33,16 +33,31 @@ class DBPM:
         # Return database instance
         return self.database()
 
-    def createUser(self, i_username, i_password, i_role):
+    def createUser(self, p_username, p_password, p_role):
         # Create new user
-        self.User.create(username = i_username, password = i_password, role = i_role)
+        self.User.create(username = p_username, password = p_password, role = p_role)
 
-    def searchForUser(self, username):
+    def userExists(self, p_username):
+        # Check if user exists in database
         query = self.User.select().order_by(self.User.username)
-        query = query.where(self.User.username.contains(username))
+        query = query.where(self.User.username.contains(p_username))
+        # Loop through users in query
         for user in query:
-            username = user.username
-            print(username)
+            # If found exact match, return true
+            if user.username == p_username:
+                return True
+        # Return false if exact match not found
+        return False
+
+    def getUserPassword(self, p_username):
+        query = self.User.select().where(self.User.username.contains(p_username))
+        # Loop through users in query
+        for user in query:
+            # If found exact match, return true
+            if user.username == p_username:
+                return user.password
+        # Return false if exact match not found
+        return None
 
 
     # Private Methods #

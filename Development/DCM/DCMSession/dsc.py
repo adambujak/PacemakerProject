@@ -36,21 +36,25 @@ class DSC:
         self.dbManager = DBPM()
         self.user      = None
         self.state     = SessionStates.LOGGED_OUT
-        self.dbManager.createUser("Ada", "pasdscsword", "doctor")
-        self.dbManager.searchForUser("Ada")
 
 
 
-    # def signInUser(self, username, password, adminPassword):
-    #     # Handle signing in
+    def signInUser(self, p_username, p_password):
+        # Handle signing in
 
-    #     # Check user to make sure it exists
-    #     if (self.dbManager.userExists):
-    #         # Check password
-    #         # Set permissions
-    #         # return true
-    #     else
-    #         return False
+        # Check user to make sure it exists
+        if (self.dbManager.userExists(p_username)):
+            password = self.dbManager.getUserPassword(p_username)
+            print (password)
+            if verify_password(password, p_password):
+                #sign in
+            else:
+                returnFalse
+            # Set permissions
+            # return true
+            return True
+        else:
+            return False
 
 
 
