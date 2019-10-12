@@ -112,7 +112,8 @@ class DUAM:
             return FailureCodes.INVALID_CREDENTIALS
 
         p_password = hash_password(p_password)
-
+        p_adminPassword = hash_password(p_adminPassword)
+#ToDo: add max 10 user limit constraint
         # If current user's role isn't admin, return 
         if self.user.getRole() != UserRole.ADMIN:
             return FailureCodes.MISSING_PERMISSIONS
