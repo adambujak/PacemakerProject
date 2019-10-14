@@ -50,12 +50,11 @@ class GUIC:
     
     # Draw Screen to GUI #
     def drawScreen(self, screen):
-# ToDo: implement screen object 
     
         if (screen.screenName == ScreenNames.LOGIN_SCREEN):
             self.p_drawLoginScreen(screen.data)
         elif (screen.screenName == ScreenNames.PROGRAMMING_SCREEN):
-            pass
+            self.p_drawProgrammingScreen(screen.data)
 
     # Update GUI #
     def updateGUI(self):
