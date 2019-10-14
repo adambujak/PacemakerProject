@@ -24,7 +24,10 @@ C_DATABASE_CACHE_SIZE       =       -1 * 64000                                  
 C_DATABASE_FOREIGN_KEYS     =       1                                                  # DATABASE FOREIGN KEYS
 
 
+# GUI CONSTANTS #
 
+C_GUI_TITLE                 =       "Pacemaker DCM"                                    # TEXT TO BE SHOWN IN TITLE BAR OF GUI 
 
-
-C_INTRO_TEXT = "HEY DUDE"
+C_LOGIN_USERNAME_LABEL      =       "Username"                                         # LABEL VALUE FOR LOGIN USERNAME FIELD 
+C_LOGIN_PASSWORD_LABEL      =       "Password"                                         # LABEL VALUE FOR LOGIN PASSWORD FIELD 
+C_LOGIN_BUTTON_TEXT         =       "Sign In"                                          # BUTTON TEXT VALUE FOR LOGIN BUTTON

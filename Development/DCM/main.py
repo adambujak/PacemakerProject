@@ -12,6 +12,7 @@ def main():
     accountController = DUAM()   # Init session controller - handles user sessions
     guiController = GUIC()       # Init GUI controller
     guiController.updateGUI()    # Update GUI
+    
     while 1:
         guiController.updateGUI()
         time.sleep(0.01)
