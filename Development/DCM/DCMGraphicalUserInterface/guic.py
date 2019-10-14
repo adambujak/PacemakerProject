@@ -17,12 +17,18 @@ class LoginMenuData():
     def __init__(self, userNameLabel, passwordLabel, signInButtonText, newUserButtonText):
         self.fieldLabels = [userNameLabel, passwordLabel]
         self.buttonTexts = [signInButtonText, newUserButtonText]
-
-
+    def setCallbacks(self, callbacks):
+        self.buttonCallbacks = callbacks
 
 class ProgramMenuData():
-    pass
-
+    def __init__(self, fieldLabels, buttonTexts, dropDownLabelText, dropDownOptions, currentOption):
+        self.fieldLabels = fieldLabels
+        self.buttonTexts = buttonTexts
+        self.dropDownLabelText = dropDownLabelText
+        self.dropDownOptions = dropDownOptions
+        self.currentOption = currentOption
+    def setCallbacks(self, callbacks):
+        self.buttonCallbacks = callbacks
 
 class Screen:
     def __init__(self, screenName, data):
@@ -30,8 +36,29 @@ class Screen:
         self.screenName = screenName
 
 
-loginScreen = Screen(ScreenNames.LOGIN_SCREEN, LoginMenuData(C_LOGIN_USERNAME_LABEL, C_LOGIN_PASSWORD_LABEL, C_LOGIN_BUTTON_TEXT, C_LOGIN_NEW_USER_BUTTON_TEXT))
-programmingScreen = Screen(ScreenNames.PROGRAMMING_SCREEN, None)
+loginScreen = Screen(
+    ScreenNames.LOGIN_SCREEN, 
+    LoginMenuData(
+        C_LOGIN_USERNAME_LABEL, 
+        C_LOGIN_PASSWORD_LABEL, 
+        C_LOGIN_BUTTON_TEXT, 
+        C_LOGIN_NEW_USER_BUTTON_TEXT))
+
+
+programmingScreen = Screen(
+    ScreenNames.PROGRAMMING_SCREEN, 
+    ProgramMenuData(
+        [
+            C_PROGRAM_UPPER_LIMIT_LABEL, 
+            C_PROGRAM_LOWER_LIMIT_LABEL
+        ],
+        [
+            C_PROGRAM_BUTTON_TEXT,            
+            C_PROGRAM_LOGOUT_BUTTON_TEXT  
+        ],
+        C_PROGRAM_DROPDOWN_LABEL,
+        C_PROGRAM_DROPDOWN_OPTIONS,
+        C_PROGRAM_DROPDOWN_DEFAULT))
 
 
 #############################################################
@@ -41,17 +68,21 @@ programmingScreen = Screen(ScreenNames.PROGRAMMING_SCREEN, None)
 class GUIC:
 
     # Initialize GUI Controller #
-    def __init__(self, callbacks):
+    def __init__(self):
         self.gui = GUIAL()
         self.gui.setTitle(C_GUI_TITLE)
-        self.callbacks = callbacks
-
-        self.p_drawFirstScreen()
-        print("Initialized GUI Controller")
     
+    def setCallbacks(self, callbacks):
+        self.callbacks = callbacks
+        loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
+        programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
+
+    def startGUI(self):
+        self.p_drawFirstScreen()
+
     # Draw Screen to GUI #
     def drawScreen(self, screen):
-    
+        self.gui.clearWindow()
         if (screen.screenName == ScreenNames.LOGIN_SCREEN):
             self.p_drawLoginScreen(screen.data)
         elif (screen.screenName == ScreenNames.PROGRAMMING_SCREEN):
@@ -72,12 +103,22 @@ class GUIC:
         """
         Draw screen of tpye login screen
         """
-        self.gui.drawTwoFieldsTwoButtonLayout(data.fieldLabels, data.buttonTexts, [self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
+        self.gui.drawTwoFieldsTwoButtonLayout(
+            data.fieldLabels, 
+            data.buttonTexts, 
+            data.buttonCallbacks)
 
     def p_drawProgrammingScreen(self, data):
         """
         Draw screen of tpye programming screen
         """
+        self.gui.drawNFieldsNButtonsOneDropDownLayout(
+            data.dropDownLabelText, 
+            data.currentOption, 
+            data.dropDownOptions, 
+            data.fieldLabels,
+            data.buttonTexts,
+            data.buttonCallbacks)
 #ToDo: Implement
         pass
     

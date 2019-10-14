@@ -32,3 +32,12 @@ C_LOGIN_USERNAME_LABEL         =       "Username"                               
 C_LOGIN_PASSWORD_LABEL         =       "Password"                                         # LABEL VALUE FOR LOGIN PASSWORD FIELD 
 C_LOGIN_BUTTON_TEXT            =       "Sign In"                                          # BUTTON TEXT VALUE FOR LOGIN BUTTON
 C_LOGIN_NEW_USER_BUTTON_TEXT   =       "New User"                                         # BUTTON TEXT VALUE FOR NEW USER BUTTON
+
+
+C_PROGRAM_DROPDOWN_OPTIONS     =       {"AOO", "VOO", "AAO", "VVO"}                       # DROPDOWN MENU OPTIONS
+C_PROGRAM_DROPDOWN_DEFAULT     =       "AOO"                                              # DEFAULT VALUE FOR DROPDOWN
+C_PROGRAM_DROPDOWN_LABEL       =       "Pacing Mode"                                      # LABEL VALUE FOR DROPDOWN INDICATOR 
+C_PROGRAM_UPPER_LIMIT_LABEL    =       "Upper Rate Limit"                                 # LABEL VALUE FOR UPPER RATE LIMIT FIELD 
+C_PROGRAM_LOWER_LIMIT_LABEL    =       "Lower Rate Limit"                                 # LABEL VALUE FOR LOWER RATE LIMIT FIELD 
+C_PROGRAM_BUTTON_TEXT          =       "Program"                                          # BUTTON TEXT VALUE FOR PROGRAM BUTTON
+C_PROGRAM_LOGOUT_BUTTON_TEXT   =       "Sign Out"                                         # BUTTON TEXT VALUE FOR LOGOUT BUTTON

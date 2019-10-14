@@ -10,20 +10,58 @@ import time
 
 
 
-def loginButtonCallback():
-    print("button cl")
 
-def newUserButtonCallback():
-    print("new user button click")
 
-callbacks = ApplicationCallbacks(loginButtonCallback, newUserButtonCallback,None, None)
+class MainApplication:
+    def __init__(self):
+        self.accountController = DUAM()
+        self.guiController = GUIC()
+
+    def setCallbacks(self, callbacks):
+        self.guiController.setCallbacks(callbacks)
+
+    def startGUI(self):
+        self.guiController.startGUI()
+
+    def updateGUI(self):
+        self.guiController.updateGUI()
+
+    def loginButtonCB(self):
+        self.guiController.drawScreen(programmingScreen)
+
+    def logoffButtonCB(self):
+        self.guiController.drawScreen(loginScreen)
+
+    def newUserButtonCB(self):
+        print("login button callback")
+
+
+
+
 
 def main():
-    accountController = DUAM()         # Init session controller - handles user sessions
-    guiController = GUIC(callbacks)    # Init GUI controller
-    guiController.updateGUI()          # Update GUI
+
+    app = MainApplication()
+
+    def loginButtonCallback():
+        app.loginButtonCB()
+
+    def logoffButtonCallback():
+        app.logoffButtonCB()
+
+    def newUserButtonCallback():
+        app.newUserButtonCallback()
+
+    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback,None, None)
+
+
+    app.setCallbacks(callbacks)
+
+    app.startGUI()
+
+    app.updateGUI()          # Update GUI
 
     while 1:
-        guiController.updateGUI()
+        app.updateGUI()
         time.sleep(0.01)
 main()

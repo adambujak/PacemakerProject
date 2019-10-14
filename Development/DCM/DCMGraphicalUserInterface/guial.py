@@ -32,15 +32,28 @@ class GUIAL:
         if self.guiInitialized == True:
             self.instance.title(self.title)
 
+    def clearWindow(self):
+        """
+        Clears all elements in window
+        """
+        _list = self.instance.winfo_children()
+
+        for item in _list :
+            if item.winfo_children() :
+                _list.extend(item.winfo_children())
+
+        for item in _list:
+            item.destroy()
+
     def drawTwoFieldsTwoButtonLayout(self, fieldLabels, buttonTexts, buttonCallbacks ):
         """
         Draws two user input fields and a button to the screen
         Params:
-        fieldLabel1    - Label for first input field
-        fieldLabel2    - Label for second input field
-        buttonText     - Text to be displayed in button
-        buttonCallback - Button callback function 
+        fieldLabels     - Array of labels for input fields
+        buttonTexts     - Array of texts to be displayed in button
+        buttonCallbacks - Array of button callback functions
         """
+        
         self.guiInitialized = True
         print("Started Two Fields One Button Layout")
         self.instance.title(self.title)
@@ -55,7 +68,7 @@ class GUIAL:
         btn = tk.Button(self.instance ,text=buttonTexts[0], command = buttonCallbacks[0]).grid(row=2,column=1)
         btn = tk.Button(self.instance ,text=buttonTexts[1], command = buttonCallbacks[1]).grid(row=3,column=1)
 
-    def drawNFieldsOneButtonOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonText, buttonCallback):
+    def drawNFieldsNButtonsOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonTexts, buttonCallbacks):
         """
         Draws two user input fields and a button to the screen
         Params:
@@ -68,7 +81,7 @@ class GUIAL:
         """
 
         self.guiInitialized = True
-        print("Started Two Fields One Button Layout")
+        print("Started N Fields N Button One DropDown Layout")
 
         self.instance.title(self.title)
 
@@ -108,6 +121,10 @@ class GUIAL:
             label = tk.Label(self.instance, text = fieldLabels[field]).grid(row = field+rowOffset, column = 0)
             entry = tk.Entry(self.instance).grid(row = field+rowOffset,column = 1)
         
+        # Update row offset to be the row after the last field 
+        rowOffset += field + 1
 
-        # Draw button
-        btn = tk.Button(self.instance ,text=buttonText, command = buttonCallback).grid(row=len(fieldLabels)+rowOffset,column=1)
+        # Draw each button
+        for buttonIndex in range(len(buttonTexts)):
+            btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=1)
+
