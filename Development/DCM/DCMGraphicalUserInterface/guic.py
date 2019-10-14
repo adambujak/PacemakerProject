@@ -14,10 +14,10 @@ class ScreenNames(Enum):
     PROGRAMMING_SCREEN  = 1
 
 class LoginMenuData():
-    def __init__(self, userNameLabel, passwordLabel, buttonText):
-        self.userNameLabel = userNameLabel
-        self.passwordLabel = passwordLabel
-        self.buttonText    = buttonText
+    def __init__(self, userNameLabel, passwordLabel, signInButtonText, newUserButtonText):
+        self.fieldLabels = [userNameLabel, passwordLabel]
+        self.buttonTexts = [signInButtonText, newUserButtonText]
+
 
 
 class ProgramMenuData():
@@ -30,7 +30,7 @@ class Screen:
         self.screenName = screenName
 
 
-loginScreen = Screen(ScreenNames.LOGIN_SCREEN, LoginMenuData(C_LOGIN_USERNAME_LABEL, C_LOGIN_PASSWORD_LABEL, C_LOGIN_BUTTON_TEXT))
+loginScreen = Screen(ScreenNames.LOGIN_SCREEN, LoginMenuData(C_LOGIN_USERNAME_LABEL, C_LOGIN_PASSWORD_LABEL, C_LOGIN_BUTTON_TEXT, C_LOGIN_NEW_USER_BUTTON_TEXT))
 programmingScreen = Screen(ScreenNames.PROGRAMMING_SCREEN, None)
 
 
@@ -45,6 +45,7 @@ class GUIC:
         self.gui = GUIAL()
         self.gui.setTitle(C_GUI_TITLE)
         self.callbacks = callbacks
+
         self.p_drawFirstScreen()
         print("Initialized GUI Controller")
     
@@ -71,7 +72,7 @@ class GUIC:
         """
         Draw screen of tpye login screen
         """
-        self.gui.drawTwoFieldsOneButtonLayout(data.userNameLabel, data.passwordLabel, data.buttonText, self.callbacks.loginButtonCB)
+        self.gui.drawTwoFieldsTwoButtonLayout(data.fieldLabels, data.buttonTexts, [self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
 
     def p_drawProgrammingScreen(self, data):
         """

@@ -32,7 +32,7 @@ class GUIAL:
         if self.guiInitialized == True:
             self.instance.title(self.title)
 
-    def drawTwoFieldsOneButtonLayout(self, fieldLabel1, fieldLabel2, buttonText, buttonCallback ):
+    def drawTwoFieldsTwoButtonLayout(self, fieldLabels, buttonTexts, buttonCallbacks ):
         """
         Draws two user input fields and a button to the screen
         Params:
@@ -47,12 +47,13 @@ class GUIAL:
 
         self.instance.configure(background = "white");
 
-        a = tk.Label(self.instance ,text = fieldLabel1).grid(row = 0,column = 0)
-        b = tk.Label(self.instance ,text = fieldLabel2).grid(row = 1,column = 0)
+        a = tk.Label(self.instance ,text = fieldLabels[0]).grid(row = 0,column = 0)
+        b = tk.Label(self.instance ,text = fieldLabels[1]).grid(row = 1,column = 0)
         a1 = tk.Entry(self.instance).grid(row = 0,column = 1)
         b1 = tk.Entry(self.instance).grid(row = 1,column = 1)
 
-        btn = tk.Button(self.instance ,text=buttonText, command = buttonCallback).grid(row=5,column=1)
+        btn = tk.Button(self.instance ,text=buttonTexts[0], command = buttonCallbacks[0]).grid(row=2,column=1)
+        btn = tk.Button(self.instance ,text=buttonTexts[1], command = buttonCallbacks[1]).grid(row=3,column=1)
 
     def drawNFieldsOneButtonOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonText, buttonCallback):
         """

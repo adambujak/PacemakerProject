@@ -13,7 +13,10 @@ import time
 def loginButtonCallback():
     print("button cl")
 
-callbacks = ApplicationCallbacks(loginButtonCallback, None, None)
+def newUserButtonCallback():
+    print("new user button click")
+
+callbacks = ApplicationCallbacks(loginButtonCallback, newUserButtonCallback,None, None)
 
 def main():
     accountController = DUAM()         # Init session controller - handles user sessions
