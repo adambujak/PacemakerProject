@@ -5,14 +5,21 @@
 
 from DCMGraphicalUserInterface.guic import *
 from DCMUserAccountManager.duam     import *
+from Common.callbacks               import ApplicationCallbacks
 import time
 
 
+
+def loginButtonCallback():
+    print("button cl")
+
+callbacks = ApplicationCallbacks(loginButtonCallback, None, None)
+
 def main():
-    accountController = DUAM()   # Init session controller - handles user sessions
-    guiController = GUIC()       # Init GUI controller
-    guiController.updateGUI()    # Update GUI
-    
+    accountController = DUAM()         # Init session controller - handles user sessions
+    guiController = GUIC(callbacks)    # Init GUI controller
+    guiController.updateGUI()          # Update GUI
+
     while 1:
         guiController.updateGUI()
         time.sleep(0.01)
