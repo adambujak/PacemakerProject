@@ -31,6 +31,11 @@ class UserRole(Enum):
     ADMIN       = 0
     USER        = 1
 
+class LoginData:
+    def __init__(self, p_username, p_password):
+        self.username = p_username
+        self.password = p_password
+
 
 class User:
     def __init__(self, p_username, p_password, p_userRole):
@@ -65,22 +70,23 @@ class DUAM:
         self.p_makeAdminUser();
 
 
-    def signInUser(self, p_username, p_password):
+    def signInUser(self, p_loginData):
         """Signs user in.
         p_password must not be hashed,
         returns FailureCode
         """
-        p_password = hash_password(p_password)
+        username = p_loginData.username
+        password = hash_password(p_loginData.password)
 
         # Check user to make sure it exists
-        if (self.dbManager.userExists(p_username)):
+        if (self.dbManager.userExists(username)):
 
             # Get user data from database
-            userData = self.dbManager.getUserData(p_username)
+            userData = self.dbManager.getUserData(username)
             # Check if password is correct
-            passwordValid = verify_password(userData.getPassword(), p_password)
+            passwordValid = verify_password(userData.getPassword(), password)
             # Redundant check to make sure correct user data is being returned
-            usernameValid = (userData.getUsername() == p_username)
+            usernameValid = (userData.getUsername() == username)
 
             if passwordValid and usernameValid:
                 self.user = userData

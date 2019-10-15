@@ -5,6 +5,7 @@
 
 
 from DCMGraphicalUserInterface.guial import *
+from DCMUserAccountManager.duam      import LoginData
 from Common.callbacks                import ApplicationCallbacks
 from enum                            import Enum
 
@@ -83,6 +84,7 @@ class GUIC:
     # Draw Screen to GUI #
     def drawScreen(self, screen):
         self.gui.clearWindow()
+        self.currentScreen = screen
         if (screen.screenName == ScreenNames.LOGIN_SCREEN):
             self.p_drawLoginScreen(screen.data)
         elif (screen.screenName == ScreenNames.PROGRAMMING_SCREEN):
@@ -91,6 +93,11 @@ class GUIC:
     # Update GUI #
     def updateGUI(self):
         self.gui.update()
+
+    def getLoginData(self):
+        if self.currentScreen.screenName == ScreenNames.LOGIN_SCREEN:
+            entryData = self.gui.getEntryData()
+            return LoginData(entryData[0], entryData[1])
 
 
     def p_drawFirstScreen(self):

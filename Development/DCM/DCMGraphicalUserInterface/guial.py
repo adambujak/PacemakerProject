@@ -128,3 +128,10 @@ class GUIAL:
         for buttonIndex in range(len(buttonTexts)):
             btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=1)
 
+    def getEntryData(self):
+        children = self.instance.winfo_children()
+        output = []
+        for item in children:
+            if type(item) == tk.Entry:
+                output.append(item.get())
+        return output

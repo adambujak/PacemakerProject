@@ -10,8 +10,6 @@ import time
 
 
 
-
-
 class MainApplication:
     def __init__(self):
         self.accountController = DUAM()
@@ -27,15 +25,15 @@ class MainApplication:
         self.guiController.updateGUI()
 
     def loginButtonCB(self):
-        self.guiController.drawScreen(programmingScreen)
+        ret = self.accountController.signInUser(self.guiController.getLoginData())
+        print(ret)
+        # self.guiController.drawScreen(programmingScreen)
 
     def logoffButtonCB(self):
         self.guiController.drawScreen(loginScreen)
 
     def newUserButtonCB(self):
         print("login button callback")
-
-
 
 
 
@@ -52,14 +50,12 @@ def main():
     def newUserButtonCallback():
         app.newUserButtonCallback()
 
-    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback,None, None)
-
+    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, None, None)
 
     app.setCallbacks(callbacks)
 
-    app.startGUI()
-
-    app.updateGUI()          # Update GUI
+    # Start GUI - open first window
+    app.startGUI()     
 
     while 1:
         app.updateGUI()
