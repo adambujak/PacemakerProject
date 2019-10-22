@@ -13,6 +13,7 @@ from enum                            import Enum
 class ScreenNames(Enum):
     LOGIN_SCREEN        = 0
     PROGRAMMING_SCREEN  = 1
+    CREATEUSER_SCREEN   = 2
 
 class LoginMenuData():
     def __init__(self, userNameLabel, passwordLabel, signInButtonText, newUserButtonText):
@@ -31,6 +32,14 @@ class ProgramMenuData():
     def setCallbacks(self, callbacks):
         self.buttonCallbacks = callbacks
 
+class CreateUserData():
+    def __init__(self, userNameLabel, passwordLabel, createUserButtonText, cancelButtonText):
+        self.fieldLabels = [userNameLabel, passwordLabel]
+        self.buttonTexts = [createUserButtonText, cancelButtonText]
+    def setCallbacks(self, callbacks):
+        self.buttonCallbacks = callbacks
+
+
 class Screen:
     def __init__(self, screenName, data):
         self.data = data
@@ -43,7 +52,7 @@ loginScreen = Screen(
         C_LOGIN_USERNAME_LABEL, 
         C_LOGIN_PASSWORD_LABEL, 
         C_LOGIN_BUTTON_TEXT, 
-        C_LOGIN_NEW_USER_BUTTON_TEXT))
+        C_NEW_USER_BUTTON_TEXT))
 
 
 programmingScreen = Screen(
@@ -61,6 +70,14 @@ programmingScreen = Screen(
         C_PROGRAM_DROPDOWN_OPTIONS,
         C_PROGRAM_DROPDOWN_DEFAULT))
 
+createUserScreen = Screen(
+    ScreenNames.CREATEUSER_SCREEN, 
+    CreateUserData(
+        C_LOGIN_USERNAME_LABEL, 
+        C_LOGIN_PASSWORD_LABEL, 
+        C_CREATE_USER_BUTTON_TEXT,
+        C_CANCEL_BUTTON_TEXT))
+
 
 #############################################################
 ################### GUI Controller Class ####################
@@ -77,7 +94,7 @@ class GUIC:
         self.callbacks = callbacks
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
         programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
-
+        createUserScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
     def startGUI(self):
         self.p_drawFirstScreen()
 
@@ -89,6 +106,8 @@ class GUIC:
             self.p_drawLoginScreen(screen.data)
         elif (screen.screenName == ScreenNames.PROGRAMMING_SCREEN):
             self.p_drawProgrammingScreen(screen.data)
+        elif (screen.screenName == ScreenNames.CREATEUSER_SCREEN):
+            self.p_drawCreateUserScreen(screen.data)
 
     # Update GUI #
     def updateGUI(self):
@@ -99,6 +118,10 @@ class GUIC:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
+    def getNewUserData(self):
+        if self.currentScreen.screenName == ScreenNames.CREATEUSER_SCREEN:
+            entryData = self.gui.getEntryData()
+            return LoginData(entryData[0], entryData[1])
 
     def p_drawFirstScreen(self):
         """
@@ -117,7 +140,7 @@ class GUIC:
 
     def p_drawProgrammingScreen(self, data):
         """
-        Draw screen of tpye programming screen
+        Draw screen of type programming screen
         """
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
@@ -126,8 +149,15 @@ class GUIC:
             data.fieldLabels,
             data.buttonTexts,
             data.buttonCallbacks)
+
+    def p_drawCreateUserScreen(self, data):  #create User and cancel
+        self.gui.drawTwoFieldsTwoButtonLayout(
+            data.fieldLabels, 
+            data.buttonTexts, 
+            data.buttonCallbacks)
 #ToDo: Implement
-        pass
+    #pass
+
     
 
     

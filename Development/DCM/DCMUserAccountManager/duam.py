@@ -87,12 +87,14 @@ class DUAM:
             passwordValid = verify_password(userData.getPassword(), password)
             # Redundant check to make sure correct user data is being returned
             usernameValid = (userData.getUsername() == username)
-
+            print(userData.getUsername() + userData.getPassword())
+            print(passwordValid)
+            print(usernameValid)
             if passwordValid and usernameValid:
                 self.user = userData
                 self.state = SessionStates.LOGGED_IN
                 return FailureCodes.SUCCESS
-        
+
         return FailureCodes.INVALID_CREDENTIALS
 
     def signOut(self):
@@ -109,28 +111,30 @@ class DUAM:
         # Store admin in database
         self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN)
 
-    def makeNewUser(self, p_username, p_password, p_adminPassword):
+    def makeNewUser(self,p_loginData, p_adminPassword):
         """Adds new user to database.
         p_password must not be hashed,
         returns FailureCode
         """
-        if not self.validUser():
-            return FailureCodes.INVALID_CREDENTIALS
-
-        p_password = hash_password(p_password)
+        p_username = p_loginData.username
+        p_password = hash_password(p_loginData.password)
         p_adminPassword = hash_password(p_adminPassword)
+        if self.validUser():
+            return FailureCodes.MISSING_PERMISSIONS
+ 
 #ToDo: add max 10 user limit constraint
-        # If current user's role isn't admin, return 
-        if self.user.getRole() != UserRole.ADMIN:
-            return FailureCodes.MISSING_PERMISSIONS
+        # This will enforce only Admin can create users, Currently anyone can create user
+        # # If current user's role isn't admin, return 
+        # if self.user.getRole() != UserRole.ADMIN:
+        #     return FailureCodes.MISSING_PERMISSIONS
 
-        # If current user isn't admin, return 
-        if self.user.getUsername() != C_ADMINISTRATOR_USERNAME:
-            return FailureCodes.MISSING_PERMISSIONS
+        # # If current user isn't admin, return 
+        # if self.user.getUsername() != C_ADMINISTRATOR_USERNAME:
+        #     return FailureCodes.MISSING_PERMISSIONS
         
-        # Verify administrator password
-        if not verify_password(self.user.getPassword(), p_adminPassword):
-            return FailureCodes.INVALID_CREDENTIALS
+        # # Verify administrator password
+        # if not verify_password(self.user.getPassword(), p_adminPassword):
+        #     return FailureCodes.INVALID_CREDENTIALS
 
         # If user already exists, return False
         if self.dbManager.userExists(p_username):
@@ -170,14 +174,10 @@ class DUAM:
         if self.state == SessionStates.LOGGED_OUT:
             return False
 
-        if self.user == None:
-            return False
+        # if self.user == None:
+        #     return False
 
         return True
-
-
-
-
 
 
 #############################################################

@@ -5,8 +5,7 @@
 
 from src.dcm_constants           import *
 from peewee                      import *
-
-from DCMUserAccountManager.duam  import * 
+import DCMUserAccountManager.duam  
 
 
 database = SqliteDatabase(C_DATABASE_PATH, pragmas={
@@ -37,14 +36,14 @@ class DBPM:
 
     def createUser(self, p_username, p_password, p_role):
         # Create new user
-        self.User.create(username = p_username, password = p_password, role = p_role)
+        self.User1.create(username = p_username, password = p_password, role = p_role)
 
     def userExists(self, p_username):
         """Checks if user exits, 
         true = exists,
         false = does not exist
         """
-        query = self.User.select().where(self.User.username.contains(p_username))
+        query = self.User1.select().where(self.User1.username.contains(p_username))
         # Loop through users in query
         for user in query:
             # If found exact match, return true
@@ -54,17 +53,19 @@ class DBPM:
         return False
 
     def getUserData(self, p_username):
-        query = self.User.select().where(self.User.username.contains(p_username))
+        query = self.User1.select().where(self.User1.username.contains(p_username))
         # Loop through users in query
         for user in query:
             # If found exact match, return true
             if user.username == p_username:
-                return User(user.password, user.password, user.role)
+                #print(user.password + user.password + user.role)
+
+                return DCMUserAccountManager.duam.User(user.password, user.password, user.role)
         # Return None if exact match not found
         return None
 
     def changeUserPassword(self, p_username, p_password):
-        # query = self.User.select().where(self.User.username.contains(p_username))
+        # query = self.User1.select().where(self.User1.username.contains(p_username))
         # # Loop through users in query
         # for user in query:
         #     # If found exact match, return true
@@ -78,9 +79,7 @@ class DBPM:
     # Private Methods #
     def p_createDataTables(self):
         # Create all tables used in application 
-        self.User.create_table()
-
-
+        self.User1.create_table()
 
     ################ Peweee Database Definitions ################
 
@@ -91,9 +90,10 @@ class DBPM:
         class Meta:
             database = database
 
-    class User(BaseModel):
+    class User1(BaseModel):
         username = CharField(unique=True)  # User's username
         password = CharField()             # Hashed value of user's password
         role     = CharField()             # User's role, ie. doctor, nurse, admin, etc.
+
 
 

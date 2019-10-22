@@ -1,1 +1,1 @@
-dsm.py is the DCM Session Controller which handles logging in, permissions, etc.
+duam.py is the DCM Session Controller which handles logging in, permissions, etc.
