@@ -64,7 +64,7 @@ class DUAM:
         returns FailureCode
         """
         username = p_loginData.username
-        password = hash_password(p_loginData.password)
+        password = p_loginData.password
 
         # Check user to make sure it exists
         if (self.dbManager.userExists(username)):

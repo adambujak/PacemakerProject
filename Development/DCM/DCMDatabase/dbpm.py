@@ -69,7 +69,7 @@ class DBPM:
         for user in query:
             # If found exact match, return true
             if user.username == p_username:
-                return User(user.password, user.password, user.role) #look to resolve by implementing signout, log in iff logged out***
+                return User(user.username, user.password, user.role) #look to resolve by implementing signout, log in iff logged out***
         # Return None if exact match not found
         return None
 
