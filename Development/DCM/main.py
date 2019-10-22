@@ -25,27 +25,35 @@ class MainApplication:
         self.guiController.updateGUI()
 
     def loginButtonCB(self):
-        print(self.accountController.signInUser(self.guiController.getLoginData()).value)
-        #self.guiController.drawScreen(programmingScreen)
+        print(self.accountController.getSessionState())
+        stateCode = self.accountController.signInUser(self.guiController.getLoginData())
+        if stateCode.value == 0:
+            self.guiController.drawScreen(programmingScreen)
+        else:
+            print(stateCode.name)
 
     def logoffButtonCB(self):
-        self.guiController.drawScreen(loginScreen)
+        if self.accountController.signOut():
+            self.guiController.drawScreen(loginScreen)
 
     def newUserButtonCB(self):
         self.guiController.drawScreen(createUserScreen)
 
     def createUserButtonCB(self):
-        x = self.accountController.makeNewUser(self.guiController.getNewUserData(),"hello")
-        print(x)
-        if x.value == 0:
+        stateCode = self.accountController.makeNewUser(self.guiController.getNewUserData(),"C_ADMIN_PASSWORD")
+        if  stateCode.value == 0:
             self.guiController.drawScreen(programmingScreen)
+        else:
+            print(stateCode.name)
+        
+
 
     def cancelButtonCB(self):
         self.guiController.drawScreen(loginScreen)
 
 
 def main():
-    #print(hash_password('hello')) #Displays hashed Admin password
+    #print(hash_password("C_ADMIN_PASSWORD")) #Displays hashed C_ADMIN_PASSWORD
 
     app = MainApplication()
 
@@ -65,7 +73,7 @@ def main():
         app.cancelButtonCB()
 
 
-    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, None, None,createUserButtonCallback,cancelButtonCallback)
+    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, None, None, createUserButtonCallback, cancelButtonCallback)
 
     app.setCallbacks(callbacks)
 

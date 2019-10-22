@@ -11,8 +11,8 @@ from pathlib import Path
 C_APPLICATION_DIRECTORY        =       str(Path.cwd().resolve())                          # APPLICATION DIRECTORY 
 
 C_ADMINISTRATOR_USERNAME       =       "Admin"
-C_ADMINISTRATOR_PASSWORD       =       "df2db0ece5530e6cc818cd7cce934a790210129218b6d29cde597a5716ec727f1dabf7bab86f28c641d3ec7f5202f19a380e31caffe191d29b0b4120af7b1e49fda292a4800c24a4c28c2f00e797e0cebb388d21263fb0bd39a5f4ce0f82c25d"
-#Admin password is hello
+C_ADMINISTRATOR_PASSWORD       =       "0b4548dfadaf4ad5c8c9ab4bf1fc95247ebf358c1952e026f67fccc7a7c08203577c3c316bfda6a290e6b68feece3f86ec5696a74389fb04b45190af212c79233864d6fddb42626947b5412d337d337f4471ca1e1bc9b89306784927048141a4"
+#Admin password is 'C_ADMIN_PASSWORD'
 
 # DATABASE CONSTANTS #
 
@@ -30,8 +30,8 @@ C_GUI_TITLE                    =       "Pacemaker DCM"                          
 
 C_LOGIN_USERNAME_LABEL         =       "Username"                                         # LABEL VALUE FOR LOGIN USERNAME FIELD 
 C_LOGIN_PASSWORD_LABEL         =       "Password"                                         # LABEL VALUE FOR LOGIN PASSWORD FIELD 
-C_LOGIN_BUTTON_TEXT            =       "Login"                                          # BUTTON TEXT VALUE FOR LOGIN BUTTON
-C_NEW_USER_BUTTON_TEXT   	   =       "New User?"                                         # BUTTON TEXT VALUE FOR NEW USER BUTTON
+C_LOGIN_BUTTON_TEXT            =       "Login"                                            # BUTTON TEXT VALUE FOR LOGIN BUTTON
+C_NEW_USER_BUTTON_TEXT   	   =       "New User?"                                        # BUTTON TEXT VALUE FOR NEW USER BUTTON
 
 
 C_PROGRAM_DROPDOWN_OPTIONS     =       {"AOO", "VOO", "AAO", "VVO"}                       # DROPDOWN MENU OPTIONS

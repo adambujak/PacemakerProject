@@ -37,20 +37,6 @@ class LoginData:
         self.password = p_password
 
 
-class User:
-    def __init__(self, p_username, p_password, p_userRole):
-        self.username    = p_username
-        self.password    = p_password
-        self.role        = p_userRole
-
-    def getUsername(self):
-        return self.username
-    def getPassword(self):
-        return self.password
-    def getRole(self):
-        return self.role
-
-
 #############################################################
 ################ User Account Manager Class #################
 #############################################################
@@ -69,6 +55,8 @@ class DUAM:
         # and admin user has never been created yet 
         self.p_makeAdminUser();
 
+    def getSessionState(self):
+        return self.state
 
     def signInUser(self, p_loginData):
         """Signs user in.
@@ -87,9 +75,9 @@ class DUAM:
             passwordValid = verify_password(userData.getPassword(), password)
             # Redundant check to make sure correct user data is being returned
             usernameValid = (userData.getUsername() == username)
-            print(userData.getUsername() + userData.getPassword())
-            print(passwordValid)
-            print(usernameValid)
+            #debugging----------------------------
+            print("usernameValid:", usernameValid)
+            print("passwordValid:", passwordValid)
             if passwordValid and usernameValid:
                 self.user = userData
                 self.state = SessionStates.LOGGED_IN
@@ -98,8 +86,11 @@ class DUAM:
         return FailureCodes.INVALID_CREDENTIALS
 
     def signOut(self):
-#ToDo: Implement
-        pass
+        '''Signs user out
+        '''
+        self.user = None
+        self.state = SessionStates.LOGGED_OUT
+        return True
         
     def p_makeAdminUser(self):
         """Adds admin to database if not already there
