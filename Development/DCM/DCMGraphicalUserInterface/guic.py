@@ -13,7 +13,7 @@ from enum                            import Enum
 class ScreenNames(Enum):
     LOGIN_SCREEN        = 0
     PROGRAMMING_SCREEN  = 1
-    CREATE_USER_SCREEN   = 2
+    CREATE_USER_SCREEN  = 2
 
 class LoginMenuData():
     def __init__(self, userNameLabel, passwordLabel, signInButtonText, newUserButtonText):
