@@ -36,6 +36,19 @@ class LoginData:
         self.username = p_username
         self.password = p_password
 
+class ProgrammedData:
+    def __init__(self, p_upperRateLim, p_lowerRateLim, p_atriumPulseAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod,  p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
+        self.upperRateLim = p_upperRateLim
+        self.lowerRateLim = p_lowerRateLim
+        self.atriumPulseAmp = p_atriumPulseAmp
+        self.atriumPulseWidth = p_atriumPulseWidth
+        self.atriumSensThres = p_atriumSensThres
+        self.atriumRefracPeriod = p_atriumRefracPeriod
+        self.ventriclePulseAmp = p_ventriclePulseAmp
+        self.ventriclePulseWidth = p_ventriclePulseWidth
+        self.ventricleSensThres = p_ventricleSensThres
+        self.ventricleRefracPeriod = p_ventricleRefracPeriod
+
 
 #############################################################
 ################ User Account Manager Class #################
@@ -114,6 +127,7 @@ class DUAM:
             return FailureCodes.MISSING_PERMISSIONS
  
 #ToDo: add max 10 user limit constraint
+
         # This will enforce only Admin can create users, Currently anyone can create user
         # # If current user's role isn't admin, return 
         # if self.user.getRole() != UserRole.ADMIN:
@@ -167,9 +181,23 @@ class DUAM:
 
         # if self.user == None:
         #     return False
-
         return True
 
+
+    def programRateLim(self,p_upperRateLim, p_lowerRateLim):
+        """Sets device's rates upper & lower limits
+        """
+        pass
+
+    def programAtriaPara(self,p_atriumPulseAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
+        """Sets device's programmable parameters for the atria
+        """
+        pass
+
+    def programVentriclePara(self,p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
+        """Sets device's programmable parameters for the ventricles
+        """
+        pass
 
 #############################################################
 ################ Password Hashing Functions #################

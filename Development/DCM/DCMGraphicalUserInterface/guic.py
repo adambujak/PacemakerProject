@@ -59,8 +59,14 @@ programmingScreen = Screen(
     ScreenNames.PROGRAMMING_SCREEN, 
     ProgramMenuData(
         [
-            C_PROGRAM_UPPER_LIMIT_LABEL, 
-            C_PROGRAM_LOWER_LIMIT_LABEL
+            C_PROGRAM_ATRIUM_PULSE_AMPLITUDE,
+            C_PROGRAM_ATRIUM_PULSE_WIDTH,
+            C_PROGRAM_ATRIUM_SENSING_THRESHOLD,
+            C_PROGRAM_ATRIUM_REFRACTORY_PERIOD,
+            C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE,
+            C_PROGRAM_VENTRICLE_PULSE_WIDTH,
+            C_PROGRAM_VENTRICLE_SENSING_THRESHOLD,
+            C_PROGRAM_VENTRICLE_REFRACTORY_PERIOD
         ],
         [
             C_PROGRAM_BUTTON_TEXT,            
@@ -70,7 +76,7 @@ programmingScreen = Screen(
         C_PROGRAM_DROPDOWN_OPTIONS,
         C_PROGRAM_DROPDOWN_DEFAULT))
 
-createUserScreen = Screen(
+createUserMenuScreen = Screen(
     ScreenNames.CREATE_USER_SCREEN, 
     CreateUserData(
         C_LOGIN_USERNAME_LABEL, 
@@ -84,7 +90,6 @@ createUserScreen = Screen(
 #############################################################
 
 class GUIC:
-
     # Initialize GUI Controller #
     def __init__(self):
         self.gui = GUIAL()
@@ -94,7 +99,7 @@ class GUIC:
         self.callbacks = callbacks
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
         programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
-        createUserScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
+        createUserMenuScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
     def startGUI(self):
         self.p_drawFirstScreen()
 
@@ -114,17 +119,30 @@ class GUIC:
         self.gui.update()
 
     def getLoginData(self):
+        """
+        Retrieves data from gui input fields on Login Screen
+        """
         if self.currentScreen.screenName == ScreenNames.LOGIN_SCREEN:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
     def getNewUserData(self):
-        '''
-        Retrieves data from gui input fields on CREATE_USER_SCREEN
-        '''
+        """
+        Retrieves data from gui input fields on Create User Screen
+        """
         if self.currentScreen.screenName == ScreenNames.CREATE_USER_SCREEN:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
+
+    def getProgramData(self,):
+        """
+        Retrieves data from gui input fields on Programming Screen
+        """
+        if self.currentScreen.screenName == ScreenNames.PROGRAMMING_SCREEN:
+            entryData = self.gui.getEntryData()
+            return ProgrammedData(entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
+
+
 
     def p_drawFirstScreen(self):
         """
@@ -154,9 +172,9 @@ class GUIC:
             data.buttonCallbacks)
 
     def p_drawCreateUserScreen(self, data): 
-        '''
+        """
         Draw screen of type Create User Screen
-        '''
+        """
         self.gui.drawTwoFieldsTwoButtonLayout(
             data.fieldLabels, 
             data.buttonTexts, 

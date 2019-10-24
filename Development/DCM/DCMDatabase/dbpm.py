@@ -26,7 +26,7 @@ class User:
     def getRole(self):
         return self.role
 #############################################################
-############### Peweee Database Manager Class ###############
+############### Database Peewee Manager Class ###############
 #############################################################
 
 class DBPM:
@@ -72,7 +72,8 @@ class DBPM:
                 return User(user.username, user.password, user.role) #look to resolve by implementing signout, log in iff logged out***
         # Return None if exact match not found
         return None
-
+    def getNumberUsers():
+        pass
     def changeUserPassword(self, p_username, p_password):
         # query = self.DatabaseUserData.select().where(self.DatabaseUserData.username.contains(p_username))
         # # Loop through users in query

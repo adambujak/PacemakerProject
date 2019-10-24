@@ -25,19 +25,20 @@ class MainApplication:
         self.guiController.updateGUI()
 
     def loginButtonCB(self):
-        print(self.accountController.getSessionState())
         stateCode = self.accountController.signInUser(self.guiController.getLoginData())
         if stateCode.value == 0:
             self.guiController.drawScreen(programmingScreen)
         else:
             print(stateCode.name)
+        print(self.accountController.getSessionState())
+
 
     def logoffButtonCB(self):
         if self.accountController.signOut():
             self.guiController.drawScreen(loginScreen)
 
     def newUserButtonCB(self):
-        self.guiController.drawScreen(createUserScreen)
+        self.guiController.drawScreen(createUserMenuScreen)
 
     def createUserButtonCB(self):
         stateCode = self.accountController.makeNewUser(self.guiController.getNewUserData(),"C_ADMIN_PASSWORD")
@@ -45,11 +46,27 @@ class MainApplication:
             self.guiController.drawScreen(programmingScreen)
         else:
             print(stateCode.name)
-        
-
 
     def cancelButtonCB(self):
         self.guiController.drawScreen(loginScreen)
+
+    def programButtonCB(self):
+        #do user field restrictions in DUAM set functions "program...."
+        programmedData = self.guiController.getProgramData() #will return all the
+        parameterStatusR = self.accountController.programRateLim(programmedData)
+        if parameterStatusR.value == 0:
+            parameterStatusA = self.accountController.programAtriaPara(programmedData)
+            if parameterStatusA.value == 0:
+                parameterStatusV = self.accountController.programVentriclePara(programmedData)
+                if parameterStatusV.value == 0:
+                    self.guiController.drawScreen(programmingScreen)
+                else:
+                    print(parameterStatusV.name)
+            else:
+                print(parameterStatusA.name)
+        else:
+            print(parameterStatusR.name)
+
 
 
 def main():
@@ -72,8 +89,11 @@ def main():
     def cancelButtonCallback():
         app.cancelButtonCB()
 
+    def programButtonCallback():
+        app.programButtonCB()
 
-    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, None, None, createUserButtonCallback, cancelButtonCallback)
+
+    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, createUserButtonCallback, cancelButtonCallback, None, None)
 
     app.setCallbacks(callbacks)
 
