@@ -50,5 +50,5 @@ C_PROGRAM_DROPDOWN_LABEL       		  =       "Pacing Mode"                        
 C_PROGRAM_BUTTON_TEXT          		  =       "Program"                                          # BUTTON TEXT VALUE FOR PROGRAM BUTTON
 C_PROGRAM_LOGOUT_BUTTON_TEXT   		  =       "Sign Out"                                         # BUTTON TEXT VALUE FOR LOGOUT BUTTON
 
-C_CREATE_USER_BUTTON_TEXT	   		  = 	   "Create New User"
-C_CANCEL_BUTTON_TEXT		   		  = 	   "Cancel"
+C_CREATE_USER_BUTTON_TEXT	   		  = 	  "Create New User"
+C_CANCEL_BUTTON_TEXT		   		  = 	  "Cancel"

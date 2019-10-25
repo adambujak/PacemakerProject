@@ -10,7 +10,7 @@ import time
 
 
 
-class MainApplication:
+class MainApplication:      #All print statments in MainApplication can be used in a call to display on gui screens
     def __init__(self):
         self.accountController = DUAM()
         self.guiController = GUIC()
@@ -52,20 +52,12 @@ class MainApplication:
 
     def programButtonCB(self):
         #do user field restrictions in DUAM set functions "program...."
+        # can do the hardware hidden print where program... functions store the error function then a get will return the failureCode to main to be printed or displayed
         programmedData = self.guiController.getProgramData() #will return all the
-        parameterStatusR = self.accountController.programRateLim(programmedData)
-        if parameterStatusR.value == 0:
-            parameterStatusA = self.accountController.programAtriaPara(programmedData)
-            if parameterStatusA.value == 0:
-                parameterStatusV = self.accountController.programVentriclePara(programmedData)
-                if parameterStatusV.value == 0:
-                    self.guiController.drawScreen(programmingScreen)
-                else:
-                    print(parameterStatusV.name)
-            else:
-                print(parameterStatusA.name)
+        if (self.accountController.programRateLim(programmedData).value) == 0 and (self.accountController.programAtriaPara(programmedData).value == 0) and (self.accountController.programVentriclePara(programmedData).value == 0):
+            self.guiController.drawScreen(programmingScreen)
         else:
-            print(parameterStatusR.name)
+            print("User input error")
 
 
 

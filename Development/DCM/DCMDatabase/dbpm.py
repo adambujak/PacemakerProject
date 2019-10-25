@@ -72,8 +72,17 @@ class DBPM:
                 return User(user.username, user.password, user.role) #look to resolve by implementing signout, log in iff logged out***
         # Return None if exact match not found
         return None
-    def getNumberUsers():
-        pass
+
+    def getNumUsers(self):
+        numUsers = 0;
+        query = self.DatabaseUserData.select()
+        for user in query:
+             numUsers += 1;
+# Just for testing
+        #     print ('User #%d is %s' % (numUsers, user.username))
+        # print('Num of users before created user is %d' % (numUsers))
+        return numUsers
+
     def changeUserPassword(self, p_username, p_password):
         # query = self.DatabaseUserData.select().where(self.DatabaseUserData.username.contains(p_username))
         # # Loop through users in query

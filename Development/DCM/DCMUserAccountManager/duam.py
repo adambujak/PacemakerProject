@@ -22,6 +22,7 @@ class FailureCodes(Enum):
     EXISTING_USER       = 3
     INVALID_CREDENTIALS = 4
     MISSING_PERMISSIONS = 5
+    TOO_MANY_USERS      = 6
 
 class SessionStates(Enum):
     LOGGED_OUT  = 0
@@ -125,6 +126,8 @@ class DUAM:
         p_adminPassword = hash_password(p_adminPassword)
         if self.validUser():
             return FailureCodes.MISSING_PERMISSIONS
+        if not self.validNumUsers():
+            return FailureCodes.TOO_MANY_USERS
  
 #ToDo: add max 10 user limit constraint
 
@@ -170,7 +173,6 @@ class DUAM:
         self.changeUserPassword(p_username, p_newPassword)
         return FailureCodes.SUCCESS
 
-
     def validUser(self):
         """ Checks if current user is valid,
         if signed out, it returns False,
@@ -183,6 +185,10 @@ class DUAM:
         #     return False
         return True
 
+    def validNumUsers(self):
+        if self.dbManager.getNumUsers() >= 10:
+            return False
+        return True
 
     def programRateLim(self,p_upperRateLim, p_lowerRateLim):
         """Sets device's rates upper & lower limits
