@@ -79,7 +79,7 @@ class UserProgramData:
         self.atrialPulseWidth=val
     def setAtrialSensingThreshold(self,val):
         self.atrialSensingThreshold=val
-    def setAtriumRefractoryPeriod(self,val):
+    def setAtrialRefractoryPeriod(self,val):
         self.atrialRefractoryPeriod=val
     def setVentricularAmplitude(self,val):
         self.ventricularAmplitude=val

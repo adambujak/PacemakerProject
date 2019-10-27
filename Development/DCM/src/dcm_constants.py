@@ -32,10 +32,12 @@ C_LOGIN_USERNAME_LABEL     	    	  =       "Username"                           
 C_LOGIN_PASSWORD_LABEL    		 	  =       "Password"                                         # LABEL VALUE FOR LOGIN PASSWORD FIELD 
 C_LOGIN_BUTTON_TEXT           		  =       "Login"                                            # BUTTON TEXT VALUE FOR LOGIN BUTTON
 C_NEW_USER_BUTTON_TEXT   	   		  =       "New User?"                                        # BUTTON TEXT VALUE FOR NEW USER BUTTON
+C_NEW_USERNAME_LABEL     	    	  =       "Username\n min length: 4 char"                    # LABEL VALUE FOR NEW USERNAME FIELD 
+C_NEW_PASSWORD_LABEL    		 	  =       "Password\n min length: 4 char"                    # LABEL VALUE FOR NEW PASSWORD FIELD 
 
 
-C_PROGRAM_UPPER_LIMIT_LABEL    		  =       "Upper Rate Limit"                                 # LABEL VALUE FOR UPPER RATE LIMIT FIELD 
-C_PROGRAM_LOWER_LIMIT_LABEL    		  =       "Lower Rate Limit"                                 # LABEL VALUE FOR LOWER RATE LIMIT FIELD 
+C_PROGRAM_UPPER_LIMIT_LABEL    		  =       "Upper Rate Limit\n(Rate < 150bpm)"                # LABEL VALUE FOR UPPER RATE LIMIT FIELD 
+C_PROGRAM_LOWER_LIMIT_LABEL    		  =       "Lower Rate Limit\n(Rate > 40bpm)"                 # LABEL VALUE FOR LOWER RATE LIMIT FIELD 
 C_PROGRAM_ATRIUM_PULSE_AMPLITUDE 	  =		  "Atrium Pulse Amplitude"						     # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
 C_PROGRAM_ATRIUM_PULSE_WIDTH	 	  =		  "Atrium Pulse Width"						   	     # LABEL VALUE FOR ATRIUM PULSE WIDTH
 C_PROGRAM_ATRIUM_SENSING_THRESHOLD	  =		  "Atrium Sensing Threshold"						 # LABEL VALUE FOR ATRIUM SENSING THRESHOLD

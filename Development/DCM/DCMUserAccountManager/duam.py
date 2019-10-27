@@ -23,6 +23,7 @@ class FailureCodes(Enum):
     INVALID_CREDENTIALS = 4
     MISSING_PERMISSIONS = 5
     TOO_MANY_USERS      = 6
+    INVALID_USER_INPUT  = 7
 
 class SessionStates(Enum):
     LOGGED_OUT  = 0
@@ -36,6 +37,21 @@ class LoginData:
     def __init__(self, p_username, p_password):
         self.username = p_username
         self.password = p_password
+
+class UserInputProgramData:
+    def __init__(self, p_lowerRateLimit, p_upperRateLimit, 
+        p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
+        p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod):
+        self.lowerRateLimit               = int(p_lowerRateLimit)
+        self.upperRateLimit               = int(p_upperRateLimit)
+        self.atrialAmplitude              = int(p_atrialAmplitude)
+        self.atrialPulseWidth             = int(p_atrialPulseWidth)
+        self.atrialSensingThreshold       = int(p_atrialSensingThreshold)
+        self.atrialRefractoryPeriod       = int(p_atrialRefractoryPeriod)
+        self.ventricularAmplitude         = int(p_ventricularAmplitude)
+        self.ventricularPulseWidth        = int(p_ventricularPulseWidth)
+        self.ventricularSensingThreshold  = int(p_ventricularSensingThreshold)
+        self.ventricularRefractoryPeriod  = int(p_ventricularRefractoryPeriod)
 
 
 
@@ -104,11 +120,14 @@ class DUAM:
         # Store admin in database
         self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN, UserProgramData(1,2,3,4,5,6,7,8,9,10))
 
-    def makeNewUser(self,p_loginData, p_adminPassword):
+    def makeNewUser(self, p_loginData, p_adminPassword):
         """Adds new user to database.
         p_password must not be hashed,
         returns FailureCode
         """
+        if not self.validSigninInput(p_loginData.username, p_loginData.password):
+            return FailureCodes.INVALID_USER_INPUT
+
         p_username = p_loginData.username
         p_password = hash_password(p_loginData.password)
         p_adminPassword = hash_password(p_adminPassword)
@@ -116,8 +135,7 @@ class DUAM:
             return FailureCodes.MISSING_PERMISSIONS
         if not self.validNumUsers():
             return FailureCodes.TOO_MANY_USERS
- 
-#ToDo: add max 10 user limit constraint
+
 
         # This will enforce only Admin can create users, Currently anyone can create user
         # # If current user's role isn't admin, return 
@@ -173,6 +191,18 @@ class DUAM:
         #     return False
         return True
 
+    def validSigninInput(self, username, password):
+        if len(username) < 4 or len(password) < 4:
+            return False
+        return True
+
+    def validRateLims(self,p_upperRateLim, p_lowerRateLim):
+        if p_upperRateLim > 150 or p_upperRateLim < p_lowerRateLim:
+            return False
+        if p_lowerRateLim < 40:
+            return False
+        return True
+
     def validNumUsers(self):
         if self.dbManager.getNumUsers() >= 10:
             return False
@@ -181,28 +211,33 @@ class DUAM:
     def programRateLim(self,p_upperRateLim, p_lowerRateLim):
         """Sets current user's upper and lower rate limits in database
         """
+        if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
+            return FailureCodes.INVALID_USER_INPUT
         self.user.data.setUpperRateLimit(p_upperRateLim)
         self.user.data.setLowerRateLimit(p_lowerRateLim)
+        return FailureCodes.SUCCESS
 
 
 
-    def programAtriaPara(self,p_atriumPulseAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
+    def programAtriaPara(self,p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
         """Sets current user's atrium data in database
         """
-        self.user.data.setAtrialPulseAmplitude(p_atriumPulseAmp)
+        self.user.data.setAtrialAmplitude(p_atriumAmp)
         self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
         self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
-        self.user.data.setAtrialRefactoryPeriod(p_atriumRefracPeriod)
+        self.user.data.setAtrialRefractoryPeriod(p_atriumRefracPeriod)
+        return FailureCodes.SUCCESS
 
         
 
     def programVentriclePara(self,p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
         """Sets current user's ventricle data in database
         """
-        self.user.data.setVentricularPulseAmplitude(p_ventriclePulseAmp)
+        self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
         self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
         self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
-        self.user.data.setVentricularRefactoryPeriod(p_ventricleRefracPeriod)
+        self.user.data.setVentricularRefractoryPeriod(p_ventricleRefracPeriod)
+        return FailureCodes.SUCCESS
 
 
 

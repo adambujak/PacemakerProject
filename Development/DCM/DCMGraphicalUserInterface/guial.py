@@ -13,6 +13,11 @@ from src.dcm_constants import *
 #############################################################
 
 class GUIAL:
+    # root = Tk()
+    # img = ImageTk.PhotoImage(Image.open("True1.gif"))
+    # panel = Label(root, image = img)
+    # panel.pack(side = "bottom", fill = "both", expand = "yes")
+    # root.mainloop()
 
     # Initialize GUI Abstraction Layer #
     def __init__(self):
@@ -59,6 +64,13 @@ class GUIAL:
         self.instance.title(self.title)
 
         self.instance.configure(background = "white");
+        
+        #Attempt to add logo to GUI Upper right corner of Login Screen
+        # img = tk.PhotoImage(file="logoMac.gif")
+        # label = Label(image=photo)
+        # img.image = img
+        # panel = tk.Label(self.instance, image = img).grid(row = 0,column = 0)
+        # panel.pack(side = "bottom", fill = "both", expand = "yes").    
 
         a = tk.Label(self.instance ,text = fieldLabels[0]).grid(row = 0,column = 1)
         b = tk.Label(self.instance ,text = fieldLabels[1]).grid(row = 1,column = 1)
@@ -103,8 +115,8 @@ class GUIAL:
 
         popupMenuRowIndex = 1
         popupMenu = tk.OptionMenu(self.instance, tkvar, *dropDownOptions)
-        tk.Label(self.instance, text=dropDownLabelText).grid(row = popupMenuRowIndex, column = 1)
-        popupMenu.grid(row = popupMenuRowIndex+1, column =1)
+        tk.Label(self.instance, text=dropDownLabelText).grid(row = popupMenuRowIndex, column = 5)
+        popupMenu.grid(row = popupMenuRowIndex+1, column =5)
 
         # On change dropdown value
         def change_dropdown(*args):
@@ -118,16 +130,18 @@ class GUIAL:
         rowOffset = popupMenuRowIndex+2;
 
         # Draw each field
-        for field in range(len(fieldLabels)):
-            label = tk.Label(self.instance, text = fieldLabels[field]).grid(row = field+rowOffset, column = 0)
-            entry = tk.Entry(self.instance).grid(row = field+rowOffset,column = 1)
-        
+
+        for columns in range(len(fieldLabels)):
+            for field in range(len(fieldLabels[columns])):
+                label = tk.Label(self.instance, text = fieldLabels[columns][field], anchor="e").grid(sticky="E", row = field+rowOffset, column = (1+columns)*2)
+                entry = tk.Entry(self.instance).grid(row = field+rowOffset, column = 1 + (1+columns)*2)
+            
         # Update row offset to be the row after the last field 
         rowOffset += field + 1
 
         # Draw each button
         for buttonIndex in range(len(buttonTexts)):
-            btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=1)
+            btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=5)
 
     def getEntryData(self):
         children = self.instance.winfo_children()

@@ -53,8 +53,12 @@ class MainApplication:      #All print statements in MainApplication can be used
     def programButtonCB(self):
         #do user field restrictions in DUAM set functions "program...."
         # can do the hardware hidden print where program... functions store the error function then a get will return the failureCode to main to be printed or displayed
-        programmedData = self.guiController.getProgramData() #will return all the
-        if (self.accountController.programRateLim(programmedData).value) == 0 and (self.accountController.programAtriaPara(programmedData).value == 0) and (self.accountController.programVentriclePara(programmedData).value == 0):
+        programmedData = self.guiController.getUserProgramData() #will return all the
+        if ((self.accountController.programRateLim(programmedData.lowerRateLimit, programmedData.upperRateLimit).value == 0)
+            and (self.accountController.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
+                programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod).value == 0)
+            and (self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
+                programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod).value == 0)):
             self.guiController.drawScreen(programmingScreen)
         else:
             print("User input error")
@@ -87,7 +91,7 @@ def main():
         app.programButtonCB()
 
 
-    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, createUserButtonCallback, cancelButtonCallback, None, None)
+    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, createUserButtonCallback, cancelButtonCallback, programButtonCallback, None)
 
     app.setCallbacks(callbacks)
 
