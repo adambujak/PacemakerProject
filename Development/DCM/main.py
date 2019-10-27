@@ -10,7 +10,7 @@ import time
 
 
 
-class MainApplication:      #All print statments in MainApplication can be used in a call to display on gui screens
+class MainApplication:      #All print statements in MainApplication can be used in a call to display on gui screens
     def __init__(self):
         self.accountController = DUAM()
         self.guiController = GUIC()
@@ -66,6 +66,8 @@ def main():
 
     app = MainApplication()
 
+
+    # TODO: get rid of these 
     def loginButtonCallback():
         app.loginButtonCB()
 

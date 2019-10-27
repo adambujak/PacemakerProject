@@ -37,18 +37,6 @@ class LoginData:
         self.username = p_username
         self.password = p_password
 
-class ProgrammedData:
-    def __init__(self, p_upperRateLim, p_lowerRateLim, p_atriumPulseAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod,  p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
-        self.upperRateLim = p_upperRateLim
-        self.lowerRateLim = p_lowerRateLim
-        self.atriumPulseAmp = p_atriumPulseAmp
-        self.atriumPulseWidth = p_atriumPulseWidth
-        self.atriumSensThres = p_atriumSensThres
-        self.atriumRefracPeriod = p_atriumRefracPeriod
-        self.ventriclePulseAmp = p_ventriclePulseAmp
-        self.ventriclePulseWidth = p_ventriclePulseWidth
-        self.ventricleSensThres = p_ventricleSensThres
-        self.ventricleRefracPeriod = p_ventricleRefracPeriod
 
 
 #############################################################
@@ -114,7 +102,7 @@ class DUAM:
         if self.dbManager.userExists(C_ADMINISTRATOR_USERNAME):
             return
         # Store admin in database
-        self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN)
+        self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN, UserProgramData(1,2,3,4,5,6,7,8,9,10))
 
     def makeNewUser(self,p_loginData, p_adminPassword):
         """Adds new user to database.
@@ -149,7 +137,7 @@ class DUAM:
             return FailureCodes.EXISTING_USER
 
         # Store user in database
-        self.dbManager.createUser(p_username, p_password, UserRole.USER)
+        self.dbManager.createUser(p_username, p_password, UserRole.USER, UserProgramData(1,2,3,4,5,6,7,8,9,10))
         return FailureCodes.SUCCESS
 
     def changeUserPassword(self, p_username, p_existingPassword, p_newPassword):
@@ -191,19 +179,32 @@ class DUAM:
         return True
 
     def programRateLim(self,p_upperRateLim, p_lowerRateLim):
-        """Sets device's rates upper & lower limits
+        """Sets current user's upper and lower rate limits in database
         """
-        pass
+        self.user.data.setUpperRateLimit(p_upperRateLim)
+        self.user.data.setLowerRateLimit(p_lowerRateLim)
+
+
 
     def programAtriaPara(self,p_atriumPulseAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
-        """Sets device's programmable parameters for the atria
+        """Sets current user's atrium data in database
         """
-        pass
+        self.user.data.setAtrialPulseAmplitude(p_atriumPulseAmp)
+        self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
+        self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
+        self.user.data.setAtrialRefactoryPeriod(p_atriumRefracPeriod)
+
+        
 
     def programVentriclePara(self,p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
-        """Sets device's programmable parameters for the ventricles
+        """Sets current user's ventricle data in database
         """
-        pass
+        self.user.data.setVentricularPulseAmplitude(p_ventriclePulseAmp)
+        self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
+        self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
+        self.user.data.setVentricularRefactoryPeriod(p_ventricleRefracPeriod)
+
+
 
 #############################################################
 ################ Password Hashing Functions #################
