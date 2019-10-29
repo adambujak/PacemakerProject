@@ -148,9 +148,12 @@ class GUIC:
         """
         if self.currentScreen.screenName == ScreenNames.PROGRAMMING_SCREEN:
             entryData = self.gui.getEntryData()
+            for entryIndex in range(len(entryData)):
+                if entryData[entryIndex] == '':
+                    entryData[entryIndex] = -1;
+                else:
+                    entryData[entryIndex] = float(entryData[entryIndex]);
             return UserInputProgramData(entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
-
-
 
     def p_drawFirstScreen(self):
         """

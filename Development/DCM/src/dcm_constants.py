@@ -36,16 +36,16 @@ C_NEW_USERNAME_LABEL     	    	  =       "Username\n min length: 4 char"        
 C_NEW_PASSWORD_LABEL    		 	  =       "Password\n min length: 4 char"                    # LABEL VALUE FOR NEW PASSWORD FIELD 
 
 
-C_PROGRAM_UPPER_LIMIT_LABEL    		  =       "Upper Rate Limit\n(Rate < 150bpm)"                # LABEL VALUE FOR UPPER RATE LIMIT FIELD 
-C_PROGRAM_LOWER_LIMIT_LABEL    		  =       "Lower Rate Limit\n(Rate > 40bpm)"                 # LABEL VALUE FOR LOWER RATE LIMIT FIELD 
-C_PROGRAM_ATRIUM_PULSE_AMPLITUDE 	  =		  "Atrium Pulse Amplitude"						     # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
-C_PROGRAM_ATRIUM_PULSE_WIDTH	 	  =		  "Atrium Pulse Width"						   	     # LABEL VALUE FOR ATRIUM PULSE WIDTH
-C_PROGRAM_ATRIUM_SENSING_THRESHOLD	  =		  "Atrium Sensing Threshold"						 # LABEL VALUE FOR ATRIUM SENSING THRESHOLD
-C_PROGRAM_ATRIUM_REFRACTORY_PERIOD 	  =		  "Atrium Refractory period"						 # LABEL VALUE FOR ATRIUM REFRACTORY PERIOD
-C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE   =		  "Ventricle Pulse Amplitude"						 # LABEL VALUE FOR VENTRICLE PULSE AMPLITUDE
-C_PROGRAM_VENTRICLE_PULSE_WIDTH	 	  =		  "Ventricle Pulse Width"						   	 # LABEL VALUE FOR VENTRICLE PULSE WIDTH
-C_PROGRAM_VENTRICLE_SENSING_THRESHOLD =		  "Ventricle Sensing Threshold"						 # LABEL VALUE FOR VENTRICLE SENSING THRESHOLD
-C_PROGRAM_VENTRICLE_REFRACTORY_PERIOD =		  "Ventricle Refractory period"						 # LABEL VALUE FOR VENTRICLE REFRACTORY PERIOD
+C_PROGRAM_UPPER_LIMIT_LABEL    		  =       "Upper Rate Limit\n (bpm)"                				 # LABEL VALUE FOR UPPER RATE LIMIT FIELD 
+C_PROGRAM_LOWER_LIMIT_LABEL    		  =       "Lower Rate Limit\n (bpm)"                 				 # LABEL VALUE FOR LOWER RATE LIMIT FIELD 
+C_PROGRAM_ATRIUM_PULSE_AMPLITUDE 	  =		  "Atrium Pulse Amplitude\n (Volts)"						     # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
+C_PROGRAM_ATRIUM_PULSE_WIDTH	 	  =		  "Atrium Pulse Width\n (ms)"						   	     # LABEL VALUE FOR ATRIUM PULSE WIDTH
+C_PROGRAM_ATRIUM_SENSING_THRESHOLD	  =		  "Atrium Sensing Threshold\n (mV)"						 # LABEL VALUE FOR ATRIUM SENSING THRESHOLD
+C_PROGRAM_ATRIUM_REFRACTORY_PERIOD 	  =		  "Atrium Refractory period\n (ms)"						 # LABEL VALUE FOR ATRIUM REFRACTORY PERIOD
+C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE   =		  "Ventricle Pulse Amplitude\n (Volts)"						 # LABEL VALUE FOR VENTRICLE PULSE AMPLITUDE
+C_PROGRAM_VENTRICLE_PULSE_WIDTH	 	  =		  "Ventricle Pulse Width\n (ms)"						   	 # LABEL VALUE FOR VENTRICLE PULSE WIDTH
+C_PROGRAM_VENTRICLE_SENSING_THRESHOLD =		  "Ventricle Sensing Threshold\n (mV)"						 # LABEL VALUE FOR VENTRICLE SENSING THRESHOLD
+C_PROGRAM_VENTRICLE_REFRACTORY_PERIOD =		  "Ventricle Refractory period\n (ms)"						 # LABEL VALUE FOR VENTRICLE REFRACTORY PERIOD
 C_PROGRAM_DROPDOWN_OPTIONS     		  =       {"AOO", "AAI", "VOO", "VVI"}                       # DROPDOWN MENU OPTIONS
 C_PROGRAM_DROPDOWN_DEFAULT     		  =       "AOO"                                              # DEFAULT VALUE FOR DROPDOWN
 C_PROGRAM_DROPDOWN_LABEL       		  =       "Pacing Mode"                                      # LABEL VALUE FOR DROPDOWN INDICATOR 

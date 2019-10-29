@@ -60,8 +60,8 @@ class MainApplication:      #All print statements in MainApplication can be used
             and (self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
                 programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod).value == 0)):
             self.guiController.drawScreen(programmingScreen)
-        else:
-            print("User input error")
+        # else:
+        #     print("USER INPUT ERROR")
 
 
 

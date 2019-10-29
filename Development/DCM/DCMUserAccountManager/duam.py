@@ -3,10 +3,10 @@
 # Description: DCM User Account Manager Source File
 # Filename: duam.py
 
-from src.dcm_constants import *
-from DCMDatabase.dbpm  import *
-from enum              import Enum
-
+from src.dcm_constants                  import *
+from DCMDatabase.dbpm                   import *
+from enum                               import Enum
+from DCMUserAccountManager.frangeFunc   import *
 import hashlib, binascii, os
 
 
@@ -16,14 +16,17 @@ import hashlib, binascii, os
 
 
 class FailureCodes(Enum):
-    SUCCESS             = 0
-    INCORRECT_PASSWORD  = 1
-    INCORRECT_USERNAME  = 2
-    EXISTING_USER       = 3
-    INVALID_CREDENTIALS = 4
-    MISSING_PERMISSIONS = 5
-    TOO_MANY_USERS      = 6
-    INVALID_USER_INPUT  = 7
+    SUCCESS                 = 0
+    INCORRECT_PASSWORD      = 1
+    INCORRECT_USERNAME      = 2
+    EXISTING_USER           = 3
+    INVALID_CREDENTIALS     = 4
+    MISSING_PERMISSIONS     = 5
+    TOO_MANY_USERS          = 6
+    INVALID_USER_INPUT      = 7
+    INVALID_RATE_INPUT      = 8
+    INVALID_ATRIUM_INPUT    = 9
+    INVALID_VENTRICLE_INPUT = 10
 
 class SessionStates(Enum):
     LOGGED_OUT  = 0
@@ -42,16 +45,16 @@ class UserInputProgramData:
     def __init__(self, p_lowerRateLimit, p_upperRateLimit, 
         p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
         p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod):
-        self.lowerRateLimit               = int(p_lowerRateLimit)
-        self.upperRateLimit               = int(p_upperRateLimit)
-        self.atrialAmplitude              = int(p_atrialAmplitude)
-        self.atrialPulseWidth             = int(p_atrialPulseWidth)
-        self.atrialSensingThreshold       = int(p_atrialSensingThreshold)
-        self.atrialRefractoryPeriod       = int(p_atrialRefractoryPeriod)
-        self.ventricularAmplitude         = int(p_ventricularAmplitude)
-        self.ventricularPulseWidth        = int(p_ventricularPulseWidth)
-        self.ventricularSensingThreshold  = int(p_ventricularSensingThreshold)
-        self.ventricularRefractoryPeriod  = int(p_ventricularRefractoryPeriod)
+        self.lowerRateLimit               = p_lowerRateLimit
+        self.upperRateLimit               = p_upperRateLimit
+        self.atrialAmplitude              = p_atrialAmplitude
+        self.atrialPulseWidth             = p_atrialPulseWidth
+        self.atrialSensingThreshold       = p_atrialSensingThreshold
+        self.atrialRefractoryPeriod       = p_atrialRefractoryPeriod
+        self.ventricularAmplitude         = p_ventricularAmplitude
+        self.ventricularPulseWidth        = p_ventricularPulseWidth
+        self.ventricularSensingThreshold  = p_ventricularSensingThreshold
+        self.ventricularRefractoryPeriod  = p_ventricularRefractoryPeriod
 
 
 
@@ -125,7 +128,7 @@ class DUAM:
         p_password must not be hashed,
         returns FailureCode
         """
-        if not self.validSigninInput(p_loginData.username, p_loginData.password):
+        if not self.validNewUserInput(p_loginData.username, p_loginData.password):
             return FailureCodes.INVALID_USER_INPUT
 
         p_username = p_loginData.username
@@ -191,37 +194,101 @@ class DUAM:
         #     return False
         return True
 
-    def validSigninInput(self, username, password):
+    def validNewUserInput(self, username, password):
         if len(username) < 4 or len(password) < 4:
             return False
         return True
 
-    def validRateLims(self,p_upperRateLim, p_lowerRateLim):
-        if p_upperRateLim > 150 or p_upperRateLim < p_lowerRateLim:
-            return False
-        if p_lowerRateLim < 40:
-            return False
-        return True
+
+
+    def validRateLims(self, p_upperRateLim, p_lowerRateLim):
+        """Validates users input for rate limits
+        """
+        checks = 0;
+        #check p_lowerRateLim
+        for valid in frange(30,50,5):
+            if p_lowerRateLim == valid:
+                checks += 1;
+                break
+        for valid in frange(51,90,1):
+            if p_lowerRateLim == valid:
+                checks += 1;
+                break
+        for valid in frange(95,175,5):
+            if p_lowerRateLim == valid:
+                checks += 1;
+                break
+        #check p_upperRateLim
+        for valid in frange(50,175,5):
+            if p_upperRateLim == valid and p_upperRateLim >= p_lowerRateLim:
+                checks += 1;
+                break
+        if checks == 2:
+            return True
+        return False
+
+    def validChamberPara(self, p_pulseAmp, p_pulseWidth, p_sensThres, p_refracPeriod):
+        """Validates users input for chamber's arguments
+        """
+        checks = 0;
+        #check p_pulseAmp
+        for valid in frange(0.5,3.2,0.1):
+            if p_pulseAmp == valid:
+                checks += 1;
+                break
+        for valid in frange(3.5,7.0,0.5):
+            if p_pulseAmp == valid:
+                checks += 1;
+                break
+        #check p_pulseWidth
+        if p_pulseWidth == 0.05:
+            checks += 1;
+        for valid in frange(0.1,1.9,0.1):
+            if p_pulseWidth == valid:
+                checks += 1;
+                break
+        #check p_sensThres
+        for valid in [0.25,0.5,0.75]:
+            if p_sensThres == valid:
+                checks += 1;
+                break
+        for valid in frange(1,10,0.5):
+            if p_sensThres == valid:
+                checks += 1;
+                break
+        #check p_refracPeriod
+        for valid in frange(150,500,10):
+            if p_refracPeriod == valid:
+                checks += 1;
+                break
+        if checks == 4: #all four arguments are valid
+            return True
+        return False
+
 
     def validNumUsers(self):
         if self.dbManager.getNumUsers() >= 10:
             return False
         return True
 
-    def programRateLim(self,p_upperRateLim, p_lowerRateLim):
+    def programRateLim(self, p_upperRateLim, p_lowerRateLim):
         """Sets current user's upper and lower rate limits in database
         """
         if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
-            return FailureCodes.INVALID_USER_INPUT
+            print('User imputted invalid rate parameter')
+            return FailureCodes.INVALID_RATE_INPUT
         self.user.data.setUpperRateLimit(p_upperRateLim)
         self.user.data.setLowerRateLimit(p_lowerRateLim)
         return FailureCodes.SUCCESS
 
 
 
-    def programAtriaPara(self,p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
+    def programAtriaPara(self, p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
         """Sets current user's atrium data in database
         """
+        if not self.validChamberPara(p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
+            print('User imputted invalid atruim parameter')
+            return FailureCodes.INVALID_ATRIUM_INPUT
         self.user.data.setAtrialAmplitude(p_atriumAmp)
         self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
         self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
@@ -230,9 +297,12 @@ class DUAM:
 
         
 
-    def programVentriclePara(self,p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
+    def programVentriclePara(self, p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
         """Sets current user's ventricle data in database
         """
+        if not self.validChamberPara(p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
+            print('User imputted invalid ventricle parameter')
+            return FailureCodes.INVALID_VENTRICLE_INPUT
         self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
         self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
         self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
