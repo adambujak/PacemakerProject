@@ -150,3 +150,19 @@ class GUIAL:
             if type(item) == tk.Entry:
                 output.append(item.get())
         return output
+
+    def setNEntryData(self, data):
+        """Sets each entry to value in data array
+            @param data - array of values to be set
+        """
+        children = self.instance.winfo_children()
+        
+        itemCnt = 0
+        for item in children:
+            if type(item) == tk.Entry:
+                if itemCnt >= len(data):
+                    return
+                print("Data[itemCnt]", data[itemCnt])
+                item.delete(0, tk.END)
+                item.insert(0, data[itemCnt])
+                itemCnt += 1

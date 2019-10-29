@@ -27,13 +27,13 @@ class User:
         return self.password
     def getRole(self):
         return self.role
-    def getData(self):
+    def getProgrammingData(self):
         return self.data
 
 
 
 class UserProgramData:
-    def __init__(self, p_lowerRateLimit, p_upperRateLimit, 
+    def __init__(self, p_upperRateLimit, p_lowerRateLimit, 
         p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
         p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod):
         self.lowerRateLimit               = p_lowerRateLimit
@@ -58,7 +58,7 @@ class UserProgramData:
         return self.atrialPulseWidth
     def getAtrialSensingThreshold(self):
         return self.atrialSensingThreshold
-    def getAtriumRefractoryPeriod(self):
+    def getAtrialRefractoryPeriod(self):
         return self.atrialRefractoryPeriod
     def getVentricularAmplitude(self):
         return self.ventricularAmplitude
@@ -118,8 +118,8 @@ class DBPM:
         # Create data variable
 
         data = DatabaseProgramData.create( 
-            lowerRateLimit              = p_data.lowerRateLimit,
             upperRateLimit              = p_data.upperRateLimit,
+            lowerRateLimit              = p_data.lowerRateLimit,
             atrialAmplitude             = p_data.atrialAmplitude,
             atrialPulseWidth            = p_data.atrialPulseWidth,
             atrialSensingThreshold      = p_data.atrialSensingThreshold,
@@ -153,8 +153,8 @@ class DBPM:
             # If found exact match, return true
             if user.username == p_username:
                 data = UserProgramData(
-                    user.data.lowerRateLimit,
                     user.data.upperRateLimit,
+                    user.data.lowerRateLimit,
                     user.data.atrialAmplitude,
                     user.data.atrialPulseWidth,
                     user.data.atrialSensingThreshold,

@@ -27,11 +27,11 @@ class MainApplication:      #All print statements in MainApplication can be used
     def loginButtonCB(self):
         stateCode = self.accountController.signInUser(self.guiController.getLoginData())
         if stateCode.value == 0:
+            self.guiController.setProgrammingValues(self.accountController.getProgrammingValues())
             self.guiController.drawScreen(programmingScreen)
         else:
             print(stateCode.name)
         print(self.accountController.getSessionState())
-
 
     def logoffButtonCB(self):
         if self.accountController.signOut():
@@ -43,7 +43,7 @@ class MainApplication:      #All print statements in MainApplication can be used
     def createUserButtonCB(self):
         stateCode = self.accountController.makeNewUser(self.guiController.getNewUserData(),"C_ADMIN_PASSWORD")
         if  stateCode.value == 0:
-            self.guiController.drawScreen(programmingScreen)
+            self.guiController.drawScreen(loginScreen)
         else:
             print(stateCode.name)
 
@@ -54,12 +54,16 @@ class MainApplication:      #All print statements in MainApplication can be used
         #do user field restrictions in DUAM set functions "program...."
         # can do the hardware hidden print where program... functions store the error function then a get will return the failureCode to main to be printed or displayed
         programmedData = self.guiController.getUserProgramData() #will return all the
-        if ((self.accountController.programRateLim(programmedData.lowerRateLimit, programmedData.upperRateLimit).value == 0)
+        print ("user program data on program button callback")
+        programmedData.printData()
+        if ((self.accountController.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit).value == 0)
             and (self.accountController.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
                 programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod).value == 0)
             and (self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
                 programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod).value == 0)):
+            self.accountController.saveProgrammingValuesToDatabase()
             self.guiController.drawScreen(programmingScreen)
+
         # else:
         #     print("USER INPUT ERROR")
 
@@ -71,27 +75,14 @@ def main():
     app = MainApplication()
 
 
-    # TODO: get rid of these 
-    def loginButtonCallback():
-        app.loginButtonCB()
-
-    def logoffButtonCallback():
-        app.logoffButtonCB()
-
-    def newUserButtonCallback():
-        app.newUserButtonCB()
-
-    def createUserButtonCallback():
-        app.createUserButtonCB()
-
-    def cancelButtonCallback():
-        app.cancelButtonCB()
-
-    def programButtonCallback():
-        app.programButtonCB()
-
-
-    callbacks = ApplicationCallbacks(loginButtonCallback, logoffButtonCallback, newUserButtonCallback, createUserButtonCallback, cancelButtonCallback, programButtonCallback, None)
+    callbacks = ApplicationCallbacks(
+        app.loginButtonCB, 
+        app.logoffButtonCB, 
+        app.newUserButtonCB,
+        app.createUserButtonCB, 
+        app.cancelButtonCB, 
+        app.programButtonCB, 
+        None)
 
     app.setCallbacks(callbacks)
 

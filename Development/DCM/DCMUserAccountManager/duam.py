@@ -41,22 +41,21 @@ class LoginData:
         self.username = p_username
         self.password = p_password
 
-class UserInputProgramData:
-    def __init__(self, p_lowerRateLimit, p_upperRateLimit, 
-        p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
-        p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod):
-        self.lowerRateLimit               = p_lowerRateLimit
-        self.upperRateLimit               = p_upperRateLimit
-        self.atrialAmplitude              = p_atrialAmplitude
-        self.atrialPulseWidth             = p_atrialPulseWidth
-        self.atrialSensingThreshold       = p_atrialSensingThreshold
-        self.atrialRefractoryPeriod       = p_atrialRefractoryPeriod
-        self.ventricularAmplitude         = p_ventricularAmplitude
-        self.ventricularPulseWidth        = p_ventricularPulseWidth
-        self.ventricularSensingThreshold  = p_ventricularSensingThreshold
-        self.ventricularRefractoryPeriod  = p_ventricularRefractoryPeriod
+defaultUserProgramData = UserProgramData(
+    C_DEFAULT_UPPER_RATE_LIMIT,
+    C_DEFAULT_LOWER_RATE_LIMIT,
+    C_DEFAULT_ATRIAL_AMPLITUDE,
+    C_DEFAULT_ATRIAL_PULSE_WIDTH,
+    C_DEFAULT_ATRIAL_SENSING_THRESHOLD,
+    C_DEFAULT_ATRIAL_REFACTORY_PERIOD,
+    C_DEFAULT_VENTRICULAR_AMPLITUDE,
+    C_DEFAULT_VENTRICULAR_PULSE_WIDTH,
+    C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD,
+    C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD)
 
-
+print(defaultUserProgramData.getUpperRateLimit(), C_DEFAULT_UPPER_RATE_LIMIT)
+print("default user data")
+defaultUserProgramData.printData()
 
 #############################################################
 ################ User Account Manager Class #################
@@ -121,7 +120,7 @@ class DUAM:
         if self.dbManager.userExists(C_ADMINISTRATOR_USERNAME):
             return
         # Store admin in database
-        self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN, UserProgramData(1,2,3,4,5,6,7,8,9,10))
+        self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN, defaultUserProgramData)
 
     def makeNewUser(self, p_loginData, p_adminPassword):
         """Adds new user to database.
@@ -158,7 +157,7 @@ class DUAM:
             return FailureCodes.EXISTING_USER
 
         # Store user in database
-        self.dbManager.createUser(p_username, p_password, UserRole.USER, UserProgramData(1,2,3,4,5,6,7,8,9,10))
+        self.dbManager.createUser(p_username, p_password, UserRole.USER, defaultUserProgramData)
         return FailureCodes.SUCCESS
 
     def changeUserPassword(self, p_username, p_existingPassword, p_newPassword):
@@ -274,6 +273,7 @@ class DUAM:
     def programRateLim(self, p_upperRateLim, p_lowerRateLim):
         """Sets current user's upper and lower rate limits in database
         """
+        print("rate limits",p_upperRateLim, p_lowerRateLim)
         if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
             print('User imputted invalid rate parameter')
             return FailureCodes.INVALID_RATE_INPUT
@@ -308,6 +308,19 @@ class DUAM:
         self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
         self.user.data.setVentricularRefractoryPeriod(p_ventricleRefracPeriod)
         return FailureCodes.SUCCESS
+
+    def getProgrammingValues(self):
+        """Gets current user's programming values from database
+        """
+        return self.user.getProgrammingData()
+
+    def saveProgrammingValuesToDatabase(self):
+        """Saves current user's programming values to database
+        """
+        print("save programming values")
+        print("username: ", self.user.username)
+        self.user.data.printData()
+        self.dbManager.setUserProgramData(self.user.username, self.user.data)
 
 
 

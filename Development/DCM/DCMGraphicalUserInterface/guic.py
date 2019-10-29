@@ -5,7 +5,8 @@
 
 
 from DCMGraphicalUserInterface.guial import *
-from DCMUserAccountManager.duam      import LoginData, UserInputProgramData
+from DCMUserAccountManager.duam      import LoginData
+from DCMDatabase.dbpm                import UserProgramData
 from Common.callbacks                import ApplicationCallbacks
 from enum                            import Enum
 
@@ -31,6 +32,10 @@ class ProgramMenuData():
         self.currentOption = currentOption
     def setCallbacks(self, callbacks):
         self.buttonCallbacks = callbacks
+    def setProgrammingValues(self, data):
+        self.programmingValues = data
+    def getProgrammingValues(self):
+        return self.programmingValues
 
 class CreateUserData():
     def __init__(self, userNameLabel, passwordLabel, createUserButtonText, cancelButtonText):
@@ -108,6 +113,13 @@ class GUIC:
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
         programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
         createUserMenuScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
+    
+    def setProgrammingValues(self, data):
+        """ Sets the programming values in our program menu data
+            @param data - type: UserProgramData
+        """
+        programmingScreen.data.setProgrammingValues(data)
+
     def startGUI(self):
         self.p_drawFirstScreen()
 
@@ -153,7 +165,7 @@ class GUIC:
                     entryData[entryIndex] = -1;
                 else:
                     entryData[entryIndex] = float(entryData[entryIndex]);
-            return UserInputProgramData(entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
+            return UserProgramData(entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
 
     def p_drawFirstScreen(self):
         """
@@ -173,6 +185,7 @@ class GUIC:
     def p_drawProgrammingScreen(self, data):
         """
         Draw screen of type programming screen
+        @param - data -> type = ProgramMenuData
         """
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
@@ -181,6 +194,25 @@ class GUIC:
             data.fieldLabels,
             data.buttonTexts,
             data.buttonCallbacks)
+
+        # Get programming values
+        programmingValues = data.getProgrammingValues()
+
+        # Make list of programming values
+        programmingValuesList = [
+            programmingValues.getUpperRateLimit(),
+            programmingValues.getLowerRateLimit(),
+            programmingValues.getAtrialAmplitude(),
+            programmingValues.getAtrialPulseWidth(),
+            programmingValues.getAtrialSensingThreshold(),
+            programmingValues.getAtrialRefractoryPeriod(),
+            programmingValues.getVentricularAmplitude(),
+            programmingValues.getVentricularPulseWidth(),
+            programmingValues.getVentricularSensingThreshold(),
+            programmingValues.getVentricularRefractoryPeriod()
+            ]
+
+        self.gui.setNEntryData(programmingValuesList)
 
     def p_drawCreateUserScreen(self, data): 
         """
