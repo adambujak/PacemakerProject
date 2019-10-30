@@ -63,7 +63,7 @@ class MainApplication:      #All print statements in MainApplication can be used
         stateVentriclePara = self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
                 programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod)
         if ((stateRateLim.value == 0)
-            and (stateVentriclePara.value == 0)
+            and (stateAtriaPara.value == 0)
             and (stateVentriclePara.value == 0)):
             self.accountController.saveProgrammingValuesToDatabase()
             self.guiController.drawScreen(programmingScreen)
