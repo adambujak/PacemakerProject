@@ -3,9 +3,10 @@
 # Description: DCM User Account Manager Source File
 # Filename: duam.py
 
+from Common.failCodes                   import FailureCodes
+from enum                               import Enum
 from src.dcm_constants                  import *
 from DCMDatabase.dbpm                   import *
-from enum                               import Enum
 from DCMUserAccountManager.frangeFunc   import *
 import hashlib, binascii, os
 
@@ -13,20 +14,6 @@ import hashlib, binascii, os
 #############################################################
 ####################### Sessions Enum #######################
 #############################################################
-
-
-class FailureCodes(Enum):
-    SUCCESS                 = 0
-    INCORRECT_PASSWORD      = 1
-    INCORRECT_USERNAME      = 2
-    EXISTING_USER           = 3
-    INVALID_CREDENTIALS     = 4
-    MISSING_PERMISSIONS     = 5
-    TOO_MANY_USERS          = 6
-    INVALID_USER_INPUT      = 7
-    INVALID_RATE_INPUT      = 8
-    INVALID_ATRIUM_INPUT    = 9
-    INVALID_VENTRICLE_INPUT = 10
 
 class SessionStates(Enum):
     LOGGED_OUT  = 0

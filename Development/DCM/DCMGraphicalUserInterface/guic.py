@@ -8,6 +8,7 @@ from DCMGraphicalUserInterface.guial import *
 from DCMUserAccountManager.duam      import LoginData
 from DCMDatabase.dbpm                import UserProgramData
 from Common.callbacks                import ApplicationCallbacks
+from Common.failCodes                import FailureCodes
 from enum                            import Enum
 
 
@@ -175,7 +176,7 @@ class GUIC:
 
     def p_drawLoginScreen(self, data):
         """
-        Draw screen of tpye login screen
+        Draw screen of type login screen
         """
         self.gui.drawTwoFieldsTwoButtonLayout(
             data.fieldLabels, 
@@ -213,6 +214,14 @@ class GUIC:
             ]
 
         self.gui.setNEntryData(programmingValuesList)
+
+    def p_drawErrorMessageOnScreen(self, errorCode, thisScreen):
+        if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):
+            self.gui.displayErrorMessageLoginS(errorCode)
+
+    def p_drawErrorMessageProgramScreen(self, errorCodeRate, errorCodeAtrium, errorCodeVentricle, thisScreen):
+        if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
+            self.gui.displayErrorMessageProgramS(errorCodeRate, errorCodeAtrium, errorCodeVentricle)
 
     def p_drawCreateUserScreen(self, data): 
         """

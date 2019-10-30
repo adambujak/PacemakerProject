@@ -225,13 +225,13 @@ class BaseModel(Model):
 class DatabaseProgramData(BaseModel):
     lowerRateLimit              = IntegerField()            
     upperRateLimit              = IntegerField()    
-    atrialAmplitude             = IntegerField() 
-    atrialPulseWidth            = IntegerField()    
-    atrialSensingThreshold      = IntegerField()  
+    atrialAmplitude             = FloatField() 
+    atrialPulseWidth            = FloatField()    
+    atrialSensingThreshold      = FloatField()  
     atrialRefractoryPeriod      = IntegerField()    
-    ventricularAmplitude        = IntegerField()      
-    ventricularPulseWidth       = IntegerField()   
-    ventricularSensingThreshold = IntegerField()
+    ventricularAmplitude        = FloatField()      
+    ventricularPulseWidth       = FloatField()   
+    ventricularSensingThreshold = FloatField()
     ventricularRefractoryPeriod = IntegerField()
           
 

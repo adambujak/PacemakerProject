@@ -6,6 +6,7 @@
 from DCMGraphicalUserInterface.guic import *
 from DCMUserAccountManager.duam     import *
 from Common.callbacks               import ApplicationCallbacks
+from Common.failCodes               import FailureCodes
 import time
 
 
@@ -30,7 +31,7 @@ class MainApplication:      #All print statements in MainApplication can be used
             self.guiController.setProgrammingValues(self.accountController.getProgrammingValues())
             self.guiController.drawScreen(programmingScreen)
         else:
-            print(stateCode.name)
+            self.guiController.p_drawErrorMessageOnScreen(stateCode.name,0)
         print(self.accountController.getSessionState())
 
     def logoffButtonCB(self):
@@ -45,7 +46,7 @@ class MainApplication:      #All print statements in MainApplication can be used
         if  stateCode.value == 0:
             self.guiController.drawScreen(loginScreen)
         else:
-            print(stateCode.name)
+            self.guiController.p_drawErrorMessageOnScreen(stateCode.name,2)
 
     def cancelButtonCB(self):
         self.guiController.drawScreen(loginScreen)
@@ -54,18 +55,19 @@ class MainApplication:      #All print statements in MainApplication can be used
         #do user field restrictions in DUAM set functions "program...."
         # can do the hardware hidden print where program... functions store the error function then a get will return the failureCode to main to be printed or displayed
         programmedData = self.guiController.getUserProgramData() #will return all the
-        print ("user program data on program button callback")
-        programmedData.printData()
-        if ((self.accountController.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit).value == 0)
-            and (self.accountController.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
-                programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod).value == 0)
-            and (self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
-                programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod).value == 0)):
+        # print ("user program data on program button callback")
+        # programmedData.printData()
+        stateRateLim = self.accountController.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit)
+        stateAtriaPara = self.accountController.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
+                programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod)
+        stateVentriclePara = self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
+                programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod)
+        if ((stateRateLim.value == 0)
+            and (stateVentriclePara.value == 0)
+            and (stateVentriclePara.value == 0)):
             self.accountController.saveProgrammingValuesToDatabase()
             self.guiController.drawScreen(programmingScreen)
-
-        # else:
-        #     print("USER INPUT ERROR")
+        self.guiController.p_drawErrorMessageProgramScreen(stateRateLim.name, stateAtriaPara.name, stateVentriclePara.name, 1)
 
 
 

@@ -137,11 +137,21 @@ class GUIAL:
                 entry = tk.Entry(self.instance).grid(row = field+rowOffset, column = 1 + (1+columns)*2)
             
         # Update row offset to be the row after the last field 
-        rowOffset += field + 1
+        rowOffset += field + 2
 
         # Draw each button
         for buttonIndex in range(len(buttonTexts)):
             btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=5)
+
+    def displayErrorMessageLoginS(self, errorCode):
+        label = tk.Label(self.instance, text = errorCode).grid(row = 0, column = 3)
+
+    def displayErrorMessageProgramS(self, errorCodeRate, errorCodeAtrium, errorCodeVentricle):
+        label = tk.Label(self.instance, text = errorCodeRate).grid(sticky="W", row = 5, column = 3)
+        label = tk.Label(self.instance, text = errorCodeAtrium).grid(sticky="W", row = 7, column = 5)
+        label = tk.Label(self.instance, text = errorCodeVentricle).grid(sticky="W", row = 7, column = 7)
+
+
 
     def getEntryData(self):
         children = self.instance.winfo_children()
