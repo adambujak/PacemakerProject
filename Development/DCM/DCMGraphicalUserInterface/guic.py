@@ -166,7 +166,8 @@ class GUIC:
                     entryData[entryIndex] = -1;
                 else:
                     entryData[entryIndex] = float(entryData[entryIndex]);
-            return UserProgramData(entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
+            stringData = self.gui.getProgramMode();
+            return UserProgramData(stringData,entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
 
     def p_drawFirstScreen(self):
         """
@@ -188,16 +189,17 @@ class GUIC:
         Draw screen of type programming screen
         @param - data -> type = ProgramMenuData
         """
+
+        # Get programming values
+        programmingValues = data.getProgrammingValues()
+
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
-            data.currentOption, 
+            programmingValues.getProgramMode(), 
             data.dropDownOptions, 
             data.fieldLabels,
             data.buttonTexts,
             data.buttonCallbacks)
-
-        # Get programming values
-        programmingValues = data.getProgrammingValues()
 
         # Make list of programming values
         programmingValuesList = [

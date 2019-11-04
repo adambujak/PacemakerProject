@@ -33,9 +33,10 @@ class User:
 
 
 class UserProgramData:
-    def __init__(self, p_upperRateLimit, p_lowerRateLimit, 
+    def __init__(self, p_programMode, p_upperRateLimit, p_lowerRateLimit, 
         p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
         p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod):
+        self.programMode                  = p_programMode
         self.lowerRateLimit               = p_lowerRateLimit
         self.upperRateLimit               = p_upperRateLimit
         self.atrialAmplitude              = p_atrialAmplitude
@@ -47,7 +48,8 @@ class UserProgramData:
         self.ventricularSensingThreshold  = p_ventricularSensingThreshold
         self.ventricularRefractoryPeriod  = p_ventricularRefractoryPeriod
 
-        
+    def getProgramMode(self):
+        return self.programMode   
     def getLowerRateLimit(self):
         return self.lowerRateLimit
     def getUpperRateLimit(self):
@@ -69,6 +71,8 @@ class UserProgramData:
     def getVentricularRefractoryPeriod(self):
         return self.ventricularRefractoryPeriod
 
+    def setProgramMode(self,val):
+        self.programMode=val
     def setLowerRateLimit(self,val):
         self.lowerRateLimit=val
     def setUpperRateLimit(self,val):
@@ -118,6 +122,7 @@ class DBPM:
         # Create data variable
 
         data = DatabaseProgramData.create( 
+            programMode                 = p_data.programMode,
             upperRateLimit              = p_data.upperRateLimit,
             lowerRateLimit              = p_data.lowerRateLimit,
             atrialAmplitude             = p_data.atrialAmplitude,
@@ -153,6 +158,7 @@ class DBPM:
             # If found exact match, return true
             if user.username == p_username:
                 data = UserProgramData(
+                    user.data.programMode,
                     user.data.upperRateLimit,
                     user.data.lowerRateLimit,
                     user.data.atrialAmplitude,
@@ -163,7 +169,7 @@ class DBPM:
                     user.data.ventricularPulseWidth,
                     user.data.ventricularSensingThreshold,
                     user.data.ventricularRefractoryPeriod)    
-                data.printData()
+                #data.printData()
                 return User(user.username, user.password, user.role, data) #look to resolve by implementing signout, log in iff logged out***
         # Return None if exact match not found
         return None
@@ -173,6 +179,7 @@ class DBPM:
         """ Updates user program data
         """
         data = DatabaseProgramData.create( 
+            programMode                 = p_data.programMode,
             lowerRateLimit              = p_data.lowerRateLimit,
             upperRateLimit              = p_data.upperRateLimit,
             atrialAmplitude             = p_data.atrialAmplitude,
@@ -223,6 +230,7 @@ class BaseModel(Model):
         database = database
 
 class DatabaseProgramData(BaseModel):
+    programMode                 = CharField()
     lowerRateLimit              = IntegerField()            
     upperRateLimit              = IntegerField()    
     atrialAmplitude             = FloatField() 

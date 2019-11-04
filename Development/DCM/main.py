@@ -57,12 +57,15 @@ class MainApplication:      #All print statements in MainApplication can be used
         programmedData = self.guiController.getUserProgramData() #will return all the
         # print ("user program data on program button callback")
         # programmedData.printData()
+        # Should all theses calls of the class UserProgramData be using gets?
+        stateProgramMode = self.accountController.programProgramMode(programmedData.programMode)
         stateRateLim = self.accountController.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit)
         stateAtriaPara = self.accountController.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
                 programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod)
         stateVentriclePara = self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
                 programmedData.ventricularSensingThreshold,programmedData.ventricularRefractoryPeriod)
-        if ((stateRateLim.value == 0)
+        if ((stateProgramMode.value == 0)
+            and (stateRateLim.value == 0)
             and (stateAtriaPara.value == 0)
             and (stateVentriclePara.value == 0)):
             self.accountController.saveProgrammingValuesToDatabase()
@@ -83,7 +86,7 @@ def main():
         app.newUserButtonCB,
         app.createUserButtonCB, 
         app.cancelButtonCB, 
-        app.programButtonCB, 
+        app.programButtonCB,
         None)
 
     app.setCallbacks(callbacks)

@@ -29,6 +29,7 @@ class LoginData:
         self.password = p_password
 
 defaultUserProgramData = UserProgramData(
+    C_DEFAULT_PROGRAM_MODE,
     C_DEFAULT_UPPER_RATE_LIMIT,
     C_DEFAULT_LOWER_RATE_LIMIT,
     C_DEFAULT_ATRIAL_AMPLITUDE,
@@ -40,9 +41,9 @@ defaultUserProgramData = UserProgramData(
     C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD,
     C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD)
 
-print(defaultUserProgramData.getUpperRateLimit(), C_DEFAULT_UPPER_RATE_LIMIT)
-print("default user data")
-defaultUserProgramData.printData()
+#print(defaultUserProgramData.getUpperRateLimit(), C_DEFAULT_UPPER_RATE_LIMIT)
+#print("default user data")
+#defaultUserProgramData.printData()
 
 #############################################################
 ################ User Account Manager Class #################
@@ -83,8 +84,8 @@ class DUAM:
             # Redundant check to make sure correct user data is being returned
             usernameValid = (userData.getUsername() == username)
             #debugging----------------------------
-            print("usernameValid:", usernameValid)
-            print("passwordValid:", passwordValid)
+            # print("usernameValid:", usernameValid)
+            # print("passwordValid:", passwordValid)
             if passwordValid and usernameValid:
                 self.user = userData
                 self.state = SessionStates.LOGGED_IN
@@ -257,38 +258,34 @@ class DUAM:
             return False
         return True
 
+    def programProgramMode(self, p_programMode):
+        self.user.data.setProgramMode(p_programMode)
+        return FailureCodes.SUCCESS
+
     def programRateLim(self, p_upperRateLim, p_lowerRateLim):
         """Sets current user's upper and lower rate limits in database
         """
-        print("rate limits",p_upperRateLim, p_lowerRateLim)
         if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
-            print('User imputted invalid rate parameter')
             return FailureCodes.INVALID_RATE_INPUT
         self.user.data.setUpperRateLimit(p_upperRateLim)
         self.user.data.setLowerRateLimit(p_lowerRateLim)
         return FailureCodes.SUCCESS
 
-
-
     def programAtriaPara(self, p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
         """Sets current user's atrium data in database
         """
         if not self.validChamberPara(p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
-            print('User imputted invalid atruim parameter')
             return FailureCodes.INVALID_ATRIUM_INPUT
         self.user.data.setAtrialAmplitude(p_atriumAmp)
         self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
         self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
         self.user.data.setAtrialRefractoryPeriod(p_atriumRefracPeriod)
         return FailureCodes.SUCCESS
-
         
-
     def programVentriclePara(self, p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
         """Sets current user's ventricle data in database
         """
         if not self.validChamberPara(p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
-            print('User imputted invalid ventricle parameter')
             return FailureCodes.INVALID_VENTRICLE_INPUT
         self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
         self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
@@ -304,9 +301,9 @@ class DUAM:
     def saveProgrammingValuesToDatabase(self):
         """Saves current user's programming values to database
         """
-        print("save programming values")
-        print("username: ", self.user.username)
-        self.user.data.printData()
+        #print("save programming values")
+        #print("username: ", self.user.username)
+        #self.user.data.printData()
         self.dbManager.setUserProgramData(self.user.username, self.user.data)
 
 

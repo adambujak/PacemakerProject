@@ -12,6 +12,8 @@ from src.dcm_constants import *
 ############### GUI Abstraction Layer Class #################
 #############################################################
 
+
+
 class GUIAL:
     # root = Tk()
     # img = ImageTk.PhotoImage(Image.open("True1.gif"))
@@ -60,6 +62,7 @@ class GUIAL:
         """
         
         self.guiInitialized = True
+        self.instance.geometry("350x125")
         print("Started Two Fields One Button Layout")
         self.instance.title(self.title)
 
@@ -94,15 +97,15 @@ class GUIAL:
         """
 
         self.guiInitialized = True
-        print("Started N Fields N Button One DropDown Layout")
-
+        self.instance.geometry("800x275")
+        print('Program Screen')
         self.instance.title(self.title)
 
         self.instance.configure(background = "white");
 
         # Create a Tkinter variable
         tkvar = tk.StringVar(self.instance)
-
+        self.setProgramMode(tkvar.get())
 
         # Check if currentDropDownItem is contained in options
         # If not - return because something has gone wrong
@@ -112,6 +115,7 @@ class GUIAL:
 
         # Set the current option
         tkvar.set(currentDropDownItem) 
+        self.programMode = currentDropDownItem;
 
         popupMenuRowIndex = 1
         popupMenu = tk.OptionMenu(self.instance, tkvar, *dropDownOptions)
@@ -120,7 +124,8 @@ class GUIAL:
 
         # On change dropdown value
         def change_dropdown(*args):
-            print( tkvar.get() )
+            self.setProgramMode(tkvar.get())
+
 
         # Link function to change dropdown
         tkvar.trace('w', change_dropdown)
@@ -143,6 +148,12 @@ class GUIAL:
         for buttonIndex in range(len(buttonTexts)):
             btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=5)
 
+    def getProgramMode(self):
+        return self.programMode
+
+    def setProgramMode(self, val):
+        self.programMode = val;
+
     def displayErrorMessageLoginS(self, errorCode):
         label = tk.Label(self.instance, text = errorCode).grid(row = 0, column = 3)
 
@@ -150,8 +161,6 @@ class GUIAL:
         label = tk.Label(self.instance, text = errorCodeRate).grid(sticky="W", row = 5, column = 3)
         label = tk.Label(self.instance, text = errorCodeAtrium).grid(sticky="W", row = 7, column = 5)
         label = tk.Label(self.instance, text = errorCodeVentricle).grid(sticky="W", row = 7, column = 7)
-
-
 
     def getEntryData(self):
         children = self.instance.winfo_children()
@@ -166,13 +175,15 @@ class GUIAL:
             @param data - array of values to be set
         """
         children = self.instance.winfo_children()
-        
-        itemCnt = 0
+        itemCnt = 0;
         for item in children:
             if type(item) == tk.Entry:
                 if itemCnt >= len(data):
                     return
-                print("Data[itemCnt]", data[itemCnt])
+                #print("Data[itemCnt]", data[itemCnt])
                 item.delete(0, tk.END)
                 item.insert(0, data[itemCnt])
-                itemCnt += 1
+                itemCnt += 1;
+
+
+
