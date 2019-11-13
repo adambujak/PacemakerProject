@@ -38,6 +38,7 @@ class ProgramMenuData():
     def getProgrammingValues(self):
         return self.programmingValues
 
+
 class CreateUserData():
     def __init__(self, userNameLabel, passwordLabel, createUserButtonText, cancelButtonText):
         self.fieldLabels = [userNameLabel, passwordLabel]
@@ -60,6 +61,8 @@ loginScreen = Screen(
         C_LOGIN_BUTTON_TEXT, 
         C_NEW_USER_BUTTON_TEXT))
 
+
+# added mode property to program screen
 
 programmingScreen = Screen(
     ScreenNames.PROGRAMMING_SCREEN, 
@@ -112,7 +115,7 @@ class GUIC:
     def setCallbacks(self, callbacks):
         self.callbacks = callbacks
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
-        programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
+        programmingScreen.data.setCallbacks([self.callbacks.changeProgramModeCB, self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
         createUserMenuScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
     
     def setProgrammingValues(self, data):
@@ -155,7 +158,7 @@ class GUIC:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
-    def getUserProgramData(self,):
+    def getUserProgramData(self, programMode):
         """
         Retrieves data from gui input fields on Programming Screen
         """
@@ -166,8 +169,10 @@ class GUIC:
                     entryData[entryIndex] = -1;
                 else:
                     entryData[entryIndex] = float(entryData[entryIndex]);
-            stringData = self.gui.getProgramMode();
-            return UserProgramData(stringData,entryData[0], entryData[1],entryData[2],entryData[3],entryData[4],entryData[5],entryData[6],entryData[7],entryData[8],entryData[9])
+            if programMode == "AOO" or programMode == "AAI":
+                return UserProgramData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None)
+            elif programMode == "VOO" or programMode == "VVI":
+                return UserProgramData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[2], entryData[3], entryData[4], entryData[5])
 
     def p_drawFirstScreen(self):
         """
@@ -192,39 +197,47 @@ class GUIC:
 
         # Get programming values
         programmingValues = data.getProgrammingValues()
+        fLabels = list(data.fieldLabels)
+        programMode = programmingValues.getProgramMode()
 
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
-            programmingValues.getProgramMode(), 
+            programMode,
             data.dropDownOptions, 
-            data.fieldLabels,
+            fLabels,
             data.buttonTexts,
             data.buttonCallbacks)
 
         # Make list of programming values
-        programmingValuesList = [
-            programmingValues.getUpperRateLimit(),
-            programmingValues.getLowerRateLimit(),
-            programmingValues.getAtrialAmplitude(),
-            programmingValues.getAtrialPulseWidth(),
-            programmingValues.getAtrialSensingThreshold(),
-            programmingValues.getAtrialRefractoryPeriod(),
-            programmingValues.getVentricularAmplitude(),
-            programmingValues.getVentricularPulseWidth(),
-            programmingValues.getVentricularSensingThreshold(),
-            programmingValues.getVentricularRefractoryPeriod()
-            ]
-
+        if programMode == "AOO" or programMode == "AAI":
+            programmingValuesList = [
+                programmingValues.getUpperRateLimit(),
+                programmingValues.getLowerRateLimit(),
+                programmingValues.getAtrialAmplitude(),
+                programmingValues.getAtrialPulseWidth(),
+                programmingValues.getAtrialSensingThreshold(),
+                programmingValues.getAtrialRefractoryPeriod(),
+                ]
+        elif programMode == "VOO" or programMode == "VVI":
+            programmingValuesList = [
+                programmingValues.getUpperRateLimit(),
+                programmingValues.getLowerRateLimit(),
+                programmingValues.getVentricularAmplitude(),
+                programmingValues.getVentricularPulseWidth(),
+                programmingValues.getVentricularSensingThreshold(),
+                programmingValues.getVentricularRefractoryPeriod(),
+                ]
         self.gui.setNEntryData(programmingValuesList)
 
     def p_drawErrorMessageOnScreen(self, errorCode, thisScreen):
         if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):
             self.gui.displayErrorMessageLoginS(errorCode)
 
-    def p_drawErrorMessageProgramScreen(self, errorCodeRate, errorCodeAtrium, errorCodeVentricle, thisScreen):
+    def p_drawErrorMessageProgramScreen(self, errorCodeRate, errorCodeChamber, thisScreen):
         if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
-            self.gui.displayErrorMessageProgramS(errorCodeRate, errorCodeAtrium, errorCodeVentricle)
+            self.gui.displayErrorMessageProgramS(errorCodeRate, errorCodeChamber)
 
+ 
     def p_drawCreateUserScreen(self, data): 
         """
         Draw screen of type Create User Screen

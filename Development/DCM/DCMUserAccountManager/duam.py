@@ -258,6 +258,7 @@ class DUAM:
             return False
         return True
 
+
     def programProgramMode(self, p_programMode):
         self.user.data.setProgramMode(p_programMode)
         return FailureCodes.SUCCESS
