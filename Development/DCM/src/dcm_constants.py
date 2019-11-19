@@ -69,3 +69,11 @@ C_DEFAULT_VENTRICULAR_AMPLITUDE            =       3.5
 C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =       0.4
 C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =       2.5
 C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD     =       320
+
+
+# SERIAL COM DEFAULTS #
+
+C_SERIAL_COM_PORT                          =       "COM10"
+C_SERIAL_BAUD_RATE                         =       9600
+C_SERIAL_TIMEOUT                           =       1
+

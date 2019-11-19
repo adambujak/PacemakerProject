@@ -5,9 +5,10 @@
 
 from DCMGraphicalUserInterface.guic import *
 from DCMUserAccountManager.duam     import *
+from DCMSerial.dsm                  import *
+from time                           import *
 from Common.callbacks               import ApplicationCallbacks
 from Common.failCodes               import FailureCodes
-import time
 
 
 
@@ -82,7 +83,6 @@ class MainApplication:      #All print statements in MainApplication can be used
 
 
 def main():
-    #print(hash_password("C_ADMIN_PASSWORD")) #Displays hashed C_ADMIN_PASSWORD
 
     app = MainApplication()
 
@@ -98,10 +98,22 @@ def main():
 
     app.setCallbacks(callbacks)
 
-    # Start GUI - open first window
-    app.startGUI()     
+    serialManager = DSM()
 
     while 1:
-        app.updateGUI()
-        time.sleep(0.01)
+        out = input()
+        serialManager.writeString(out)
+        out = ""
+        while (out != 'recieved'):
+            out = serialManager.readLine()
+            print(out)
+
+
+    # Start GUI - open first window
+    # app.startGUI()     
+
+    # while 1:
+    #     app.updateGUI()
+    #     time.sleep(0.01)
+
 main()
