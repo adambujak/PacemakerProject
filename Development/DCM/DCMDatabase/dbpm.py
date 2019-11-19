@@ -5,7 +5,7 @@
 
 from src.dcm_constants           import *
 from peewee                      import *
-#from DCMUserAccountManager.duam  import User 
+from Common.datatypes            import PacemakerParameterData
 
 
 database = SqliteDatabase(C_DATABASE_PATH, pragmas={
@@ -32,70 +32,6 @@ class User:
 
 
 
-class UserProgramData:
-    def __init__(self, p_programMode, p_upperRateLimit, p_lowerRateLimit, 
-        p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
-        p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod):
-        self.programMode                  = p_programMode
-        self.lowerRateLimit               = p_lowerRateLimit
-        self.upperRateLimit               = p_upperRateLimit
-        self.atrialAmplitude              = p_atrialAmplitude
-        self.atrialPulseWidth             = p_atrialPulseWidth
-        self.atrialSensingThreshold       = p_atrialSensingThreshold
-        self.atrialRefractoryPeriod       = p_atrialRefractoryPeriod
-        self.ventricularAmplitude         = p_ventricularAmplitude
-        self.ventricularPulseWidth        = p_ventricularPulseWidth
-        self.ventricularSensingThreshold  = p_ventricularSensingThreshold
-        self.ventricularRefractoryPeriod  = p_ventricularRefractoryPeriod
-
-    def getProgramMode(self):
-        return self.programMode   
-    def getLowerRateLimit(self):
-        return self.lowerRateLimit
-    def getUpperRateLimit(self):
-        return self.upperRateLimit
-    def getAtrialAmplitude(self):
-        return self.atrialAmplitude
-    def getAtrialPulseWidth(self):
-        return self.atrialPulseWidth
-    def getAtrialSensingThreshold(self):
-        return self.atrialSensingThreshold
-    def getAtrialRefractoryPeriod(self):
-        return self.atrialRefractoryPeriod
-    def getVentricularAmplitude(self):
-        return self.ventricularAmplitude
-    def getVentricularPulseWidth(self):
-        return self.ventricularPulseWidth
-    def getVentricularSensingThreshold(self):
-        return self.ventricularSensingThreshold
-    def getVentricularRefractoryPeriod(self):
-        return self.ventricularRefractoryPeriod
-
-    def setProgramMode(self,val):
-        self.programMode=val
-    def setLowerRateLimit(self,val):
-        self.lowerRateLimit=val
-    def setUpperRateLimit(self,val):
-        self.upperRateLimit=val
-    def setAtrialAmplitude(self,val):
-        self.atrialAmplitude=val
-    def setAtrialPulseWidth(self,val):
-        self.atrialPulseWidth=val
-    def setAtrialSensingThreshold(self,val):
-        self.atrialSensingThreshold=val
-    def setAtrialRefractoryPeriod(self,val):
-        self.atrialRefractoryPeriod=val
-    def setVentricularAmplitude(self,val):
-        self.ventricularAmplitude=val
-    def setVentricularPulseWidth(self,val):
-        self.ventricularPulseWidth=val
-    def setVentricularSensingThreshold(self,val):
-        self.ventricularSensingThreshold=val
-    def setVentricularRefractoryPeriod(self,val):
-        self.ventricularRefractoryPeriod=val
-
-    def printData(self):
-        print("User Program Data", self.lowerRateLimit, self.upperRateLimit, self.atrialAmplitude)
 
 #############################################################
 ############### Database Peewee Manager Class ###############
@@ -132,7 +68,10 @@ class DBPM:
             ventricularAmplitude        = p_data.ventricularAmplitude,
             ventricularPulseWidth       = p_data.ventricularPulseWidth,
             ventricularSensingThreshold = p_data.ventricularSensingThreshold,
-            ventricularRefractoryPeriod = p_data.ventricularRefractoryPeriod)
+            ventricularRefractoryPeriod = p_data.ventricularRefractoryPeriod,
+            fixedAVDelay                = p_data.fixedAVDelay, 
+            accelerationFactor          = p_data.accelerationFactor,
+            rateModulation              = p_data.rateModulation)
 
         DatabaseUserData.create(username = p_username, password = p_password, role = p_role, data = data)
 
@@ -157,7 +96,7 @@ class DBPM:
         for user in query:
             # If found exact match, return true
             if user.username == p_username:
-                data = UserProgramData(
+                data = PacemakerParameterData(
                     user.data.programMode,
                     user.data.upperRateLimit,
                     user.data.lowerRateLimit,
@@ -168,8 +107,11 @@ class DBPM:
                     user.data.ventricularAmplitude,
                     user.data.ventricularPulseWidth,
                     user.data.ventricularSensingThreshold,
-                    user.data.ventricularRefractoryPeriod)    
-                #data.printData()
+                    user.data.ventricularRefractoryPeriod,
+                    user.data.fixedAVDelay,
+                    user.data.accelerationFactor,
+                    user.data.rateModulation)    
+                
                 return User(user.username, user.password, user.role, data) #look to resolve by implementing signout, log in iff logged out***
         # Return None if exact match not found
         return None
@@ -189,7 +131,10 @@ class DBPM:
             ventricularAmplitude        = p_data.ventricularAmplitude,
             ventricularPulseWidth       = p_data.ventricularPulseWidth,
             ventricularSensingThreshold = p_data.ventricularSensingThreshold,
-            ventricularRefractoryPeriod = p_data.ventricularRefractoryPeriod)
+            ventricularRefractoryPeriod = p_data.ventricularRefractoryPeriod,
+            fixedAVDelay                = p_data.fixedAVDelay, 
+            accelerationFactor          = p_data.accelerationFactor,
+            rateModulation              = p_data.rateModulation)
 
         res = (DatabaseUserData
             .update({DatabaseUserData.data: data})
@@ -241,6 +186,10 @@ class DatabaseProgramData(BaseModel):
     ventricularPulseWidth       = FloatField()   
     ventricularSensingThreshold = FloatField()
     ventricularRefractoryPeriod = IntegerField()
+    fixedAVDelay                = IntegerField()
+    accelerationFactor          = IntegerField()
+    rateModulation              = BooleanField()
+
           
 
 

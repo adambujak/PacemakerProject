@@ -6,9 +6,9 @@
 from DCMGraphicalUserInterface.guic import *
 from DCMUserAccountManager.duam     import *
 from DCMSerial.dsm                  import *
-from time                           import *
 from Common.callbacks               import ApplicationCallbacks
 from Common.failCodes               import FailureCodes
+import time
 
 
 
@@ -57,7 +57,7 @@ class MainApplication:      #All print statements in MainApplication can be used
         # can do the hardware hidden print where program... functions store the error function then a get will return the failureCode to main to be printed or displayed
         programMode = self.accountController.getProgrammingValues().getProgramMode()
         #print("in programButtonCB, programMode is:", programMode)
-        programmedData = self.guiController.getUserProgramData(programMode) #will return all the
+        programmedData = self.guiController.getPacemakerParameterData(programMode) #will return all the
         # print ("user program data on program button callback")
         # programmedData.printData()
         # Should all theses calls of the class UserProgramData be using gets?
@@ -98,22 +98,22 @@ def main():
 
     app.setCallbacks(callbacks)
 
-    serialManager = DSM()
+    # serialManager = DSM() 
+    # 
+    # while 1:
+    #     out = input()
+    #     serialManager.writeString(out)
+    #     out = ""
+    #     while (out != 'recieved'):
+    #         out = serialManager.readLine()
+    #         print(out)
+
+
+    #Start GUI - open first window
+    app.startGUI()     
 
     while 1:
-        out = input()
-        serialManager.writeString(out)
-        out = ""
-        while (out != 'recieved'):
-            out = serialManager.readLine()
-            print(out)
-
-
-    # Start GUI - open first window
-    # app.startGUI()     
-
-    # while 1:
-    #     app.updateGUI()
-    #     time.sleep(0.01)
+        app.updateGUI()
+        time.sleep(0.01)
 
 main()

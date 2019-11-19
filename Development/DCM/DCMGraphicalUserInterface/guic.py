@@ -6,7 +6,7 @@
 
 from DCMGraphicalUserInterface.guial import *
 from DCMUserAccountManager.duam      import LoginData
-from DCMDatabase.dbpm                import UserProgramData
+from Common.datatypes                import PacemakerParameterData
 from Common.callbacks                import ApplicationCallbacks
 from Common.failCodes                import FailureCodes
 from enum                            import Enum
@@ -120,7 +120,7 @@ class GUIC:
     
     def setProgrammingValues(self, data):
         """ Sets the programming values in our program menu data
-            @param data - type: UserProgramData
+            @param data - type: PacemakerParameterData
         """
         programmingScreen.data.setProgrammingValues(data)
 
@@ -158,7 +158,7 @@ class GUIC:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
-    def getUserProgramData(self, programMode):
+    def getPacemakerParameterData(self, programMode):
         """
         Retrieves data from gui input fields on Programming Screen
         """
@@ -170,9 +170,10 @@ class GUIC:
                 else:
                     entryData[entryIndex] = float(entryData[entryIndex]);
             if programMode == "AOO" or programMode == "AAI":
-                return UserProgramData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None)
+                return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None, None, None, None)
             elif programMode == "VOO" or programMode == "VVI":
-                return UserProgramData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[2], entryData[3], entryData[4], entryData[5])
+                return PacemakerParameterData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[2], entryData[3], entryData[4], entryData[5], None, None, None)
+                
 
     def p_drawFirstScreen(self):
         """

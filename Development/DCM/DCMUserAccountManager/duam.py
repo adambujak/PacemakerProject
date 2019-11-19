@@ -28,7 +28,7 @@ class LoginData:
         self.username = p_username
         self.password = p_password
 
-defaultUserProgramData = UserProgramData(
+defaultPacemakerParameterData = PacemakerParameterData(
     C_DEFAULT_PROGRAM_MODE,
     C_DEFAULT_UPPER_RATE_LIMIT,
     C_DEFAULT_LOWER_RATE_LIMIT,
@@ -39,11 +39,11 @@ defaultUserProgramData = UserProgramData(
     C_DEFAULT_VENTRICULAR_AMPLITUDE,
     C_DEFAULT_VENTRICULAR_PULSE_WIDTH,
     C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD,
-    C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD)
+    C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD,
+    C_DEFAULT_FIXED_AV_DELAY,
+    C_DEFAULT_ACCELERATION_FACTOR,
+    C_DEFAULT_RATE_MODULATION)
 
-#print(defaultUserProgramData.getUpperRateLimit(), C_DEFAULT_UPPER_RATE_LIMIT)
-#print("default user data")
-#defaultUserProgramData.printData()
 
 #############################################################
 ################ User Account Manager Class #################
@@ -108,7 +108,7 @@ class DUAM:
         if self.dbManager.userExists(C_ADMINISTRATOR_USERNAME):
             return
         # Store admin in database
-        self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN, defaultUserProgramData)
+        self.dbManager.createUser(C_ADMINISTRATOR_USERNAME, C_ADMINISTRATOR_PASSWORD, UserRole.ADMIN, defaultPacemakerParameterData)
 
     def makeNewUser(self, p_loginData, p_adminPassword):
         """Adds new user to database.
@@ -145,7 +145,7 @@ class DUAM:
             return FailureCodes.EXISTING_USER
 
         # Store user in database
-        self.dbManager.createUser(p_username, p_password, UserRole.USER, defaultUserProgramData)
+        self.dbManager.createUser(p_username, p_password, UserRole.USER, defaultPacemakerParameterData)
         return FailureCodes.SUCCESS
 
     def changeUserPassword(self, p_username, p_existingPassword, p_newPassword):
