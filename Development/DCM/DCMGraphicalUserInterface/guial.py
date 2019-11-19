@@ -85,8 +85,7 @@ class GUIAL:
         btn = tk.Button(self.instance ,text=buttonTexts[1], command = buttonCallbacks[1]).grid(row=3,column=2)
 
     def drawNFieldsNButtonsOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonTexts, buttonCallbacks):
-        """
-        Draws ten user input fields and a button to the screen
+        """Draws ten user input fields and a button to the screen
         Params:
         dropDownLabelText    - Label for dropDownMenu  
         currentDropDownItem  - Value of current dropDownOption
@@ -97,7 +96,7 @@ class GUIAL:
         """
 
         self.guiInitialized = True
-        self.instance.geometry("800x275")
+        self.instance.geometry("550x275")
         print('Program Screen')
         self.instance.title(self.title)
 
@@ -105,7 +104,6 @@ class GUIAL:
 
         # Create a Tkinter variable
         tkvar = tk.StringVar(self.instance)
-        self.setProgramMode(tkvar.get())
 
         # Check if currentDropDownItem is contained in options
         # If not - return because something has gone wrong
@@ -118,23 +116,26 @@ class GUIAL:
         self.programMode = currentDropDownItem;
 
         popupMenuRowIndex = 1
-        popupMenu = tk.OptionMenu(self.instance, tkvar, *dropDownOptions)
-        tk.Label(self.instance, text=dropDownLabelText).grid(row = popupMenuRowIndex, column = 5)
-        popupMenu.grid(row = popupMenuRowIndex+1, column =5)
+        popupMenu = tk.OptionMenu(self.instance, tkvar, *dropDownOptions, command = buttonCallbacks[0])
+        tk.Label(self.instance, text=dropDownLabelText).grid(row = popupMenuRowIndex, column = 4)
+        popupMenu.grid(row = popupMenuRowIndex+1, column =4)
 
-        # On change dropdown value
-        def change_dropdown(*args):
-            self.setProgramMode(tkvar.get())
+        # # On change dropdown value
+        # def change_dropdown(*args):
+        #     self.setProgramMode(tkvar.get(), buttonCallbacks[0])
 
-
-        # Link function to change dropdown
-        tkvar.trace('w', change_dropdown)
+        # # Link function to change dropdown
+        # tkvar.trace('w', change_dropdown)
 
         # Set the row offest so the entries and labels don't overwrite the popup menu
         # +2 because of the number of elements previously
         rowOffset = popupMenuRowIndex+2;
 
         # Draw each field
+        if currentDropDownItem == "AOO" or currentDropDownItem == "AAI":
+            fieldLabels.pop(2);
+        elif currentDropDownItem == "VOO" or currentDropDownItem == "VVI":
+            fieldLabels.pop(1);
 
         for columns in range(len(fieldLabels)):
             for field in range(len(fieldLabels[columns])):
@@ -145,22 +146,23 @@ class GUIAL:
         rowOffset += field + 2
 
         # Draw each button
-        for buttonIndex in range(len(buttonTexts)):
-            btn = tk.Button(self.instance ,text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex +rowOffset),column=5)
+        for buttonIndex in range(2):
+            btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex+1]).grid(row = (buttonIndex + rowOffset), column = 4)
 
-    def getProgramMode(self):
-        return self.programMode
+    # def getProgramMode(self):
+    #     return self.programMode
 
-    def setProgramMode(self, val):
-        self.programMode = val;
+    # def setProgramMode(self, val, hellwya):
+    #     self.programMode = val;
+    #     hellwya
+
 
     def displayErrorMessageLoginS(self, errorCode):
         label = tk.Label(self.instance, text = errorCode).grid(row = 0, column = 3)
 
-    def displayErrorMessageProgramS(self, errorCodeRate, errorCodeAtrium, errorCodeVentricle):
+    def displayErrorMessageProgramS(self, errorCodeRate, errorCodeChamber):
         label = tk.Label(self.instance, text = errorCodeRate).grid(sticky="W", row = 5, column = 3)
-        label = tk.Label(self.instance, text = errorCodeAtrium).grid(sticky="W", row = 7, column = 5)
-        label = tk.Label(self.instance, text = errorCodeVentricle).grid(sticky="W", row = 7, column = 7)
+        label = tk.Label(self.instance, text = errorCodeChamber).grid(sticky="W", row = 7, column = 5)
 
     def getEntryData(self):
         children = self.instance.winfo_children()
