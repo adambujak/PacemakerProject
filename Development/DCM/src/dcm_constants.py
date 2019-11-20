@@ -61,17 +61,18 @@ C_CANCEL_BUTTON_TEXT		   		       = 	   "Cancel"
 C_DEFAULT_PROGRAM_MODE					   =       'AOO'
 C_DEFAULT_LOWER_RATE_LIMIT                 =       60
 C_DEFAULT_UPPER_RATE_LIMIT                 =       120 
-C_DEFAULT_ATRIAL_AMPLITUDE                 =       3.5
-C_DEFAULT_ATRIAL_PULSE_WIDTH               =       0.4
-C_DEFAULT_ATRIAL_SENSING_THRESHOLD         =       0.75
+C_DEFAULT_ATRIAL_AMPLITUDE                 =       3.5  #this needs to be in mV so 3500
+C_DEFAULT_ATRIAL_PULSE_WIDTH               =       0.4  #this can't be smaller than 1 ms, because that's the simulink model step size
+C_DEFAULT_ATRIAL_SENSING_THRESHOLD         =       0.75 #should be a mV value so 2640mV is the default
 C_DEFAULT_ATRIAL_REFACTORY_PERIOD          =       250
-C_DEFAULT_VENTRICULAR_AMPLITUDE            =       3.5
-C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =       0.4
-C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =       2.5
+C_DEFAULT_VENTRICULAR_AMPLITUDE            =       3.5  #this needs to be in mV so 3500
+C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =       0.4  #also can't be less than 1 ms
+C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =       2.5  #neds to be 2640mV
 C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD     =       320
-C_DEFAULT_FIXED_AV_DELAY                   =       1
-C_DEFAULT_ACCELERATION_FACTOR              =       1
-C_DEFAULT_RATE_MODULATION                  =       1
+C_DEFAULT_FIXED_AV_DELAY                   =       150  #ms
+C_DEFAULT_RATE_MODULATION                  =       0    #0 for off, 1 for on
+C_DEFAULT_MODULATION_SENSITIVITY           =       8    #value between 1 and 16
+
 
 
 # SERIAL COM DEFAULTS #
