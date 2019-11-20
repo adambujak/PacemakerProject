@@ -80,3 +80,14 @@ C_SERIAL_COM_PORT                          =       "COM10"
 C_SERIAL_BAUD_RATE                         =       9600
 C_SERIAL_TIMEOUT                           =       1
 
+C_SERIAL_START_BYTE                        =       0x16
+
+C_SERIAL_PARAMETER_START_BYTE              =       0x55
+
+C_SERIAL_EEGRAM_START_BYTE                 =       0x47
+C_SERIAL_EEGRAM_STOP_BYTE                  =       0x62
+
+C_SERIAL_ECHO_COMMAND_BYTE                 =       0x22
+
+C_SERIAL_ACK_RECIEVE_STRING                =       "ACK"
+C_SERIAL_ACK_RECIEVE_TIMEOUT               =       4000
