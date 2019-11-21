@@ -11,3 +11,4 @@ class FailureCodes(Enum):
     INVALID_RATE_INPUT      = 8
     INVALID_ATRIUM_INPUT    = 9
     INVALID_VENTRICLE_INPUT = 10
+    CANNOT_OPEN_COM_PORT    = 11
