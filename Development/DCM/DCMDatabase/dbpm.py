@@ -10,7 +10,7 @@ from Common.datatypes            import PacemakerParameterData
 
 database = SqliteDatabase(C_DATABASE_PATH, pragmas={
     'journal_mode': C_DATABASE_JOURNAL_MODE,
-    'cache_size': C_DATABASE_CACHE_SIZE,
+    'cache_size'  : C_DATABASE_CACHE_SIZE,
     'foreign_keys': C_DATABASE_FOREIGN_KEYS})
 
 
