@@ -86,6 +86,11 @@ class DSM:
         return self.hSerial.name
 
     def checkSerialPort(self):
+        '''
+        @brief  Checks to see if serial port is open and available 
+        @param  None
+        @retval True / FailuteCode.CANNOT_OPEN_COM_PORT
+        '''
         if (self.hSerial == None):
             try:
                 self.hSerial = serial.Serial(C_SERIAL_COM_PORT, C_SERIAL_BAUD_RATE, timeout = C_SERIAL_TIMEOUT)
