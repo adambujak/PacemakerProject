@@ -3,7 +3,7 @@
 # Description: DCM Communication Controller
 # Filename: dcc.py
 
-from DCMSerial         import *
+from DCMSerial.dsm     import *
 from src.dcm_constants import *
 from Common.datatypes  import *
 
@@ -52,7 +52,8 @@ class DCC:
         @param  data    - data to be sent
         @retval data with prepended start byte
         '''
-        pass
+        prepend = bytearray(C_SERIAL_START_BYTE)
+        return prepend + data
 
     def p_transmitData(self, data):
         '''
@@ -65,9 +66,15 @@ class DCC:
         timeout = 0
         # ToDo: Figure out a better way to do this
         while (timeout < C_SERIAL_ACK_RECIEVE_TIMEOUT):
-            recieved = self.serialManager.readLine()
-            if C_SERIAL_ACK_RECIEVE_STRING in recieved:
+            recieved = self.serialManager.readLine().decode('utf-8')
+            if recieved == FailureCodes.CANNOT_OPEN_COM_PORT:
+                print("Cannot Transmit Data")
+                return
+            if recieved.find(C_SERIAL_ACK_RECIEVE_STRING) != -1:
+                print("ACK recieved")
                 return True
+            timeout += 1
+        print("ACK not recieved")
         return False
 
     def programPacemaker(self, params):
@@ -77,12 +84,21 @@ class DCC:
         @retval success - True/False
         '''
         params = self.p_convertPacemakerParamsToByteArray(params)
+        print(params)
         if (self.p_transmitData(params) == False):
             return False
         
         #ToDo: read back params to ensure proper programming
         
-        pass
+    def p_convertToInts(self, number, numberOfBytes):
+        if number == None:
+            number = 0
+        number   = int(number)
+        lowByte  = (number & 0xff)
+        highByte = ((number >> 8) & 0xff)
+        if (numberOfBytes == 1):
+            return [lowByte]
+        return [lowByte, highByte]
 
     def p_convertPacemakerParamsToByteArray(self, pacemakerParams):
         '''
@@ -90,7 +106,25 @@ class DCC:
         @param  pacemakerParams  - programmable pacemaker parameters
         @retval bytearray of pacemaker parameters
         '''
-        pass
+        transferList = [C_SERIAL_PARAMETER_START_BYTE]
+        transferList += (self.p_convertToInts(pacemakerParams.getProgramModeInt(),         1))
+        transferList += (self.p_convertToInts(pacemakerParams.lowerRateLimit,              1))
+        transferList += (self.p_convertToInts(pacemakerParams.upperRateLimit,              1))
+        transferList += (self.p_convertToInts(pacemakerParams.atrialAmplitude,             2))
+        transferList += (self.p_convertToInts(pacemakerParams.ventricularAmplitude,        2))
+        transferList += (self.p_convertToInts(pacemakerParams.atrialPulseWidth,            1))
+        transferList += (self.p_convertToInts(pacemakerParams.ventricularPulseWidth,       1))
+        transferList += (self.p_convertToInts(pacemakerParams.atrialSensingThreshold,      2))
+        transferList += (self.p_convertToInts(pacemakerParams.ventricularSensingThreshold, 2))
+        transferList += (self.p_convertToInts(pacemakerParams.atrialRefractoryPeriod,      2))
+        transferList += (self.p_convertToInts(pacemakerParams.ventricularRefractoryPeriod, 2))
+        transferList += (self.p_convertToInts(pacemakerParams.fixedAVDelay,                2))
+        transferList += (self.p_convertToInts(pacemakerParams.rateModulation,              1))
+        transferList += (self.p_convertToInts(pacemakerParams.accelerationFactor,          1))
+        print (transferList)
+        byteArray = bytearray(transferList)
+
+        return byteArray
 
     def p_sendEchoCommand(self):
         '''
@@ -98,7 +132,7 @@ class DCC:
         @param  None
         @retval success - True/False
         '''
-        return self.p_transmitData(C_SERIAL_ECHO_COMMAND_BYTE):
+        return self.p_transmitData(C_SERIAL_ECHO_COMMAND_BYTE)
 
     def getPacemakerData(self):
         '''
@@ -106,7 +140,7 @@ class DCC:
         @param  None
         @retval Pacemaker Data - in byte array
         '''
-        if (p_sendEchoCommand() == True)
+        if (p_sendEchoCommand() == True):
             return self.serialManager.readLine()
         return None
 
@@ -116,5 +150,6 @@ class DCC:
         @param  None
         @retval Array of electrogram values
         '''
+        pass
         
 
