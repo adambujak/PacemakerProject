@@ -18,7 +18,17 @@ class PacemakerParameterData:
         self.accelerationFactor           = p_accelerationFactor
         self.rateModulation               = p_rateModulation
 
-
+    def getProgramModeInt(self):
+        if self.programMode == 'AOO':
+            return 0
+        if self.programMode == 'VOO':
+            return 1
+        if self.programMode == 'AAI':
+            return 2
+        if self.programMode == 'VVI':
+            return 3
+        if self.programMode == 'DOO':
+            return 4
     def getProgramMode(self):
         return self.programMode   
     def getLowerRateLimit(self):
