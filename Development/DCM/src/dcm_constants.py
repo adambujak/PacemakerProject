@@ -69,9 +69,10 @@ C_DEFAULT_VENTRICULAR_AMPLITUDE            =       3.5
 C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =       1
 C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =       2.5
 C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD     =       320
-C_DEFAULT_FIXED_AV_DELAY                   =       1
-C_DEFAULT_ACCELERATION_FACTOR              =       1
-C_DEFAULT_RATE_MODULATION                  =       1
+C_DEFAULT_FIXED_AV_DELAY                   =       150  #ms
+C_DEFAULT_RATE_MODULATION                  =       0    #0 for off, 1 for on
+C_DEFAULT_MODULATION_SENSITIVITY           =       8    #value between 1 and 16
+
 
 
 # SERIAL COM DEFAULTS #
@@ -90,4 +91,6 @@ C_SERIAL_EEGRAM_STOP_BYTE                  =       0x62
 C_SERIAL_ECHO_COMMAND_BYTE                 =       0x22
 
 C_SERIAL_ACK_RECIEVE_STRING                =       "ACK"
+
 C_SERIAL_ACK_RECIEVE_TIMEOUT               =       5
+
