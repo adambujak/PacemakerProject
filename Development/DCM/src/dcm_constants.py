@@ -8,7 +8,7 @@ from pathlib import Path
 
 # GENERAL APPLICATION CONSTANTS #
 
-C_APPLICATION_DIRECTORY        		       =       str(Path.cwd().resolve())                          # APPLICATION DIRECTORY 
+C_APPLICATION_DIRECTORY        		       =        str(Path.cwd().resolve())                          # APPLICATION DIRECTORY 
 
 C_ADMINISTRATOR_USERNAME       		       =       "Admin"
 C_ADMINISTRATOR_PASSWORD       		       =       "0b4548dfadaf4ad5c8c9ab4bf1fc95247ebf358c1952e026f67fccc7a7c08203577c3c316bfda6a290e6b68feece3f86ec5696a74389fb04b45190af212c79233864d6fddb42626947b5412d337d337f4471ca1e1bc9b89306784927048141a4"
@@ -17,11 +17,11 @@ C_ADMINISTRATOR_PASSWORD       		       =       "0b4548dfadaf4ad5c8c9ab4bf1fc952
 # DATABASE CONSTANTS #
 
 C_DATABASE_NAME                		       =       "dcm_database.sqlite"                              # DATABASE FILE NAME 
-C_DATABASE_DIRECTORY           		       =       C_APPLICATION_DIRECTORY + "/src"                   # DIRECTORY OF DATABASE 
-C_DATABASE_PATH               	 	       =       C_DATABASE_DIRECTORY + "/" + C_DATABASE_NAME       # DATABASE PATH #PacemakerProject\Development\DCM\src/src/dcm_database.sqlite
+C_DATABASE_DIRECTORY           		       =        C_APPLICATION_DIRECTORY + "/src"                   # DIRECTORY OF DATABASE 
+C_DATABASE_PATH               	 	       =        C_DATABASE_DIRECTORY + "/" + C_DATABASE_NAME       # DATABASE PATH #PacemakerProject\Development\DCM\src/src/dcm_database.sqlite
 C_DATABASE_JOURNAL_MODE        		       =       "wal"                                              # DATABASE JOURNAL MODE
 C_DATABASE_CACHE_SIZE          		       =       -1 * 64000                                         # DATABASE CACHE SIZE
-C_DATABASE_FOREIGN_KEYS        		       =       1                                                  # DATABASE FOREIGN KEYS
+C_DATABASE_FOREIGN_KEYS        		       =        1                                                  # DATABASE FOREIGN KEYS
 
 
 # GUI CONSTANTS #
@@ -46,7 +46,7 @@ C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE        =	   "Ventricle Pulse Amplitude\n (Vo
 C_PROGRAM_VENTRICLE_PULSE_WIDTH	 	       =	   "Ventricle Pulse Width\n (ms)"					  # LABEL VALUE FOR VENTRICLE PULSE WIDTH
 C_PROGRAM_VENTRICLE_SENSING_THRESHOLD      =	   "Ventricle Sensing Threshold\n (mV)"				  # LABEL VALUE FOR VENTRICLE SENSING THRESHOLD
 C_PROGRAM_VENTRICLE_REFRACTORY_PERIOD      =	   "Ventricle Refractory period\n (ms)"				  # LABEL VALUE FOR VENTRICLE REFRACTORY PERIOD
-C_PROGRAM_DROPDOWN_OPTIONS     		       =       ["AOO", "AAI", "VOO", "VVI"]                       # DROPDOWN MENU OPTIONS
+C_PROGRAM_DROPDOWN_OPTIONS     		       =      ["AOO", "AAI", "VOO", "VVI"]                       # DROPDOWN MENU OPTIONS
 C_PROGRAM_DROPDOWN_DEFAULT     		       =       "AOO"                                              # DEFAULT VALUE FOR DROPDOWN
 C_PROGRAM_DROPDOWN_LABEL       		       =       "Pacing Mode"                                      # LABEL VALUE FOR DROPDOWN INDICATOR 
 C_PROGRAM_BUTTON_TEXT          		       =       "Program"                                          # BUTTON TEXT VALUE FOR PROGRAM BUTTON
@@ -58,39 +58,39 @@ C_CANCEL_BUTTON_TEXT		   		       = 	   "Cancel"
 
 # PROGRAM DATA DEFAULTS #
 
-C_DEFAULT_PROGRAM_MODE					   =       'AOO'
-C_DEFAULT_LOWER_RATE_LIMIT                 =       60
-C_DEFAULT_UPPER_RATE_LIMIT                 =       120 
-C_DEFAULT_ATRIAL_AMPLITUDE                 =       3.5
-C_DEFAULT_ATRIAL_PULSE_WIDTH               =       1
-C_DEFAULT_ATRIAL_SENSING_THRESHOLD         =       0.75
-C_DEFAULT_ATRIAL_REFACTORY_PERIOD          =       250
-C_DEFAULT_VENTRICULAR_AMPLITUDE            =       3.5
-C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =       1
-C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =       2.5
-C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD     =       320
-C_DEFAULT_FIXED_AV_DELAY                   =       150  #ms
-C_DEFAULT_RATE_MODULATION                  =       0    #0 for off, 1 for on
-C_DEFAULT_MODULATION_SENSITIVITY           =       8    #value between 1 and 16
+C_DEFAULT_PROGRAM_MODE					   =       "AOO"
+C_DEFAULT_LOWER_RATE_LIMIT                 =        60
+C_DEFAULT_UPPER_RATE_LIMIT                 =        120 
+C_DEFAULT_ATRIAL_AMPLITUDE                 =        3.5
+C_DEFAULT_ATRIAL_PULSE_WIDTH               =        1
+C_DEFAULT_ATRIAL_SENSING_THRESHOLD         =        0.75
+C_DEFAULT_ATRIAL_REFACTORY_PERIOD          =        250
+C_DEFAULT_VENTRICULAR_AMPLITUDE            =        3.5
+C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =        1
+C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =        2.5
+C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD     =        320
+C_DEFAULT_FIXED_AV_DELAY                   =        150  #ms
+C_DEFAULT_RATE_MODULATION                  =        0    #0 for off, 1 for on
+C_DEFAULT_MODULATION_SENSITIVITY           =        8    #value between 1 and 16
 
 
 
 # SERIAL COM DEFAULTS #
 
 C_SERIAL_COM_PORT                          =       "COM10"
-C_SERIAL_BAUD_RATE                         =       9600
-C_SERIAL_TIMEOUT                           =       1
+C_SERIAL_BAUD_RATE                         =        9600
+C_SERIAL_TIMEOUT                           =        1
 
-C_SERIAL_START_BYTE                        =       0x16
+C_SERIAL_START_BYTE                        =        0x16
 
-C_SERIAL_PARAMETER_START_BYTE              =       0x55
+C_SERIAL_PARAMETER_START_BYTE              =        0x55
 
-C_SERIAL_EEGRAM_START_BYTE                 =       0x47
-C_SERIAL_EEGRAM_STOP_BYTE                  =       0x62
+C_SERIAL_EEGRAM_START_BYTE                 =        0x47
+C_SERIAL_EEGRAM_STOP_BYTE                  =        0x62
 
-C_SERIAL_ECHO_COMMAND_BYTE                 =       0x22
+C_SERIAL_ECHO_COMMAND_BYTE                 =        0x22
 
 C_SERIAL_ACK_RECIEVE_STRING                =       "ACK"
 
-C_SERIAL_ACK_RECIEVE_TIMEOUT               =       5
+C_SERIAL_ACK_RECIEVE_TIMEOUT               =        5
 
