@@ -5,6 +5,7 @@
 
 import serial
 from src.dcm_constants import *
+from Common.failCodes  import *
 
 
 #############################################################
@@ -18,8 +19,12 @@ class DSM:
         @param  None
         @retval None 
         '''
-        self.hSerial = serial.Serial(C_SERIAL_COM_PORT, C_SERIAL_BAUD_RATE, timeout = C_SERIAL_TIMEOUT)
-
+        try:
+            self.hSerial = serial.Serial(C_SERIAL_COM_PORT, C_SERIAL_BAUD_RATE, timeout = C_SERIAL_TIMEOUT)
+        except:
+            print("Error Opening Com Port")
+            self.hSerial = None
+        
     def deinit(self):
         '''
         @brief  Deinitializes serial manager - closes serial port
@@ -34,6 +39,9 @@ class DSM:
         @param  data - input byte array
         @retval None 
         '''
+        if (self.checkSerialPort() == FailureCodes.CANNOT_OPEN_COM_PORT):
+            return FailureCodes.CANNOT_OPEN_COM_PORT
+        print("Serial write data", data)
         self.hSerial.write(data)
 
     def writeString(self, dataStr):
@@ -52,6 +60,8 @@ class DSM:
         @param  expected - expected end character
         @retval read string
         '''
+        if (self.checkSerialPort() == FailureCodes.CANNOT_OPEN_COM_PORT):
+            return FailureCodes.CANNOT_OPEN_COM_PORT
         return self.hSerial.read_until(expected = expected)
 
     def readLine(self):
@@ -60,6 +70,8 @@ class DSM:
         @param  None
         @retval read string
         '''
+        if (self.checkSerialPort() == FailureCodes.CANNOT_OPEN_COM_PORT):
+            return FailureCodes.CANNOT_OPEN_COM_PORT
         return self.hSerial.read_until()
 
     def getSerialPort(self):
@@ -68,5 +80,16 @@ class DSM:
         @param  None
         @retval Serial port name 
         '''
+        if (self.checkSerialPort() == FailureCodes.CANNOT_OPEN_COM_PORT):
+            return FailureCodes.CANNOT_OPEN_COM_PORT
         return self.hSerial.name
 
+    def checkSerialPort(self):
+        if (self.hSerial == None):
+            try:
+                self.hSerial = serial.Serial(C_SERIAL_COM_PORT, C_SERIAL_BAUD_RATE, timeout = C_SERIAL_TIMEOUT)
+            except:
+                print("Error Opening Com Port")
+                self.hSerial = None
+                return FailureCodes.CANNOT_OPEN_COM_PORT
+        return True
