@@ -170,9 +170,9 @@ class GUIC:
                 else:
                     entryData[entryIndex] = float(entryData[entryIndex]);
             if programMode == "AOO" or programMode == "AAI":
-                return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None, None, None, None)
+                return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0, 0, 0, 0, 0)
             elif programMode == "VOO" or programMode == "VVI":
-                return PacemakerParameterData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[2], entryData[3], entryData[4], entryData[5], None, None, None)
+                return PacemakerParameterData(programMode, entryData[0], entryData[1], 0, 0, 0, 0, entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0)
                 
 
     def p_drawFirstScreen(self):

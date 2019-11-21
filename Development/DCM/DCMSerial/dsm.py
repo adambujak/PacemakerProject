@@ -42,6 +42,7 @@ class DSM:
         if (self.checkSerialPort() == FailureCodes.CANNOT_OPEN_COM_PORT):
             return FailureCodes.CANNOT_OPEN_COM_PORT
         print("Serial write data", data)
+        print("Serial write data length", len(data))
         self.hSerial.write(data)
 
     def writeString(self, dataStr):

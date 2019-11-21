@@ -52,7 +52,7 @@ class DCC:
         @param  data    - data to be sent
         @retval data with prepended start byte
         '''
-        prepend = bytearray(C_SERIAL_START_BYTE)
+        prepend = bytearray([C_SERIAL_START_BYTE])
         return prepend + data
 
     def p_transmitData(self, data):
@@ -63,17 +63,15 @@ class DCC:
         '''
         data = self.p_prependDataWithStartCode(data)
         self.serialManager.write(data)
-        timeout = 0
-        # ToDo: Figure out a better way to do this
-        while (timeout < C_SERIAL_ACK_RECIEVE_TIMEOUT):
-            recieved = self.serialManager.readLine().decode('utf-8')
-            if recieved == FailureCodes.CANNOT_OPEN_COM_PORT:
-                print("Cannot Transmit Data")
-                return
-            if recieved.find(C_SERIAL_ACK_RECIEVE_STRING) != -1:
-                print("ACK recieved")
-                return True
-            timeout += 1
+        
+        recieved = self.serialManager.readLine().decode('utf-8')
+        if recieved == FailureCodes.CANNOT_OPEN_COM_PORT:
+            print("Cannot Transmit Data")
+            return
+        if recieved.find(C_SERIAL_ACK_RECIEVE_STRING) != -1:
+            print("ACK recieved")
+            return True
+    
         print("ACK not recieved")
         return False
 
@@ -84,7 +82,6 @@ class DCC:
         @retval success - True/False
         '''
         params = self.p_convertPacemakerParamsToByteArray(params)
-        print(params)
         if (self.p_transmitData(params) == False):
             return False
         
@@ -107,23 +104,21 @@ class DCC:
         @retval bytearray of pacemaker parameters
         '''
         transferList = [C_SERIAL_PARAMETER_START_BYTE]
-        transferList += (self.p_convertToInts(pacemakerParams.getProgramModeInt(),         1))
-        transferList += (self.p_convertToInts(pacemakerParams.lowerRateLimit,              1))
-        transferList += (self.p_convertToInts(pacemakerParams.upperRateLimit,              1))
-        transferList += (self.p_convertToInts(pacemakerParams.atrialAmplitude,             2))
-        transferList += (self.p_convertToInts(pacemakerParams.ventricularAmplitude,        2))
-        transferList += (self.p_convertToInts(pacemakerParams.atrialPulseWidth,            1))
-        transferList += (self.p_convertToInts(pacemakerParams.ventricularPulseWidth,       1))
-        transferList += (self.p_convertToInts(pacemakerParams.atrialSensingThreshold,      2))
-        transferList += (self.p_convertToInts(pacemakerParams.ventricularSensingThreshold, 2))
-        transferList += (self.p_convertToInts(pacemakerParams.atrialRefractoryPeriod,      2))
-        transferList += (self.p_convertToInts(pacemakerParams.ventricularRefractoryPeriod, 2))
-        transferList += (self.p_convertToInts(pacemakerParams.fixedAVDelay,                2))
-        transferList += (self.p_convertToInts(pacemakerParams.rateModulation,              1))
-        transferList += (self.p_convertToInts(pacemakerParams.accelerationFactor,          1))
-        print (transferList)
+        transferList += (self.p_convertToInts(pacemakerParams.getProgramModeInt(),                  1))
+        transferList += (self.p_convertToInts(pacemakerParams.lowerRateLimit,                       1))
+        transferList += (self.p_convertToInts(pacemakerParams.upperRateLimit,                       1))
+        transferList += (self.p_convertToInts(pacemakerParams.getAtrialAmplitudeInMV(),             2))
+        transferList += (self.p_convertToInts(pacemakerParams.getVentricularAmplitudeInMV(),        2))
+        transferList += (self.p_convertToInts(pacemakerParams.atrialPulseWidth,                     1))
+        transferList += (self.p_convertToInts(pacemakerParams.ventricularPulseWidth,                1))
+        transferList += (self.p_convertToInts(pacemakerParams.getAtrialSensingThresholdInMV(),      2))
+        transferList += (self.p_convertToInts(pacemakerParams.getVentricularSensingThresholdInMV(), 2))
+        transferList += (self.p_convertToInts(pacemakerParams.atrialRefractoryPeriod,               2))
+        transferList += (self.p_convertToInts(pacemakerParams.ventricularRefractoryPeriod,          2))
+        transferList += (self.p_convertToInts(pacemakerParams.fixedAVDelay,                         2))
+        transferList += (self.p_convertToInts(pacemakerParams.rateModulation,                       1))
+        transferList += (self.p_convertToInts(pacemakerParams.accelerationFactor,                   1))
         byteArray = bytearray(transferList)
-
         return byteArray
 
     def p_sendEchoCommand(self):
