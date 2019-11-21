@@ -5,7 +5,7 @@
 
 from DCMGraphicalUserInterface.guic import *
 from DCMUserAccountManager.duam     import *
-from DCMSerial.dsm                  import *
+from DCMCommunicationController.dcc import *
 from Common.callbacks               import ApplicationCallbacks
 from Common.failCodes               import FailureCodes
 import time
@@ -16,6 +16,7 @@ class MainApplication:      #All print statements in MainApplication can be used
     def __init__(self):
         self.accountController = DUAM()
         self.guiController = GUIC()
+        self.comController = DCC()
 
     def setCallbacks(self, callbacks):
         self.guiController.setCallbacks(callbacks)
@@ -73,6 +74,8 @@ class MainApplication:      #All print statements in MainApplication can be used
             and (stateChamberPara.value == 0)):
             self.accountController.saveProgrammingValuesToDatabase()
             self.guiController.drawScreen(programmingScreen)
+            self.comController.programPacemaker(programmedData)
+
         self.guiController.p_drawErrorMessageProgramScreen(stateRateLim.name, stateChamberPara.name, 1)
 
     def changeProgramModeCB(self, programMode):
