@@ -2,7 +2,7 @@ class PacemakerParameterData:
     def __init__(self, p_programMode, p_upperRateLimit, p_lowerRateLimit, 
         p_atrialAmplitude, p_atrialPulseWidth, p_atrialSensingThreshold, p_atrialRefractoryPeriod, 
         p_ventricularAmplitude, p_ventricularPulseWidth, p_ventricularSensingThreshold, p_ventricularRefractoryPeriod,
-        p_fixedAVDelay, p_accelerationFactor, p_rateModulation):
+        p_fixedAVDelay, p_modulationSensitivity, p_rateModulation):
         self.programMode                  = p_programMode
         self.lowerRateLimit               = p_lowerRateLimit
         self.upperRateLimit               = p_upperRateLimit
@@ -15,7 +15,7 @@ class PacemakerParameterData:
         self.ventricularSensingThreshold  = p_ventricularSensingThreshold
         self.ventricularRefractoryPeriod  = p_ventricularRefractoryPeriod
         self.fixedAVDelay                 = p_fixedAVDelay
-        self.accelerationFactor           = p_accelerationFactor
+        self.modulationSensitivity        = p_modulationSensitivity
         self.rateModulation               = p_rateModulation
 
     def getProgramModeInt(self):
@@ -38,31 +38,31 @@ class PacemakerParameterData:
     def getAtrialAmplitude(self):
         return self.atrialAmplitude
     def getAtrialAmplitudeInMV(self):
-        return int(self.atrialAmplitude * 1000)
+        return int(self.atrialAmplitude)
     def getAtrialPulseWidth(self):
         return self.atrialPulseWidth
     def getAtrialSensingThreshold(self):
         return self.atrialSensingThreshold
     def getAtrialSensingThresholdInMV(self):
-        return int(self.atrialSensingThreshold * 1000)
+        return int(self.atrialSensingThreshold)
     def getAtrialRefractoryPeriod(self):
         return self.atrialRefractoryPeriod
     def getVentricularAmplitude(self):
         return self.ventricularAmplitude
     def getVentricularAmplitudeInMV(self):
-        return int(self.ventricularAmplitude * 1000)
+        return int(self.ventricularAmplitude)
     def getVentricularPulseWidth(self):
         return self.ventricularPulseWidth
     def getVentricularSensingThreshold(self):
         return self.ventricularSensingThreshold
     def getVentricularSensingThresholdInMV(self):
-        return int(self.ventricularSensingThreshold * 1000)
+        return int(self.ventricularSensingThreshold)
     def getVentricularRefractoryPeriod(self):
         return self.ventricularRefractoryPeriod
     def getFixedAVDelay(self):
         return self.fixedAVDelay
     def getAccelerationFactor(self):
-        return self.accelerationFactor
+        return self.modulationSensitivity
     def getRateModulation(self):
         return self.rateModulation
 
@@ -92,7 +92,7 @@ class PacemakerParameterData:
     def setFixedAVDelay(self,val):
         self.fixedAVDelay=val
     def setAccelerationFactor(self,val):
-        self.accelerationFactor=val
+        self.modulationSensitivity=val
     def setRateModulation(self,val):
         self.rateModulation=val
 

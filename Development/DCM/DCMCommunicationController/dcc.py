@@ -11,6 +11,8 @@ from Common.datatypes  import *
 #############################################################
 ############   DCM Communication Controller   ###############
 #############################################################
+from Development.DCM.src.dcm_constants import C_SERIAL_ACK_RECEIVE_STRING
+
 
 class DCC:
 
@@ -64,15 +66,15 @@ class DCC:
         data = self.p_prependDataWithStartCode(data)
         self.serialManager.write(data)
         
-        recieved = self.serialManager.readLine().decode('utf-8')
-        if recieved == FailureCodes.CANNOT_OPEN_COM_PORT:
+        received = self.serialManager.readLine().decode('utf-8')
+        if received == FailureCodes.CANNOT_OPEN_COM_PORT:
             print("Cannot Transmit Data")
             return
-        if recieved.find(C_SERIAL_ACK_RECIEVE_STRING) != -1:
-            print("ACK recieved")
+        if received.find(C_SERIAL_ACK_RECEIVE_STRING) != -1:
+            print("ACK received")
             return True
     
-        print("ACK not recieved")
+        print("ACK not received")
         return False
 
     def programPacemaker(self, params):
@@ -117,7 +119,7 @@ class DCC:
         transferList += (self.p_convertToInts(pacemakerParams.ventricularRefractoryPeriod,          2))
         transferList += (self.p_convertToInts(pacemakerParams.fixedAVDelay,                         2))
         transferList += (self.p_convertToInts(pacemakerParams.rateModulation,                       1))
-        transferList += (self.p_convertToInts(pacemakerParams.accelerationFactor,                   1))
+        transferList += (self.p_convertToInts(pacemakerParams.modulationSensitivity,                1))
         byteArray = bytearray(transferList)
         return byteArray
 

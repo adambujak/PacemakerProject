@@ -35,11 +35,11 @@ defaultPacemakerParameterData = PacemakerParameterData(
     C_DEFAULT_ATRIAL_AMPLITUDE,
     C_DEFAULT_ATRIAL_PULSE_WIDTH,
     C_DEFAULT_ATRIAL_SENSING_THRESHOLD,
-    C_DEFAULT_ATRIAL_REFACTORY_PERIOD,
+    C_DEFAULT_ATRIAL_REFRACTORY_PERIOD,
     C_DEFAULT_VENTRICULAR_AMPLITUDE,
     C_DEFAULT_VENTRICULAR_PULSE_WIDTH,
     C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD,
-    C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD,
+    C_DEFAULT_VENTRICULAR_REFRACTORY_PERIOD,
     C_DEFAULT_FIXED_AV_DELAY,
     C_DEFAULT_MODULATION_SENSITIVITY,
     C_DEFAULT_RATE_MODULATION)
@@ -219,27 +219,21 @@ class DUAM:
         """
         checks = 0;
         #check p_pulseAmp
-        for valid in frange(0.5,3.2,0.1):
+        for valid in frange(500,3200,100):
             if p_pulseAmp == valid:
                 checks += 1;
                 break
-        for valid in frange(3.5,7.0,0.5):
+        for valid in frange(3500,7000,500):
             if p_pulseAmp == valid:
                 checks += 1;
                 break
         #check p_pulseWidth
-        if p_pulseWidth == 0.05:
-            checks += 1;
-        for valid in frange(0.1,1.9,0.1):
+        for valid in frange(1,20,1):
             if p_pulseWidth == valid:
                 checks += 1;
                 break
         #check p_sensThres
-        for valid in [0.25,0.5,0.75]:
-            if p_sensThres == valid:
-                checks += 1;
-                break
-        for valid in frange(1,10,0.5):
+        for valid in frange(1000,3300,10):
             if p_sensThres == valid:
                 checks += 1;
                 break

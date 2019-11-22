@@ -36,17 +36,17 @@ C_NEW_USERNAME_LABEL                       =       "Username\n min length: 4 cha
 C_NEW_PASSWORD_LABEL                       =       "Password\n min length: 4 char"                    # LABEL VALUE FOR NEW PASSWORD FIELD 
 
 
-C_PROGRAM_UPPER_LIMIT_LABEL                =       "Upper Rate Limit\n (bpm)"                         # LABEL VALUE FOR UPPER RATE LIMIT FIELD 
-C_PROGRAM_LOWER_LIMIT_LABEL                =       "Lower Rate Limit\n (bpm)"                         # LABEL VALUE FOR LOWER RATE LIMIT FIELD 
-C_PROGRAM_ATRIUM_PULSE_AMPLITUDE           =       "Atrium Pulse Amplitude\n (Volts)"                 # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
+C_PROGRAM_UPPER_LIMIT_LABEL                =       "Upper Rate Limit\n (BPM)"                         # LABEL VALUE FOR UPPER RATE LIMIT FIELD
+C_PROGRAM_LOWER_LIMIT_LABEL                =       "Lower Rate Limit\n (BPM)"                         # LABEL VALUE FOR LOWER RATE LIMIT FIELD
+C_PROGRAM_ATRIUM_PULSE_AMPLITUDE           =       "Atrium Pulse Amplitude\n (mV)"                    # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
 C_PROGRAM_ATRIUM_PULSE_WIDTH               =       "Atrium Pulse Width\n (ms)"                        # LABEL VALUE FOR ATRIUM PULSE WIDTH
 C_PROGRAM_ATRIUM_SENSING_THRESHOLD         =       "Atrium Sensing Threshold\n (mV)"                  # LABEL VALUE FOR ATRIUM SENSING THRESHOLD
 C_PROGRAM_ATRIUM_REFRACTORY_PERIOD         =       "Atrium Refractory period\n (ms)"                  # LABEL VALUE FOR ATRIUM REFRACTORY PERIOD
-C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE        =       "Ventricle Pulse Amplitude\n (Volts)"              # LABEL VALUE FOR VENTRICLE PULSE AMPLITUDE
+C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE        =       "Ventricle Pulse Amplitude\n (mV)"              # LABEL VALUE FOR VENTRICLE PULSE AMPLITUDE
 C_PROGRAM_VENTRICLE_PULSE_WIDTH            =       "Ventricle Pulse Width\n (ms)"                     # LABEL VALUE FOR VENTRICLE PULSE WIDTH
 C_PROGRAM_VENTRICLE_SENSING_THRESHOLD      =       "Ventricle Sensing Threshold\n (mV)"               # LABEL VALUE FOR VENTRICLE SENSING THRESHOLD
 C_PROGRAM_VENTRICLE_REFRACTORY_PERIOD      =       "Ventricle Refractory period\n (ms)"               # LABEL VALUE FOR VENTRICLE REFRACTORY PERIOD
-C_PROGRAM_DROPDOWN_OPTIONS                 =      ["AOO", "AAI", "VOO", "VVI"]                       # DROPDOWN MENU OPTIONS
+C_PROGRAM_DROPDOWN_OPTIONS                 =      ["AOO", "AAI", "VOO", "VVI"]                        # DROPDOWN MENU OPTIONS
 C_PROGRAM_DROPDOWN_DEFAULT                 =       "AOO"                                              # DEFAULT VALUE FOR DROPDOWN
 C_PROGRAM_DROPDOWN_LABEL                   =       "Pacing Mode"                                      # LABEL VALUE FOR DROPDOWN INDICATOR 
 C_PROGRAM_BUTTON_TEXT                      =       "Program"                                          # BUTTON TEXT VALUE FOR PROGRAM BUTTON
@@ -59,19 +59,19 @@ C_CANCEL_BUTTON_TEXT                       =       "Cancel"
 # PROGRAM DATA DEFAULTS #
 
 C_DEFAULT_PROGRAM_MODE                     =       "AOO"
-C_DEFAULT_LOWER_RATE_LIMIT                 =        60
-C_DEFAULT_UPPER_RATE_LIMIT                 =        120 
-C_DEFAULT_ATRIAL_AMPLITUDE                 =        3.5
-C_DEFAULT_ATRIAL_PULSE_WIDTH               =        1
-C_DEFAULT_ATRIAL_SENSING_THRESHOLD         =        0.75
-C_DEFAULT_ATRIAL_REFACTORY_PERIOD          =        250
-C_DEFAULT_VENTRICULAR_AMPLITUDE            =        3.5
-C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =        1
-C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =        2.5
-C_DEFAULT_VENTRICULAR_REFACTORY_PERIOD     =        320
-C_DEFAULT_FIXED_AV_DELAY                   =        150  #ms
-C_DEFAULT_RATE_MODULATION                  =        0    #0 for off, 1 for on
-C_DEFAULT_MODULATION_SENSITIVITY           =        8    #value between 1 and 16
+C_DEFAULT_LOWER_RATE_LIMIT                 =        60          # BPM
+C_DEFAULT_UPPER_RATE_LIMIT                 =        120         # BPM
+C_DEFAULT_ATRIAL_AMPLITUDE                 =        3500        # mV
+C_DEFAULT_ATRIAL_PULSE_WIDTH               =        10          # ms
+C_DEFAULT_ATRIAL_SENSING_THRESHOLD         =        2640        # mV
+C_DEFAULT_ATRIAL_REFRACTORY_PERIOD         =        250         # ms
+C_DEFAULT_VENTRICULAR_AMPLITUDE            =        3500        # mV
+C_DEFAULT_VENTRICULAR_PULSE_WIDTH          =        10          # ms
+C_DEFAULT_VENTRICULAR_SENSING_THRESHOLD    =        2640        # mV
+C_DEFAULT_VENTRICULAR_REFRACTORY_PERIOD    =        320         # ms
+C_DEFAULT_FIXED_AV_DELAY                   =        150         # ms
+C_DEFAULT_RATE_MODULATION                  =        0           # bool, off or on
+C_DEFAULT_MODULATION_SENSITIVITY           =        8           # int, 1 - 16
 
 
 
@@ -85,12 +85,12 @@ C_SERIAL_START_BYTE                        =        0x16
 
 C_SERIAL_PARAMETER_START_BYTE              =        0x55
 
-C_SERIAL_EEGRAM_START_BYTE                 =        0x47
-C_SERIAL_EEGRAM_STOP_BYTE                  =        0x62
+C_SERIAL_EGRAM_START_BYTE                 =        0x47
+C_SERIAL_EGRAM_STOP_BYTE                  =        0x62
 
 C_SERIAL_ECHO_COMMAND_BYTE                 =        0x22
 
-C_SERIAL_ACK_RECIEVE_STRING                =       "ACK"
+C_SERIAL_ACK_RECEIVE_STRING                =       "ACK"
 
-C_SERIAL_ACK_RECIEVE_TIMEOUT               =        5
+C_SERIAL_ACK_RECEIVE_TIMEOUT               =        5
 

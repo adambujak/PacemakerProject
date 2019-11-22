@@ -70,7 +70,7 @@ class DBPM:
             ventricularSensingThreshold = p_data.ventricularSensingThreshold,
             ventricularRefractoryPeriod = p_data.ventricularRefractoryPeriod,
             fixedAVDelay                = p_data.fixedAVDelay, 
-            accelerationFactor          = p_data.accelerationFactor,
+            modulationSensitivity       = p_data.modulationSensitivity,
             rateModulation              = p_data.rateModulation)
 
         DatabaseUserData.create(username = p_username, password = p_password, role = p_role, data = data)
@@ -109,7 +109,7 @@ class DBPM:
                     user.data.ventricularSensingThreshold,
                     user.data.ventricularRefractoryPeriod,
                     user.data.fixedAVDelay,
-                    user.data.accelerationFactor,
+                    user.data.modulationSensitivity,
                     user.data.rateModulation)    
                 
                 return User(user.username, user.password, user.role, data) #look to resolve by implementing signout, log in iff logged out***
@@ -133,7 +133,7 @@ class DBPM:
             ventricularSensingThreshold = p_data.ventricularSensingThreshold,
             ventricularRefractoryPeriod = p_data.ventricularRefractoryPeriod,
             fixedAVDelay                = p_data.fixedAVDelay, 
-            accelerationFactor          = p_data.accelerationFactor,
+            modulationSensitivity       = p_data.modulationSensitivity,
             rateModulation              = p_data.rateModulation)
 
         res = (DatabaseUserData
@@ -187,7 +187,7 @@ class DatabaseProgramData(BaseModel):
     ventricularSensingThreshold = FloatField()
     ventricularRefractoryPeriod = IntegerField()
     fixedAVDelay                = IntegerField()
-    accelerationFactor          = IntegerField()
+    modulationSensitivity       = IntegerField()
     rateModulation              = BooleanField()
 
           
