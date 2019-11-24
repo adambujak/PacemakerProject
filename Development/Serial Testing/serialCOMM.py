@@ -18,7 +18,7 @@ class SerialManager:
     def sendParams(self):
         # < indicates little endian, B indicates unsigned uint8, H indicates unsigned uint16
         paramsPackHeader = '<5B2H2B5H2B'
-        paramsPack = pack(paramsPackHeader, 0x16, 0x55, 1, 50, 120, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 0,
+        paramsPack = pack(paramsPackHeader, 0x16, 0x55, 4, 50, 120, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 0,
                           8)
         self.ser.write(paramsPack)
         print("Sent Params: ", paramsPack)
@@ -51,13 +51,17 @@ class SerialManager:
         self.unpackedDataRead = unpack(echoUnpackHeader, self.dataRead)
         print(self.unpackedDataRead)
 
+    def closePort(self):
+        self.ser.close()
+
 
 def main():
     serComms = SerialManager()
-    serComms.sendParams()
+    #serComms.sendParams()
     serComms.sendEcho()
     serComms.readParams()
     serComms.unpackParams()
+    serComms.closePort()
 
 
 main()
