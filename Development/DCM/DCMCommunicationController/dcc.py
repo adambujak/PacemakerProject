@@ -11,7 +11,7 @@ from Common.datatypes  import *
 #############################################################
 ############   DCM Communication Controller   ###############
 #############################################################
-from Development.DCM.src.dcm_constants import C_SERIAL_ACK_RECEIVE_STRING
+#from Development.DCM.src.dcm_constants import C_SERIAL_ACK_RECEIVE_STRING
 
 
 class DCC:
