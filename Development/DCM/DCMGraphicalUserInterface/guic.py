@@ -158,23 +158,23 @@ class GUIC:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
-    def getPacemakerParameterData(self, programMode):
+    def getPacemakerParameterData(self, data):
         """
         Retrieves data from gui input fields on Programming Screen
         """
         if self.currentScreen.screenName == ScreenNames.PROGRAMMING_SCREEN:
+            programMode = data.getProgrammingValues().getProgramModeInt();
             entryData = self.gui.getEntryData()
             for entryIndex in range(len(entryData)):
                 if entryData[entryIndex] == '':
                     entryData[entryIndex] = -1;
                 else:
                     entryData[entryIndex] = float(entryData[entryIndex]);
-            if programMode == "AOO" or programMode == "AAI":
-                return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0, 0, 0, 0, 0)
-            elif programMode == "VOO" or programMode == "VVI":
-                return PacemakerParameterData(programMode, entryData[0], entryData[1], 0, 0, 0, 0, entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0)
-                
-
+            if programMode == 0 or programMode == 1:
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0, 0, 0, 0, 0)
+            elif programMode == 2 or programMode == 3:
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], 0, 0, 0, 0, entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0)
+        
     def p_drawFirstScreen(self):
         """
         Draw first screen in application - in our case - login screen

@@ -4,6 +4,7 @@
 # Filename: duam.py
 
 from Common.failCodes                   import FailureCodes
+from Common.datatypes                   import PacemakerParameterData
 from enum                               import Enum
 from src.dcm_constants                  import *
 from DCMDatabase.dbpm                   import *
@@ -186,8 +187,6 @@ class DUAM:
             return False
         return True
 
-
-
     def validRateLims(self, p_upperRateLim, p_lowerRateLim):
         """Validates users input for rate limits
         """
@@ -251,6 +250,17 @@ class DUAM:
         if self.dbManager.getNumUsers() >= 10:
             return False
         return True
+
+    def controlProgramData(self, programmedData):
+        programMode = self.user.data.getProgramModeInt()
+        stateRateLim = self.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit)
+        if programMode == 0 or programMode == 1:
+            stateChamberPara = self.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
+                programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod)
+        elif programMode == 2 or programMode == 3:
+            stateChamberPara = self.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
+                programmedData.ventricularSensingThreshold, programmedData.ventricularRefractoryPeriod)
+        return [stateRateLim, stateChamberPara]
 
 
     def programProgramMode(self, p_programMode):

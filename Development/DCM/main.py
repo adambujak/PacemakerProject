@@ -54,29 +54,12 @@ class MainApplication:      #All print statements in MainApplication can be used
         self.guiController.drawScreen(loginScreen)
 
     def programButtonCB(self):
-        #do user field restrictions in DUAM set functions "program...."
-        # can do the hardware hidden print where program... functions store the error function then a get will return the failureCode to main to be printed or displayed
-        programMode = self.accountController.getProgrammingValues().getProgramMode()
-        #print("in programButtonCB, programMode is:", programMode)
-        programmedData = self.guiController.getPacemakerParameterData(programMode) #will return all the
-        # print ("user program data on program button callback")
-        # programmedData.printData()
-        # Should all theses calls of the class UserProgramData be using gets?
-        stateRateLim = self.accountController.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit)
-        if programmedData.programMode == "AOO" or programmedData.programMode == "AAI":
-            stateChamberPara = self.accountController.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
-                programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod)
-        elif programmedData.programMode == "VOO" or programmedData.programMode == "VVI":
-            stateChamberPara = self.accountController.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
-                programmedData.ventricularSensingThreshold, programmedData.ventricularRefractoryPeriod)
-
-        if ((stateRateLim.value == 0)
-            and (stateChamberPara.value == 0)):
+        stateError = self.accountController.controlProgramData(self.guiController.getPacemakerParameterData(programmingScreen.data))
+        if stateError[0].value == 0 and stateError[1].value == 0:
             self.accountController.saveProgrammingValuesToDatabase()
             self.guiController.drawScreen(programmingScreen)
-            self.comController.programPacemaker(programmedData)
-
-        self.guiController.p_drawErrorMessageProgramScreen(stateRateLim.name, stateChamberPara.name, 1)
+            #self.comController.programPacemaker(programmedData)
+        self.guiController.p_drawErrorMessageProgramScreen(stateError[0].name, stateError[1].name, 1)
 
     def changeProgramModeCB(self, programMode):
         stateProgramMode = self.accountController.programProgramMode(programMode)

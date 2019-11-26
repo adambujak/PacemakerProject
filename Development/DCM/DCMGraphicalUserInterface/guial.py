@@ -113,7 +113,7 @@ class GUIAL:
 
         # Set the current option
         tkvar.set(currentDropDownItem) 
-        self.programMode = currentDropDownItem;
+        self.programMode = currentDropDownItem
 
         popupMenuRowIndex = 1
         popupMenu = tk.OptionMenu(self.instance, tkvar, *dropDownOptions, command = buttonCallbacks[0])
@@ -149,13 +149,8 @@ class GUIAL:
         for buttonIndex in range(2):
             btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex+1]).grid(row = (buttonIndex + rowOffset), column = 4)
 
-    # def getProgramMode(self):
-    #     return self.programMode
-
-    # def setProgramMode(self, val, hellwya):
-    #     self.programMode = val;
-    #     hellwya
-
+    def getProgramMode(self):
+        return self.programMode
 
     def displayErrorMessageLoginS(self, errorCode):
         label = tk.Label(self.instance, text = errorCode).grid(row = 0, column = 3)
