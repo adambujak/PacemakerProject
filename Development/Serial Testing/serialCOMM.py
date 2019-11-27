@@ -18,8 +18,14 @@ class SerialManager:
     def sendParams(self):
         # < indicates little endian, B indicates unsigned uint8, H indicates unsigned uint16
         paramsPackHeader = '<5B2H2B5H2B'
-        paramsPack = pack(paramsPackHeader, 0x16, 0x55, 4, 50, 120, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 0,
-                          8)
+        paramsPack = pack(paramsPackHeader, 0x16, 0x55, 0, 30, 180, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 1,
+                          16)
+        #         paramsPack = pack(paramsPackHeader, 0x16, 0x55, 4, 100, 120, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 0,
+        #                           8)
+        #         paramsPack = pack(paramsPackHeader, 0x16, 0x55, 0, 50, 120, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 0,
+        #                           8)
+        #         paramsPack = pack(paramsPackHeader, 0x16, 0x55, 1, 80, 120, 3500, 3500, 10, 10, 2640, 2640, 250, 320, 150, 0,
+        #                           8)
         self.ser.write(paramsPack)
         print("Sent Params: ", paramsPack)
         time.sleep(1)
@@ -33,17 +39,13 @@ class SerialManager:
         time.sleep(1)
 
     def readParams(self):
-        print("In_buffer Before: ", self.ser.in_waiting)
-        time.sleep(1)
+        # print("In_buffer Before: ", self.ser.in_waiting)
         while self.ser.in_waiting < 21:
             print("Waiting for buffer to fill")
-        print("Reading data...")
+        # print("Reading data...")
         self.dataRead = self.ser.read(self.ser.in_waiting)
-        time.sleep(1)
-        print("Data read...")
-        time.sleep(1)
-        print("In_buffer After: ", self.ser.in_waiting)
-        time.sleep(1)
+        # print("Data read...")
+        # print("In_buffer After: ", self.ser.in_waiting)
         print("Echo In: ", self.dataRead)
 
     def unpackParams(self):
@@ -57,10 +59,14 @@ class SerialManager:
 
 def main():
     serComms = SerialManager()
-    #serComms.sendParams()
+    serComms.sendParams()
     serComms.sendEcho()
     serComms.readParams()
     serComms.unpackParams()
+    while serComms.unpackedDataRead[2] == 0:
+        serComms.sendEcho()
+        serComms.readParams()
+        serComms.unpackParams()
     serComms.closePort()
 
 
