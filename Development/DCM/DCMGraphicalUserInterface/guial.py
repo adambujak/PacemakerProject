@@ -84,7 +84,7 @@ class GUIAL:
         btn = tk.Button(self.instance ,text=buttonTexts[0], command = buttonCallbacks[0]).grid(row=2,column=2)
         btn = tk.Button(self.instance ,text=buttonTexts[1], command = buttonCallbacks[1]).grid(row=3,column=2)
 
-    def drawNFieldsNButtonsOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonTexts, buttonCallbacks):
+    def drawNFieldsNButtonsOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonTexts, buttonCallbacks, dataStr):
         """Draws Program Screen acrroding to current programMode
         Params:
         dropDownLabelText    - Label for dropDownMenu, Title
@@ -99,6 +99,10 @@ class GUIAL:
         #self.instance.configure(background = "white");
         print('Program Screen')
         tk.Label(self.instance, text=dropDownLabelText).grid(row = 1, column = 2)
+        textBox = tk.Text(self.instance, height=12, width=115)
+        textBox.insert(tk.END, dataStr) 
+        textBox.grid(row=9, column=0, columnspan=80, rowspan=40)
+        
         if not currentDropDownItem in dropDownOptions:
             print("ERROR: Invalid dropDownOption")
             return

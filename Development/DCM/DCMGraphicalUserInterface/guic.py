@@ -202,34 +202,54 @@ class GUIC:
         programmingValues = data.getProgrammingValues()
         fLabels = list(data.fieldLabels)
         programMode = programmingValues.getProgramMode()
-
+        textBoxStr = """Values currently stored in Database:
+        Upper Rate Limit: {},\t\t\tAtrial Amplitude: {},           Ventricular Amplitude: {}
+        Lower Rate Limit: {},           Atrial Pulse Width: {},         Ventricular Pulse Width: {}
+        Modulation Sensitivity: {},     Atrial Sensing Threshold: {},   Ventricular Sensing Threshold: {}
+        AV Delay: {},                   Atrial Refractory Period: {},   Ventricular Refractory Period: {}
+        """
+        storedValsStr = textBoxStr.format(
+                programmingValues.getUpperRateLimit(),
+                programmingValues.getAtrialAmplitude(),
+                programmingValues.getVentricularAmplitude(),
+                programmingValues.getLowerRateLimit(),
+                programmingValues.getAtrialPulseWidth(),
+                programmingValues.getVentricularPulseWidth(),
+                programmingValues.getAccelerationFactor(),
+                programmingValues.getAtrialSensingThreshold(),
+                programmingValues.getAtrialRefractoryPeriod(),
+                programmingValues.getAVDelay(),        
+                programmingValues.getVentricularSensingThreshold(),
+                programmingValues.getVentricularRefractoryPeriod(),
+                )
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
             programMode,
             data.dropDownOptions, 
             fLabels,
             data.buttonTexts,
-            data.buttonCallbacks)
+            data.buttonCallbacks,
+            storedValsStr)
 
-        # Make list of programming values
-        if programMode == "AOO" or programMode == "AAI":
-            programmingValuesList = [
-                programmingValues.getUpperRateLimit(),
-                programmingValues.getLowerRateLimit(),
-                programmingValues.getAtrialAmplitude(),
-                programmingValues.getAtrialPulseWidth(),
-                programmingValues.getAtrialSensingThreshold(),
-                programmingValues.getAtrialRefractoryPeriod(),
-                ]
-        elif programMode == "VOO" or programMode == "VVI":
-            programmingValuesList = [
-                programmingValues.getUpperRateLimit(),
-                programmingValues.getLowerRateLimit(),
-                programmingValues.getVentricularAmplitude(),
-                programmingValues.getVentricularPulseWidth(),
-                programmingValues.getVentricularSensingThreshold(),
-                programmingValues.getVentricularRefractoryPeriod(),
-                ]
+        # # Make list of programming values
+        # if programMode == "AOO" or programMode == "AAI":
+        #     programmingValuesList = [
+        #         programmingValues.getUpperRateLimit(),
+        #         programmingValues.getLowerRateLimit(),
+        #         programmingValues.getAtrialAmplitude(),
+        #         programmingValues.getAtrialPulseWidth(),
+        #         programmingValues.getAtrialSensingThreshold(),
+        #         programmingValues.getAtrialRefractoryPeriod(),
+        #         ]
+        # elif programMode == "VOO" or programMode == "VVI":
+        #     programmingValuesList = [
+        #         programmingValues.getUpperRateLimit(),
+        #         programmingValues.getLowerRateLimit(),
+        #         programmingValues.getVentricularAmplitude(),
+        #         programmingValues.getVentricularPulseWidth(),
+        #         programmingValues.getVentricularSensingThreshold(),
+        #         programmingValues.getVentricularRefractoryPeriod(),
+        #         ]
         #self.gui.setNEntryData(programmingValuesList)
 
     def p_drawErrorMessageOnScreen(self, errorCode, thisScreen):
