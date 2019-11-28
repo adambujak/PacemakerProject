@@ -60,14 +60,14 @@ class GUIAL:
         buttonTexts     - Array of texts to be displayed in button
         buttonCallbacks - Array of button callback functions
         """
-        
+    
         self.guiInitialized = True
         self.instance.geometry("350x125")
         print("Started Two Fields One Button Layout")
         self.instance.title(self.title)
 
-        self.instance.configure(background = "white");
-        
+        #self.instance.configure(background = "grey");
+
         #Attempt to add logo to GUI Upper right corner of Login Screen
         # img = tk.PhotoImage(file="logoMac.gif")
         # label = Label(image=photo)
@@ -85,69 +85,94 @@ class GUIAL:
         btn = tk.Button(self.instance ,text=buttonTexts[1], command = buttonCallbacks[1]).grid(row=3,column=2)
 
     def drawNFieldsNButtonsOneDropDownLayout(self, dropDownLabelText, currentDropDownItem, dropDownOptions, fieldLabels, buttonTexts, buttonCallbacks):
-        """Draws ten user input fields and a button to the screen
+        """Draws Program Screen acrroding to current programMode
         Params:
-        dropDownLabelText    - Label for dropDownMenu  
-        currentDropDownItem  - Value of current dropDownOption
-        dropDownOptions      - Set of dropDownOptions
-        fieldLabels          - Array of labels for input fields
-        buttonText           - Text to be displayed in button
-        buttonCallback       - Button callback function 
+        dropDownLabelText    - Label for dropDownMenu, Title
+        currentDropDownItem  - Value of current dropDownOption, current program mode
+        dropDownOptions      - Set of dropDownOptions, List of all programmable modes
+        fieldLabels          - Array of labels for input fields, All relevant programmable variables
+        buttonText           - Text to be displayed in buttons, program and quit buttin text
+        buttonCallback       - Button callback function, programButtonCB and cancelButtonCB
         """
-
         self.guiInitialized = True
-        self.instance.geometry("550x275")
-        print('Program Screen')
         self.instance.title(self.title)
-
-        self.instance.configure(background = "white");
-
-        # Create a Tkinter variable
-        tkvar = tk.StringVar(self.instance)
-
-        # Check if currentDropDownItem is contained in options
-        # If not - return because something has gone wrong
+        #self.instance.configure(background = "white");
+        print('Program Screen')
+        tk.Label(self.instance, text=dropDownLabelText).grid(row = 1, column = 2)
         if not currentDropDownItem in dropDownOptions:
             print("ERROR: Invalid dropDownOption")
             return
+        else:
+            self.programMode = currentDropDownItem
+        valCheckBox = tk.BooleanVar(self.instance)
+        tkvar = tk.StringVar(self.instance)
+        tkvar.set(self.programMode) 
+        if dropDownOptions.index(self.programMode) <= 4:
+            valCheckBox.set(False)
+            programList = list(dropDownOptions[0:5])
+        else:
+            valCheckBox.set(True)
+            programList = list(dropDownOptions[5:10])
+        
+        def changeModeCB(programMode):
+            self.programMode = programMode
+            self.displayLabelEntry(self.programMode, dropDownOptions, fieldLabels)
 
-        # Set the current option
-        tkvar.set(currentDropDownItem) 
-        self.programMode = currentDropDownItem
+        def changeCheckCB():
+            if valCheckBox.get():
+                self.programMode = dropDownOptions[dropDownOptions.index(self.programMode)+5]
+                programList = list(dropDownOptions[5:10])
+            else:
+                self.programMode = dropDownOptions[dropDownOptions.index(self.programMode)-5]
+                programList = list(dropDownOptions[0:5])
+            tkvar.set(self.programMode)
+            for wig in self.instance.grid_slaves():
+                rowVal = int(wig.grid_info().get("row"))
+                colVal = int(wig.grid_info().get("column"))
+                if rowVal ==2 and colVal == 4:
+                    wig.grid_forget()
+                    break
+            popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 2)
+            changeModeCB(self.programMode)       
 
-        popupMenuRowIndex = 1
-        popupMenu = tk.OptionMenu(self.instance, tkvar, *dropDownOptions, command = buttonCallbacks[0])
-        tk.Label(self.instance, text=dropDownLabelText).grid(row = popupMenuRowIndex, column = 4)
-        popupMenu.grid(row = popupMenuRowIndex+1, column =4)
+        checkBox = tk.Checkbutton(self.instance, text="Rate Modulation", variable=valCheckBox, command = changeCheckCB).grid(row = 2, column = 3)       
+        popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 2)
+        changeModeCB(self.programMode)
 
-        # # On change dropdown value
-        # def change_dropdown(*args):
-        #     self.setProgramMode(tkvar.get(), buttonCallbacks[0])
+        for buttonIndex in range(2):         # Draw each button
+            btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex + 7), column = 2)
 
-        # # Link function to change dropdown
-        # tkvar.trace('w', change_dropdown)
-
-        # Set the row offest so the entries and labels don't overwrite the popup menu
-        # +2 because of the number of elements previously
-        rowOffset = popupMenuRowIndex+2;
-
-        # Draw each field
-        if currentDropDownItem == "AOO" or currentDropDownItem == "AAI":
-            fieldLabels.pop(2);
-        elif currentDropDownItem == "VOO" or currentDropDownItem == "VVI":
-            fieldLabels.pop(1);
-
-        for columns in range(len(fieldLabels)):
-            for field in range(len(fieldLabels[columns])):
-                label = tk.Label(self.instance, text = fieldLabels[columns][field], anchor="e").grid(sticky="E", row = field+rowOffset, column = (1+columns)*2)
-                entry = tk.Entry(self.instance).grid(row = field+rowOffset, column = 1 + (1+columns)*2)
-            
-        # Update row offset to be the row after the last field 
-        rowOffset += field + 2
-
-        # Draw each button
-        for buttonIndex in range(2):
-            btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex+1]).grid(row = (buttonIndex + rowOffset), column = 4)
+    def displayLabelEntry(self, programMode, dropDownOptions, fieldLabels):
+        for wig in self.instance.grid_slaves():
+            rowVal = int(wig.grid_info().get("row"))
+            if rowVal >= 3 and rowVal <= 6:
+                wig.grid_forget()
+        if programMode == dropDownOptions[0] or programMode == dropDownOptions[1]:
+            self.instance.geometry("550x275")
+            fieldInd = [[0,1], [0,1], [0,1,2,3]]
+        if programMode == dropDownOptions[2] or programMode == dropDownOptions[3]:
+            self.instance.geometry("550x275")
+            fieldInd = [[0,2], [0,1], [0,1,2,3]]
+        if programMode == dropDownOptions[4]:
+            self.instance.geometry("800x275")
+            fieldInd = [[0,1,2], [0,1,3], [0,1,2,3], [0,1,2,3]]
+        if programMode == dropDownOptions[5] or programMode == dropDownOptions[6]:
+            self.instance.geometry("550x275")
+            fieldInd = [[0,1], [0,1,2], [0,1,2,3]]
+        if programMode == dropDownOptions[7] or programMode == dropDownOptions[8]:
+            self.instance.geometry("550x275")
+            fieldInd = [[0,2], [0,1,2], [0,1,2,3]]
+        if programMode == dropDownOptions[9]:
+            self.instance.geometry("800x275")
+            fieldInd = [[0,1,2], [0,1,2,3], [0,1,2,3], [0,1,2,3]]
+        colOffset = 0
+        for columns in fieldInd[0]:
+            rowOffset = 3
+            for field in fieldInd[int(colOffset/2)+1]:
+                label = tk.Label(self.instance, text = fieldLabels[columns][field], anchor="e").grid(sticky="E", row = rowOffset, column = colOffset)
+                entry = tk.Entry(self.instance).grid(row = rowOffset, column = colOffset + 1)
+                rowOffset +=1
+            colOffset +=2
 
     def getProgramMode(self):
         return self.programMode

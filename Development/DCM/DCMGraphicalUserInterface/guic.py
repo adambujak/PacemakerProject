@@ -70,7 +70,9 @@ programmingScreen = Screen(
         [
             [
             C_PROGRAM_UPPER_LIMIT_LABEL,
-            C_PROGRAM_LOWER_LIMIT_LABEL
+            C_PROGRAM_LOWER_LIMIT_LABEL,
+            C_PROGRAM_MODULATION_SENSITIVITY_LABEL,
+            C_PROGRAM_FIXED_AV_DELAY_LABEL
             ],
             [
             C_PROGRAM_ATRIUM_PULSE_AMPLITUDE,
@@ -115,7 +117,7 @@ class GUIC:
     def setCallbacks(self, callbacks):
         self.callbacks = callbacks
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
-        programmingScreen.data.setCallbacks([self.callbacks.changeProgramModeCB, self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
+        programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
         createUserMenuScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
     
     def setProgrammingValues(self, data):
@@ -228,7 +230,7 @@ class GUIC:
                 programmingValues.getVentricularSensingThreshold(),
                 programmingValues.getVentricularRefractoryPeriod(),
                 ]
-        self.gui.setNEntryData(programmingValuesList)
+        #self.gui.setNEntryData(programmingValuesList)
 
     def p_drawErrorMessageOnScreen(self, errorCode, thisScreen):
         if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):

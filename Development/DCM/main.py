@@ -61,11 +61,11 @@ class MainApplication:      #All print statements in MainApplication can be used
             #self.comController.programPacemaker(programmedData)
         self.guiController.p_drawErrorMessageProgramScreen(stateError[0].name, stateError[1].name, 1)
 
-    def changeProgramModeCB(self, programMode):
-        stateProgramMode = self.accountController.programProgramMode(programMode)
-        if stateProgramMode.value == 0:
-            self.accountController.saveProgrammingValuesToDatabase()
-            self.guiController.drawScreen(programmingScreen)
+    # def changeProgramModeCB(self, programMode):
+    #     stateProgramMode = self.accountController.programProgramMode(programMode)
+    #     if stateProgramMode.value == 0:
+    #         self.accountController.saveProgrammingValuesToDatabase()
+    #         self.guiController.drawScreen(programmingScreen)
 
 
 def main():
@@ -79,8 +79,7 @@ def main():
         app.newUserButtonCB,
         app.createUserButtonCB, 
         app.cancelButtonCB, 
-        app.programButtonCB,
-        app.changeProgramModeCB)
+        app.programButtonCB)
 
     app.setCallbacks(callbacks)
 

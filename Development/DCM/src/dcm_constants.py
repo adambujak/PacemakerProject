@@ -38,15 +38,18 @@ C_NEW_PASSWORD_LABEL                       =       "Password\n min length: 4 cha
 
 C_PROGRAM_UPPER_LIMIT_LABEL                =       "Upper Rate Limit\n (BPM)"                         # LABEL VALUE FOR UPPER RATE LIMIT FIELD
 C_PROGRAM_LOWER_LIMIT_LABEL                =       "Lower Rate Limit\n (BPM)"                         # LABEL VALUE FOR LOWER RATE LIMIT FIELD
+C_PROGRAM_FIXED_AV_DELAY_LABEL             =       "AV Delay\n (ms)"
+C_PROGRAM_MODULATION_SENSITIVITY_LABEL     =       "Modulation\n Sensitivity (1-16)"
 C_PROGRAM_ATRIUM_PULSE_AMPLITUDE           =       "Atrium Pulse Amplitude\n (mV)"                    # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
 C_PROGRAM_ATRIUM_PULSE_WIDTH               =       "Atrium Pulse Width\n (ms)"                        # LABEL VALUE FOR ATRIUM PULSE WIDTH
 C_PROGRAM_ATRIUM_SENSING_THRESHOLD         =       "Atrium Sensing Threshold\n (mV)"                  # LABEL VALUE FOR ATRIUM SENSING THRESHOLD
 C_PROGRAM_ATRIUM_REFRACTORY_PERIOD         =       "Atrium Refractory period\n (ms)"                  # LABEL VALUE FOR ATRIUM REFRACTORY PERIOD
-C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE        =       "Ventricle Pulse Amplitude\n (mV)"              # LABEL VALUE FOR VENTRICLE PULSE AMPLITUDE
+C_PROGRAM_VENTRICLE_PULSE_AMPLITUDE        =       "Ventricle Pulse Amplitude\n (mV)"                 # LABEL VALUE FOR VENTRICLE PULSE AMPLITUDE
 C_PROGRAM_VENTRICLE_PULSE_WIDTH            =       "Ventricle Pulse Width\n (ms)"                     # LABEL VALUE FOR VENTRICLE PULSE WIDTH
 C_PROGRAM_VENTRICLE_SENSING_THRESHOLD      =       "Ventricle Sensing Threshold\n (mV)"               # LABEL VALUE FOR VENTRICLE SENSING THRESHOLD
 C_PROGRAM_VENTRICLE_REFRACTORY_PERIOD      =       "Ventricle Refractory period\n (ms)"               # LABEL VALUE FOR VENTRICLE REFRACTORY PERIOD
-C_PROGRAM_DROPDOWN_OPTIONS                 =      ["AOO", "AAI", "VOO", "VVI"]                        # DROPDOWN MENU OPTIONS
+C_PROGRAM_DROPDOWN_OPTIONS                 =       ["AOO", "AAI", "VOO", "VVI", "DOO", 
+													"AOOR", "AAIR", "VOOR", "VVIR", "DOOR"] 		  # DROPDOWN MENU OPTIONS
 C_PROGRAM_DROPDOWN_DEFAULT                 =       "AOO"                                              # DEFAULT VALUE FOR DROPDOWN
 C_PROGRAM_DROPDOWN_LABEL                   =       "Pacing Mode"                                      # LABEL VALUE FOR DROPDOWN INDICATOR 
 C_PROGRAM_BUTTON_TEXT                      =       "Program"                                          # BUTTON TEXT VALUE FOR PROGRAM BUTTON
