@@ -202,26 +202,39 @@ class GUIC:
         programmingValues = data.getProgrammingValues()
         fLabels = list(data.fieldLabels)
         programMode = programmingValues.getProgramMode()
-        textBoxStr = """Values currently stored in Database:
-        Upper Rate Limit: {},\t\t\tAtrial Amplitude: {},           Ventricular Amplitude: {}
-        Lower Rate Limit: {},           Atrial Pulse Width: {},         Ventricular Pulse Width: {}
-        Modulation Sensitivity: {},     Atrial Sensing Threshold: {},   Ventricular Sensing Threshold: {}
-        AV Delay: {},                   Atrial Refractory Period: {},   Ventricular Refractory Period: {}
-        """
-        storedValsStr = textBoxStr.format(
+        textBoxStr = [
+        "\t\t\t\t\tValues currently stored in Database:\n",
+        "\t\t\t\t\tProgram Mode: {}",
+        "\tUpper Rate Limit: {} BPM,\t\tAtrial Amplitude: {} mV,\t\tVentricular Amplitude: {} mV\n",
+        "\tLower Rate Limit: {} BPM,\t\tAtrial Pulse Width: {} ms,\t\t\tVentricular Pulse Width: {} ms\n",
+        "\tModulation Sensitivity: {},\t\tAtrial Sensing Threshold: {} mV,\t\tVentricular Sensing Threshold: {} mV\n",
+        "\tAV Delay: {} ms,\t\t\tAtrial Refractory Period: {} ms,\t\tVentricular Refractory Period: {} ms"
+        ]
+        textBoxStr[1] = textBoxStr[1].format(
+                programmingValues.getProgramMode()
+                )
+        textBoxStr[2] = textBoxStr[2].format(
                 programmingValues.getUpperRateLimit(),
                 programmingValues.getAtrialAmplitude(),
-                programmingValues.getVentricularAmplitude(),
+                programmingValues.getVentricularAmplitude()
+                )
+        textBoxStr[3] = textBoxStr[3].format(
                 programmingValues.getLowerRateLimit(),
                 programmingValues.getAtrialPulseWidth(),
-                programmingValues.getVentricularPulseWidth(),
+                programmingValues.getVentricularPulseWidth()
+                )
+        textBoxStr[4] = textBoxStr[4].format(
                 programmingValues.getAccelerationFactor(),
                 programmingValues.getAtrialSensingThreshold(),
-                programmingValues.getAtrialRefractoryPeriod(),
-                programmingValues.getAVDelay(),        
-                programmingValues.getVentricularSensingThreshold(),
-                programmingValues.getVentricularRefractoryPeriod(),
+                programmingValues.getAtrialRefractoryPeriod()
                 )
+        textBoxStr[5] = textBoxStr[5].format(
+                programmingValues.getFixedAVDelay(),        
+                programmingValues.getVentricularSensingThreshold(),
+                programmingValues.getVentricularRefractoryPeriod()
+                )
+        print(textBoxStr)
+
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
             programMode,
@@ -229,7 +242,7 @@ class GUIC:
             fLabels,
             data.buttonTexts,
             data.buttonCallbacks,
-            storedValsStr)
+            textBoxStr)
 
         # # Make list of programming values
         # if programMode == "AOO" or programMode == "AAI":

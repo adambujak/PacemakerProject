@@ -97,11 +97,19 @@ class GUIAL:
         self.guiInitialized = True
         self.instance.title(self.title)
         #self.instance.configure(background = "white");
+        self.instance.geometry("815x360")
+        self.instance.grid_rowconfigure(9, minsize=25)
+        self.instance.grid_columnconfigure(6, minsize=25)
+        self.instance.grid_columnconfigure(7, minsize=25)
+        self.instance.grid_columnconfigure(8, minsize=25)
         print('Program Screen')
+        for row in range(len(dataStr)):
+            rowLabel = 10
+            tk.Label(self.instance, text = dataStr[row], anchor="w").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
         tk.Label(self.instance, text=dropDownLabelText).grid(row = 1, column = 2)
-        textBox = tk.Text(self.instance, height=12, width=115)
-        textBox.insert(tk.END, dataStr) 
-        textBox.grid(row=9, column=0, columnspan=80, rowspan=40)
+        # textBox = tk.Text(self.instance, height=6, width=115)
+        # textBox.insert(tk.END, dataStr) 
+        # textBox.grid(row=9, column=0, columnspan=80, rowspan=40)
         
         if not currentDropDownItem in dropDownOptions:
             print("ERROR: Invalid dropDownOption")
@@ -152,22 +160,22 @@ class GUIAL:
             if rowVal >= 3 and rowVal <= 6:
                 wig.grid_forget()
         if programMode == dropDownOptions[0] or programMode == dropDownOptions[1]:
-            self.instance.geometry("550x275")
+            # self.instance.geometry("550x275")
             fieldInd = [[0,1], [0,1], [0,1,2,3]]
         if programMode == dropDownOptions[2] or programMode == dropDownOptions[3]:
-            self.instance.geometry("550x275")
+            # self.instance.geometry("550x275")
             fieldInd = [[0,2], [0,1], [0,1,2,3]]
         if programMode == dropDownOptions[4]:
-            self.instance.geometry("800x275")
+            # self.instance.geometry("800x275")
             fieldInd = [[0,1,2], [0,1,3], [0,1,2,3], [0,1,2,3]]
         if programMode == dropDownOptions[5] or programMode == dropDownOptions[6]:
-            self.instance.geometry("550x275")
+            # self.instance.geometry("550x275")
             fieldInd = [[0,1], [0,1,2], [0,1,2,3]]
         if programMode == dropDownOptions[7] or programMode == dropDownOptions[8]:
-            self.instance.geometry("550x275")
+            # self.instance.geometry("550x275")
             fieldInd = [[0,2], [0,1,2], [0,1,2,3]]
         if programMode == dropDownOptions[9]:
-            self.instance.geometry("800x275")
+            # self.instance.geometry("800x275")
             fieldInd = [[0,1,2], [0,1,2,3], [0,1,2,3], [0,1,2,3]]
         colOffset = 0
         for columns in fieldInd[0]:
