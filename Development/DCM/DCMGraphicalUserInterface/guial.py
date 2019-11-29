@@ -97,20 +97,15 @@ class GUIAL:
         self.guiInitialized = True
         self.instance.title(self.title)
         #self.instance.configure(background = "white");
-        self.instance.geometry("815x360")
+        self.instance.geometry("790x510")
+        self.instance.grid_rowconfigure(0, minsize=25)
         self.instance.grid_rowconfigure(9, minsize=25)
-        self.instance.grid_columnconfigure(6, minsize=25)
-        self.instance.grid_columnconfigure(7, minsize=25)
-        self.instance.grid_columnconfigure(8, minsize=25)
+        self.instance.grid_columnconfigure(9, minsize=25)
         print('Program Screen')
+        rowLabel = 10
         for row in range(len(dataStr)):
-            rowLabel = 10
-            tk.Label(self.instance, text = dataStr[row], anchor="w").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
-        tk.Label(self.instance, text=dropDownLabelText).grid(row = 1, column = 2)
-        # textBox = tk.Text(self.instance, height=6, width=115)
-        # textBox.insert(tk.END, dataStr) 
-        # textBox.grid(row=9, column=0, columnspan=80, rowspan=40)
-        
+            tk.Label(self.instance, text = dataStr[row], anchor="w", bg="white").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
+        tk.Label(self.instance, text=dropDownLabelText).grid(row = 1, column = 3)
         if not currentDropDownItem in dropDownOptions:
             print("ERROR: Invalid dropDownOption")
             return
@@ -141,18 +136,18 @@ class GUIAL:
             for wig in self.instance.grid_slaves():
                 rowVal = int(wig.grid_info().get("row"))
                 colVal = int(wig.grid_info().get("column"))
-                if rowVal ==2 and colVal == 4:
+                if rowVal ==2 and colVal == 3:
                     wig.grid_forget()
                     break
-            popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 2)
+            popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 3)
             changeModeCB(self.programMode)       
 
-        checkBox = tk.Checkbutton(self.instance, text="Rate Modulation", variable=valCheckBox, command = changeCheckCB).grid(row = 2, column = 3)       
-        popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 2)
+        checkBox = tk.Checkbutton(self.instance, text="Rate Modulation", variable=valCheckBox, command = changeCheckCB).grid(row = 2, column = 4)       
+        popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 3)
         changeModeCB(self.programMode)
 
         for buttonIndex in range(2):         # Draw each button
-            btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex + 7), column = 2)
+            btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex + 7), column = 3)
 
     def displayLabelEntry(self, programMode, dropDownOptions, fieldLabels):
         for wig in self.instance.grid_slaves():
@@ -177,7 +172,7 @@ class GUIAL:
         if programMode == dropDownOptions[9]:
             # self.instance.geometry("800x275")
             fieldInd = [[0,1,2], [0,1,2,3], [0,1,2,3], [0,1,2,3]]
-        colOffset = 0
+        colOffset = 1
         for columns in fieldInd[0]:
             rowOffset = 3
             for field in fieldInd[int(colOffset/2)+1]:

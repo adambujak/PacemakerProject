@@ -204,7 +204,7 @@ class GUIC:
         programMode = programmingValues.getProgramMode()
         textBoxStr = [
         "\t\t\t\t\tValues currently stored in Database:\n",
-        "\t\t\t\t\tProgram Mode: {}",
+        "\t\t\t\t\tProgram Mode: {}                             ",
         "\tUpper Rate Limit: {} BPM,\t\tAtrial Amplitude: {} mV,\t\tVentricular Amplitude: {} mV\n",
         "\tLower Rate Limit: {} BPM,\t\tAtrial Pulse Width: {} ms,\t\t\tVentricular Pulse Width: {} ms\n",
         "\tModulation Sensitivity: {},\t\tAtrial Sensing Threshold: {} mV,\t\tVentricular Sensing Threshold: {} mV\n",
