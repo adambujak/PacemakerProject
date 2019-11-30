@@ -124,7 +124,7 @@ class DCC:
         @param  None
         @retval success - True/False
         '''
-        return self.p_transmitData([C_SERIAL_ECHO_COMMAND_BYTE])
+        return self.p_transmitData(bytearray([C_SERIAL_ECHO_COMMAND_BYTE]))
 
     def getPacemakerData(self):
         '''
@@ -132,10 +132,10 @@ class DCC:
         @param  None
         @retval Pacemaker Data - in byte array
         '''
-        if (p_sendEchoCommand() == True):
-            while self.serialManager.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
+        if (self.p_sendEchoCommand() == True):
+            while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
                 pass
-            return self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
+            return self.serialManager.read(self.serialManager.hSerial.in_waiting)
         return None
 
     def getElectrogram(self):
