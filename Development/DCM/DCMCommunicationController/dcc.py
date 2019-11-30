@@ -133,7 +133,7 @@ class DCC:
         @retval Pacemaker Data - in byte array
         '''
         if (p_sendEchoCommand() == True):
-            return self.serialManager.read()
+            return self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
         return None
 
     def getElectrogram(self):

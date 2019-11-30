@@ -84,9 +84,10 @@ C_SERIAL_TIMEOUT                           =        1
 C_SERIAL_START_BYTE                        =        0x16
 
 C_SERIAL_PARAMETER_START_BYTE              =        0x55
+C_SERIAL_PARAMETER_BYTE_CNT                =        21
 
-C_SERIAL_EGRAM_START_BYTE                 =        0x47
-C_SERIAL_EGRAM_STOP_BYTE                  =        0x62
+C_SERIAL_EGRAM_START_BYTE                  =        0x47
+C_SERIAL_EGRAM_STOP_BYTE                   =        0x62
 
 C_SERIAL_ECHO_COMMAND_BYTE                 =        0x22
 
