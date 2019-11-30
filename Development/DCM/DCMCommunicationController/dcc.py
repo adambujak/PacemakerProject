@@ -69,13 +69,8 @@ class DCC:
         received = self.serialManager.readLine().decode('utf-8')
         if received == FailureCodes.CANNOT_OPEN_COM_PORT:
             print("Cannot Transmit Data")
-            return
-        if received.find(C_SERIAL_ACK_RECEIVE_STRING) != -1:
-            print("ACK received")
-            return True
-    
-        print("ACK not received")
-        return False
+            return FailureCodes.CANNOT_OPEN_COM_PORT
+        return True
 
     def programPacemaker(self, params):
         '''
@@ -138,7 +133,7 @@ class DCC:
         @retval Pacemaker Data - in byte array
         '''
         if (p_sendEchoCommand() == True):
-            return self.serialManager.readLine()
+            return self.serialManager.read()
         return None
 
     def getElectrogram(self):

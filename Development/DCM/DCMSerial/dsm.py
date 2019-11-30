@@ -55,6 +55,16 @@ class DSM:
         byteArray.extend(map(ord, dataStr))
         self.write(byteArray)
 
+    def read(self, size):
+        '''
+        @brief  Reads n bytes of serial data 
+        @param  size - size of data in bytes
+        @retval read string
+        '''
+        if (self.checkSerialPort() == FailureCodes.CANNOT_OPEN_COM_PORT):
+            return FailureCodes.CANNOT_OPEN_COM_PORT
+        return self.hSerial.read(size = size)
+
     def readUntil(self, expected):
         '''
         @brief  Reads serial data until expected character
