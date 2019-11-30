@@ -6,6 +6,7 @@
 from DCMSerial.dsm     import *
 from src.dcm_constants import *
 from Common.datatypes  import *
+from struct            import *
 
 
 #############################################################
@@ -66,7 +67,7 @@ class DCC:
         data = self.p_prependDataWithStartCode(data)
         self.serialManager.write(data)
         
-        received = self.serialManager.readLine().decode('utf-8')
+        received = self.serialManager.readLine()
         if received == FailureCodes.CANNOT_OPEN_COM_PORT:
             print("Cannot Transmit Data")
             return FailureCodes.CANNOT_OPEN_COM_PORT
@@ -124,7 +125,8 @@ class DCC:
         @param  None
         @retval success - True/False
         '''
-        return self.p_transmitData([C_SERIAL_ECHO_COMMAND_BYTE])
+        sendBuffer = pack(C_SERIAL_PARAMETER_ECHO_PACK, C_SERIAL_START_BYTE, C_SERIAL_ECHO_COMMAND_BYTE)
+        return self.p_transmitData(sendBuffer)
 
     def getPacemakerData(self):
         '''
@@ -133,17 +135,28 @@ class DCC:
         @retval Pacemaker Data - in byte array
         '''
         if (p_sendEchoCommand() == True):
-            while self.serialManager.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
+            while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
                 pass
             return self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
         return None
 
+    def p_sendGetEgram(self):
+        '''
+        @brief  Sends echo egram values command to pacemaker
+        @param  None
+        @retval success - True/False
+        '''
+        sendBuffer = pack(C_SERIAL_EGRAM_ECHO_PACK, C_SERIAL_START_BYTE, C_SERIAL_EGRAM_START_BYTE)
+        return self.serialManager.write(sendBuffer)
+    
     def getElectrogram(self):
         '''
         @brief  Reads electrogram from pacemaker
         @param  None
         @retval Array of electrogram values
         '''
-        pass
+        while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
+            pass
+        self.egramRead = self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
         
 
