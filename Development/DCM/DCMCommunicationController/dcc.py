@@ -126,7 +126,7 @@ class DCC:
         @retval success - True/False
         '''
         sendBuffer = pack(C_SERIAL_PARAMETER_ECHO_PACK, C_SERIAL_START_BYTE, C_SERIAL_ECHO_COMMAND_BYTE)
-        return self.p_transmitData(sendBuffer)
+        return self.serialManager.write(sendBuffer)
 
     def getPacemakerData(self):
         '''
