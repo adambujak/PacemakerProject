@@ -6,6 +6,7 @@
 
 import tkinter as tk
 from src.dcm_constants import *
+from Common.failCodes  import FailureCodes
 
 
 #############################################################
@@ -97,7 +98,7 @@ class GUIAL:
         self.guiInitialized = True
         self.instance.title(self.title)
         #self.instance.configure(background = "white");
-        self.instance.geometry("790x510")
+        self.instance.geometry("790x440")
         self.instance.grid_rowconfigure(0, minsize=25)
         self.instance.grid_rowconfigure(9, minsize=25)
         self.instance.grid_columnconfigure(9, minsize=25)
@@ -137,7 +138,7 @@ class GUIAL:
                 rowVal = int(wig.grid_info().get("row"))
                 colVal = int(wig.grid_info().get("column"))
                 if rowVal ==2 and colVal == 3:
-                    wig.grid_forget()
+                    wig.destroy()
                     break
             popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 3)
             changeModeCB(self.programMode)       
@@ -152,8 +153,11 @@ class GUIAL:
     def displayLabelEntry(self, programMode, dropDownOptions, fieldLabels):
         for wig in self.instance.grid_slaves():
             rowVal = int(wig.grid_info().get("row"))
+            colVal = int(wig.grid_info().get("column"))
             if rowVal >= 3 and rowVal <= 6:
-                wig.grid_forget()
+                wig.destroy()
+            if rowVal == 7 and (colVal == 2 or colVal == 4 or colVal == 6):
+                wig.destroy()
         if programMode == dropDownOptions[0] or programMode == dropDownOptions[1]:
             # self.instance.geometry("550x275")
             fieldInd = [[0,1], [0,1], [0,1,2,3]]
@@ -185,12 +189,12 @@ class GUIAL:
         return self.programMode
 
     def displayErrorMessageLoginS(self, errorCode):
-        label = tk.Label(self.instance, text = errorCode).grid(row = 0, column = 3)
+        label = tk.Label(self.instance, text = errorCode.name, bg = "red").grid(row = 0, column = 3)
 
-    def displayErrorMessageProgramS(self, errorCodeRate, errorCodeChamber):
-        label = tk.Label(self.instance, text = errorCodeRate).grid(sticky="W", row = 5, column = 3)
-        label = tk.Label(self.instance, text = errorCodeChamber).grid(sticky="W", row = 7, column = 5)
-
+    def displayErrorMessageProgramS(self, errorCodes):
+        for i in range(1,len(errorCodes)-1):
+            label = tk.Label(self.instance, text = errorCodes[i].name, bg = "red").grid(row = 7, column = 2*i)
+        
     def getEntryData(self):
         children = self.instance.winfo_children()
         output = []

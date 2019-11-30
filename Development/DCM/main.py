@@ -7,7 +7,6 @@ from DCMGraphicalUserInterface.guic import *
 from DCMUserAccountManager.duam     import *
 from DCMCommunicationController.dcc import *
 from Common.callbacks               import ApplicationCallbacks
-from Common.failCodes               import FailureCodes
 import time
 
 
@@ -33,7 +32,7 @@ class MainApplication:      #All print statements in MainApplication can be used
             self.guiController.setProgrammingValues(self.accountController.getProgrammingValues())
             self.guiController.drawScreen(programmingScreen)
         else:
-            self.guiController.p_drawErrorMessageOnScreen(stateCode.name,0)
+            self.guiController.drawErrorMessage(stateCode,0)
         print(self.accountController.getSessionState())
 
     def logoffButtonCB(self):
@@ -48,18 +47,19 @@ class MainApplication:      #All print statements in MainApplication can be used
         if  stateCode.value == 0:
             self.guiController.drawScreen(loginScreen)
         else:
-            self.guiController.p_drawErrorMessageOnScreen(stateCode.name,2)
+            self.guiController.drawErrorMessage(stateCode,2)
 
     def cancelButtonCB(self):
         self.guiController.drawScreen(loginScreen)
 
     def programButtonCB(self):
-        stateError = self.accountController.controlProgramData(self.guiController.getPacemakerParameterData(programmingScreen.data))
-        if stateError[0].value == 0 and stateError[1].value == 0:
-            self.accountController.saveProgrammingValuesToDatabase()
+        stateError = self.accountController.controlProgramData(self.guiController.getPacemakerParameterData())
+        if stateError[0] == 1:
+            #self.accountController.saveProgrammingValuesToDatabase()
+            self.guiController.setProgrammingValues(self.accountController.getProgrammingValues())
             self.guiController.drawScreen(programmingScreen)
             #self.comController.programPacemaker(programmedData)
-        self.guiController.p_drawErrorMessageProgramScreen(stateError[0].name, stateError[1].name, 1)
+        self.guiController.drawErrorMessage(stateError, 1)
 
     # def changeProgramModeCB(self, programMode):
     #     stateProgramMode = self.accountController.programProgramMode(programMode)

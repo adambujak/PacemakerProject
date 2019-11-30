@@ -252,50 +252,69 @@ class DUAM:
         return True
 
     def controlProgramData(self, programmedData):
-        programMode = self.user.data.getProgramModeInt()
-        stateRateLim = self.programRateLim(programmedData.upperRateLimit, programmedData.lowerRateLimit)
-        if programMode == 0 or programMode == 1:
-            stateChamberPara = self.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
+        #change all these to getUpperRateLimit() ...
+        #change all private naming convention
+        self.programProgramMode(programmedData.getProgramMode())
+        stateRateLim = self.programMisc(programmedData.upperRateLimit, programmedData.lowerRateLimit, programmedData.fixedAVDelay,
+                programmedData.modulationSensitivity, programmedData.rateModulation)
+        stateChamber1Para = self.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
                 programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod)
-        elif programMode == 2 or programMode == 3:
-            stateChamberPara = self.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
+        stateChamber2Para = self.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
                 programmedData.ventricularSensingThreshold, programmedData.ventricularRefractoryPeriod)
-        return [stateRateLim, stateChamberPara]
+        if stateRateLim.value == 0 and stateChamber1Para.value == 0 and stateChamber2Para.value == 0:
+            return [1, stateRateLim, stateChamber1Para, stateChamber2Para]
+        else:
+            return [0, stateRateLim, stateChamber1Para, stateChamber2Para]
 
 
-    def programProgramMode(self, p_programMode):
-        self.user.data.setProgramMode(p_programMode)
+    def programProgramMode(self, programMode):
+        self.user.data.setProgramMode(programMode)
         return FailureCodes.SUCCESS
 
-    def programRateLim(self, p_upperRateLim, p_lowerRateLim):
-        """Sets current user's upper and lower rate limits in database
+    def programMisc(self, p_upperRateLim, p_lowerRateLim, p_fixedAVDelay, p_modulationSensitivity, p_rateModulation):
+        """Sets current user's upper and lower rate limits, in database
         """
-        if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
-            return FailureCodes.INVALID_RATE_INPUT
-        self.user.data.setUpperRateLimit(p_upperRateLim)
-        self.user.data.setLowerRateLimit(p_lowerRateLim)
+        # if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
+        #     return FailureCodes.INVALID_USER_INPUT
+        if p_upperRateLim is not None:
+            self.user.data.setUpperRateLimit(p_upperRateLim)
+        if p_lowerRateLim is not None:
+            self.user.data.setLowerRateLimit(p_lowerRateLim)
+        if p_fixedAVDelay is not None:
+            self.user.data.setFixedAVDelay(p_fixedAVDelay)
+        if p_modulationSensitivity is not None:
+            self.user.data.setAccelerationFactor(p_modulationSensitivity)
+        self.user.data.setRateModulation(p_rateModulation)
         return FailureCodes.SUCCESS
 
     def programAtriaPara(self, p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
         """Sets current user's atrium data in database
         """
-        if not self.validChamberPara(p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
-            return FailureCodes.INVALID_ATRIUM_INPUT
-        self.user.data.setAtrialAmplitude(p_atriumAmp)
-        self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
-        self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
-        self.user.data.setAtrialRefractoryPeriod(p_atriumRefracPeriod)
+        # if not self.validChamberPara(p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
+        #     return FailureCodes.INVALID_USER_INPUT
+        if p_atriumAmp is not None:
+            self.user.data.setAtrialAmplitude(p_atriumAmp)
+        if p_atriumPulseWidth is not None:
+            self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
+        if p_atriumSensThres is not None:
+            self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
+        if p_atriumRefracPeriod is not None:
+            self.user.data.setAtrialRefractoryPeriod(p_atriumRefracPeriod)
         return FailureCodes.SUCCESS
         
     def programVentriclePara(self, p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
         """Sets current user's ventricle data in database
         """
-        if not self.validChamberPara(p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
-            return FailureCodes.INVALID_VENTRICLE_INPUT
-        self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
-        self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
-        self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
-        self.user.data.setVentricularRefractoryPeriod(p_ventricleRefracPeriod)
+        # if not self.validChamberPara(p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
+        #     return FailureCodes.INVALID_USER_INPUT
+        if p_ventriclePulseAmp is not None:
+            self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
+        if p_ventriclePulseWidth is not None:
+            self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
+        if p_ventricleSensThres is not None:
+            self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
+        if p_ventricleRefracPeriod is not None:
+            self.user.data.setVentricularRefractoryPeriod(p_ventricleRefracPeriod)
         return FailureCodes.SUCCESS
 
     def getProgrammingValues(self):

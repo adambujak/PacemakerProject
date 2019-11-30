@@ -5,6 +5,7 @@
 
 
 from DCMGraphicalUserInterface.guial import *
+from src.dcm_constants               import *
 from DCMUserAccountManager.duam      import LoginData
 from Common.datatypes                import PacemakerParameterData
 from Common.callbacks                import ApplicationCallbacks
@@ -160,23 +161,38 @@ class GUIC:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
-    def getPacemakerParameterData(self, data):
+    def getPacemakerParameterData(self):
         """
         Retrieves data from gui input fields on Programming Screen
         """
+        #use PacemakerParameterData class to pass data to main
         if self.currentScreen.screenName == ScreenNames.PROGRAMMING_SCREEN:
-            programMode = data.getProgrammingValues().getProgramModeInt();
+            programMode = self.gui.getProgramMode()
             entryData = self.gui.getEntryData()
             for entryIndex in range(len(entryData)):
                 if entryData[entryIndex] == '':
-                    entryData[entryIndex] = -1;
+                    entryData[entryIndex] = None
                 else:
-                    entryData[entryIndex] = float(entryData[entryIndex]);
-            if programMode == 0 or programMode == 1:
-                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0, 0, 0, 0, 0)
-            elif programMode == 2 or programMode == 3:
-                    return PacemakerParameterData(programMode, entryData[0], entryData[1], 0, 0, 0, 0, entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0)
-        
+                    entryData[entryIndex] = float(entryData[entryIndex])
+            if programMode == "AOO" or programMode == "AAI":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None, None, None, 0)
+            if programMode == "VOO" or programMode == "VVI":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[2], entryData[3], entryData[4], entryData[5], None, None, 0)
+            if programMode == "AOOR" or programMode == "AAIR":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[3], entryData[4], entryData[5], entryData[6], None, None, None, None, None, entryData[2], 1)
+            if programMode == "VOOR" or programMode == "VVIR":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[3], entryData[4], entryData[5], entryData[6], None, entryData[2], 1)
+            if programMode == "DOO":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[3], entryData[4], entryData[5], entryData[6], entryData[7], entryData[8], entryData[9], entryData[10], entryData[2], None, 0)
+            if programMode == "DOOR":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[4], entryData[5], entryData[6], entryData[7], entryData[8], entryData[9], entryData[10], entryData[11], entryData[3], entryData[2], 1)
+            
+    def drawErrorMessage(self, errorCodes, thisScreen):
+        if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):
+            self.gui.displayErrorMessageLoginS(errorCodes)
+        if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
+            self.gui.displayErrorMessageProgramS(errorCodes)
+
     def p_drawFirstScreen(self):
         """
         Draw first screen in application - in our case - login screen
@@ -197,82 +213,35 @@ class GUIC:
         Draw screen of type programming screen
         @param - data -> type = ProgramMenuData
         """
-
         # Get programming values
         programmingValues = data.getProgrammingValues()
-        fLabels = list(data.fieldLabels)
         programMode = programmingValues.getProgramMode()
-        textBoxStr = [
-        "\t\t\t\t\tValues currently stored in Database:\n",
-        "\t\t\t\t\tProgram Mode: {}                             ",
-        "\tUpper Rate Limit: {} BPM,\t\tAtrial Amplitude: {} mV,\t\tVentricular Amplitude: {} mV\n",
-        "\tLower Rate Limit: {} BPM,\t\tAtrial Pulse Width: {} ms,\t\t\tVentricular Pulse Width: {} ms\n",
-        "\tModulation Sensitivity: {},\t\tAtrial Sensing Threshold: {} mV,\t\tVentricular Sensing Threshold: {} mV\n",
-        "\tAV Delay: {} ms,\t\t\tAtrial Refractory Period: {} ms,\t\tVentricular Refractory Period: {} ms"
-        ]
-        textBoxStr[1] = textBoxStr[1].format(
-                programmingValues.getProgramMode()
-                )
+        textBoxStr = C_PROGRAM_DATA_LABEL 
+        textBoxStr[1] = textBoxStr[1].format(programmingValues.getProgramMode())
         textBoxStr[2] = textBoxStr[2].format(
                 programmingValues.getUpperRateLimit(),
                 programmingValues.getAtrialAmplitude(),
-                programmingValues.getVentricularAmplitude()
-                )
+                programmingValues.getVentricularAmplitude())
         textBoxStr[3] = textBoxStr[3].format(
                 programmingValues.getLowerRateLimit(),
                 programmingValues.getAtrialPulseWidth(),
-                programmingValues.getVentricularPulseWidth()
-                )
+                programmingValues.getVentricularPulseWidth())
         textBoxStr[4] = textBoxStr[4].format(
                 programmingValues.getAccelerationFactor(),
                 programmingValues.getAtrialSensingThreshold(),
-                programmingValues.getAtrialRefractoryPeriod()
-                )
+                programmingValues.getAtrialRefractoryPeriod())
         textBoxStr[5] = textBoxStr[5].format(
                 programmingValues.getFixedAVDelay(),        
                 programmingValues.getVentricularSensingThreshold(),
-                programmingValues.getVentricularRefractoryPeriod()
-                )
-        print(textBoxStr)
-
+                programmingValues.getVentricularRefractoryPeriod())
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
             programMode,
             data.dropDownOptions, 
-            fLabels,
+            data.fieldLabels,
             data.buttonTexts,
             data.buttonCallbacks,
             textBoxStr)
-
-        # # Make list of programming values
-        # if programMode == "AOO" or programMode == "AAI":
-        #     programmingValuesList = [
-        #         programmingValues.getUpperRateLimit(),
-        #         programmingValues.getLowerRateLimit(),
-        #         programmingValues.getAtrialAmplitude(),
-        #         programmingValues.getAtrialPulseWidth(),
-        #         programmingValues.getAtrialSensingThreshold(),
-        #         programmingValues.getAtrialRefractoryPeriod(),
-        #         ]
-        # elif programMode == "VOO" or programMode == "VVI":
-        #     programmingValuesList = [
-        #         programmingValues.getUpperRateLimit(),
-        #         programmingValues.getLowerRateLimit(),
-        #         programmingValues.getVentricularAmplitude(),
-        #         programmingValues.getVentricularPulseWidth(),
-        #         programmingValues.getVentricularSensingThreshold(),
-        #         programmingValues.getVentricularRefractoryPeriod(),
-        #         ]
-        #self.gui.setNEntryData(programmingValuesList)
-
-    def p_drawErrorMessageOnScreen(self, errorCode, thisScreen):
-        if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):
-            self.gui.displayErrorMessageLoginS(errorCode)
-
-    def p_drawErrorMessageProgramScreen(self, errorCodeRate, errorCodeChamber, thisScreen):
-        if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
-            self.gui.displayErrorMessageProgramS(errorCodeRate, errorCodeChamber)
-
  
     def p_drawCreateUserScreen(self, data): 
         """

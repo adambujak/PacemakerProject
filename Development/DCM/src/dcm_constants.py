@@ -54,6 +54,14 @@ C_PROGRAM_DROPDOWN_DEFAULT                 =       "AOO"                        
 C_PROGRAM_DROPDOWN_LABEL                   =       "Pacing Mode"                                      # LABEL VALUE FOR DROPDOWN INDICATOR 
 C_PROGRAM_BUTTON_TEXT                      =       "Program"                                          # BUTTON TEXT VALUE FOR PROGRAM BUTTON
 C_PROGRAM_LOGOUT_BUTTON_TEXT               =       "Sign Out"                                         # BUTTON TEXT VALUE FOR LOGOUT BUTTON
+C_PROGRAM_DATA_LABEL   				  	   =	   [												  # LABEL FOR DISPLAYING DATABASE VALUES
+        										   "\t\t\t\t\tValues currently stored in Database\t\t\t\t\t\t\t",
+        										   "\t\t\t\t\tProgram Mode: {}\t\t\t\t\t\t\t\t",
+        										   "\tUpper Rate Limit: {} BPM,\t\tAtrial Amplitude: {} mV,\t\tVentricular Amplitude: {} mV\t\t",
+       											   "\tLower Rate Limit: {} BPM,\t\tAtrial Pulse Width: {} ms,\t\t\tVentricular Pulse Width: {} ms\t\t",
+											       "\tModulation Sensitivity: {},\t\tAtrial Sensing Threshold: {} mV,\t\tVentricular Sensing Threshold: {} mV\t",
+											       "\tAV Delay: {} ms,\t\t\tAtrial Refractory Period: {} ms,\t\tVentricular Refractory Period: {} ms\t\n"			
+											       ]
 
 C_CREATE_USER_BUTTON_TEXT                  =       "Create New User"
 C_CANCEL_BUTTON_TEXT                       =       "Cancel"
