@@ -55,8 +55,9 @@ class MainApplication:      #All print statements in MainApplication can be used
     def programButtonCB(self):
         stateError = self.accountController.controlProgramData(self.guiController.getPacemakerParameterData())
         if stateError[0] == 1:
-            #self.accountController.saveProgrammingValuesToDatabase()
-            self.guiController.setProgrammingValues(self.accountController.getProgrammingValues())
+            self.accountController.saveProgrammingValuesToDatabase()
+            x = self.accountController.getProgrammingValues()
+            self.guiController.setProgrammingValues(x)
             self.guiController.drawScreen(programmingScreen)
             #self.comController.programPacemaker(programmedData)
         self.guiController.drawErrorMessage(stateError, 1)

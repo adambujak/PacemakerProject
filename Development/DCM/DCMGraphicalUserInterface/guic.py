@@ -172,8 +172,10 @@ class GUIC:
             for entryIndex in range(len(entryData)):
                 if entryData[entryIndex] == '':
                     entryData[entryIndex] = None
+                elif entryData[entryIndex].isdigit():
+                    entryData[entryIndex] = int(entryData[entryIndex])
                 else:
-                    entryData[entryIndex] = float(entryData[entryIndex])
+                    entryData[entryIndex] = -1
             if programMode == "AOO" or programMode == "AAI":
                     return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None, None, None, 0)
             if programMode == "VOO" or programMode == "VVI":
@@ -216,24 +218,26 @@ class GUIC:
         # Get programming values
         programmingValues = data.getProgrammingValues()
         programMode = programmingValues.getProgramMode()
-        textBoxStr = C_PROGRAM_DATA_LABEL 
-        textBoxStr[1] = textBoxStr[1].format(programmingValues.getProgramMode())
-        textBoxStr[2] = textBoxStr[2].format(
-                programmingValues.getUpperRateLimit(),
-                programmingValues.getAtrialAmplitude(),
-                programmingValues.getVentricularAmplitude())
-        textBoxStr[3] = textBoxStr[3].format(
-                programmingValues.getLowerRateLimit(),
-                programmingValues.getAtrialPulseWidth(),
-                programmingValues.getVentricularPulseWidth())
-        textBoxStr[4] = textBoxStr[4].format(
-                programmingValues.getAccelerationFactor(),
-                programmingValues.getAtrialSensingThreshold(),
-                programmingValues.getAtrialRefractoryPeriod())
-        textBoxStr[5] = textBoxStr[5].format(
-                programmingValues.getFixedAVDelay(),        
-                programmingValues.getVentricularSensingThreshold(),
-                programmingValues.getVentricularRefractoryPeriod())
+        textBoxStr = [
+                C_PROGRAM_DATA_LABEL[0],
+                str(C_PROGRAM_DATA_LABEL[1].format(programMode)),
+                str(C_PROGRAM_DATA_LABEL[2].format(
+                int(programmingValues.getUpperRateLimit()),
+                int(programmingValues.getAtrialAmplitude()),
+                int(programmingValues.getVentricularAmplitude()))),
+                str(C_PROGRAM_DATA_LABEL[3].format(
+                int(programmingValues.getLowerRateLimit()),
+                int(programmingValues.getAtrialPulseWidth()),
+                int(programmingValues.getVentricularPulseWidth()))),
+                str(C_PROGRAM_DATA_LABEL[4].format(
+                int(programmingValues.getAccelerationFactor()),
+                int(programmingValues.getAtrialSensingThreshold()),
+                int(programmingValues.getAtrialRefractoryPeriod()))),
+                str(C_PROGRAM_DATA_LABEL[5].format(
+                int(programmingValues.getFixedAVDelay()),        
+                int(programmingValues.getVentricularSensingThreshold()),
+                int(programmingValues.getVentricularRefractoryPeriod())))
+                ]
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
             programMode,

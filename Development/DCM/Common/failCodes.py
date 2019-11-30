@@ -1,6 +1,6 @@
 from enum                  import Enum
 class FailureCodes(Enum):
-    SUCCESS                 = 0
+    VALID                   = 0
     INCORRECT_PASSWORD      = 1
     INCORRECT_USERNAME      = 2
     EXISTING_USER           = 3

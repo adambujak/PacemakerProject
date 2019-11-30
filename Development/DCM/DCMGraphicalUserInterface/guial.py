@@ -192,8 +192,16 @@ class GUIAL:
         label = tk.Label(self.instance, text = errorCode.name, bg = "red").grid(row = 0, column = 3)
 
     def displayErrorMessageProgramS(self, errorCodes):
-        for i in range(1,len(errorCodes)-1):
-            label = tk.Label(self.instance, text = errorCodes[i].name, bg = "red").grid(row = 7, column = 2*i)
+        for wig in self.instance.grid_slaves():
+            rowVal = int(wig.grid_info().get("row"))
+            colVal = int(wig.grid_info().get("column"))
+            if rowVal == 7 and (colVal == 2 or colVal == 4 or colVal == 6):
+                wig.destroy()
+        for i in range(1,len(errorCodes)):
+            if errorCodes[i].value == 0:
+                label = tk.Label(self.instance, text = errorCodes[i].name, bg = "green").grid(row = 7, column = 2*i)
+            else:
+                label = tk.Label(self.instance, text = errorCodes[i].name, bg = "red").grid(row = 7, column = 2*i)
         
     def getEntryData(self):
         children = self.instance.winfo_children()
