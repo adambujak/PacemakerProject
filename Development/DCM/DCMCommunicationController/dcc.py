@@ -134,7 +134,7 @@ class DCC:
         @param  None
         @retval Pacemaker Data - in byte array
         '''
-        if (p_sendEchoCommand() == True):
+        if (self.p_sendEchoCommand() == True):
             while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
                 pass
             return self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
