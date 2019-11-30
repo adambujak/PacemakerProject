@@ -132,12 +132,19 @@ class DCC:
         '''
         @brief  Get parameters stored on pacemaker
         @param  None
-        @retval Pacemaker Data - in byte array
+        @retval Pacemaker Data - in array
         '''
         if (self.p_sendEchoCommand() == True):
             while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
                 pass
-            return self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
+            validData = False
+            while not validData:
+                readData = self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
+                readData = unpack(C_SERIAL_PARAMETER_ECHO_UNPACK, readData)
+                for i in readData:
+                    if i != 0:
+                        validData = True
+                        break
         return None
 
     def p_sendGetEgram(self):
