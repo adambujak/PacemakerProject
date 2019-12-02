@@ -38,7 +38,7 @@ C_NEW_PASSWORD_LABEL                       =       "Password\n min length: 4 cha
 
 C_PROGRAM_UPPER_LIMIT_LABEL                =       "Upper Rate Limit\n (BPM)"                         # LABEL VALUE FOR UPPER RATE LIMIT FIELD
 C_PROGRAM_LOWER_LIMIT_LABEL                =       "Lower Rate Limit\n (BPM)"                         # LABEL VALUE FOR LOWER RATE LIMIT FIELD
-C_PROGRAM_FIXED_AV_DELAY_LABEL             =       "AV Delay\n (ms)"
+C_PROGRAM_FIXED_AV_DELAY_LABEL             =       "AV Delay\n (150ms)"
 C_PROGRAM_MODULATION_SENSITIVITY_LABEL     =       "Modulation\n Sensitivity (1-16)"
 C_PROGRAM_ATRIUM_PULSE_AMPLITUDE           =       "Atrium Pulse Amplitude\n (mV)"                    # LABEL VALUE FOR ATRIUM PULSE AMPLITUDE
 C_PROGRAM_ATRIUM_PULSE_WIDTH               =       "Atrium Pulse Width\n (ms)"                        # LABEL VALUE FOR ATRIUM PULSE WIDTH

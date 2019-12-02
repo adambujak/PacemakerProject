@@ -60,7 +60,8 @@ class MainApplication:      #All print statements in MainApplication can be used
             self.guiController.setProgrammingValues(x)
             self.guiController.drawScreen(programmingScreen)
             #self.comController.programPacemaker(programmedData)
-        self.guiController.drawErrorMessage(stateError, 1)
+        else:
+            self.guiController.drawErrorMessage(stateError, 1)
 
     # def changeProgramModeCB(self, programMode):
     #     stateProgramMode = self.accountController.programProgramMode(programMode)

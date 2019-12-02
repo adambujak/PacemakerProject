@@ -232,10 +232,10 @@ class GUIC:
                 str(C_PROGRAM_DATA_LABEL[4].format(
                 int(programmingValues.getAccelerationFactor()),
                 int(programmingValues.getAtrialSensingThreshold()),
-                int(programmingValues.getAtrialRefractoryPeriod()))),
+                int(programmingValues.getVentricularSensingThreshold()))),
                 str(C_PROGRAM_DATA_LABEL[5].format(
                 int(programmingValues.getFixedAVDelay()),        
-                int(programmingValues.getVentricularSensingThreshold()),
+                int(programmingValues.getAtrialRefractoryPeriod()),
                 int(programmingValues.getVentricularRefractoryPeriod())))
                 ]
         self.gui.drawNFieldsNButtonsOneDropDownLayout(

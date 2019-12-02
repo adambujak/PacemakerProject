@@ -192,7 +192,6 @@ class DUAM:
         """
         checks = 0;
         for val in [p_upperRateLim, p_lowerRateLim, p_fixedAVDelay, p_modulationSensitivity]:
-            print(val)
             if val is None:
                 checks += 1;
         #check p_lowerRateLim
