@@ -4,6 +4,7 @@
 # Filename: duam.py
 
 from Common.failCodes                   import FailureCodes
+from Common.datatypes                   import PacemakerParameterData
 from enum                               import Enum
 from src.dcm_constants                  import *
 from DCMDatabase.dbpm                   import *
@@ -89,7 +90,7 @@ class DUAM:
             if passwordValid and usernameValid:
                 self.user = userData
                 self.state = SessionStates.LOGGED_IN
-                return FailureCodes.SUCCESS
+                return FailureCodes.VALID
 
         return FailureCodes.INVALID_CREDENTIALS
 
@@ -146,7 +147,7 @@ class DUAM:
 
         # Store user in database
         self.dbManager.createUser(p_username, p_password, UserRole.USER, defaultPacemakerParameterData)
-        return FailureCodes.SUCCESS
+        return FailureCodes.VALID
 
     def changeUserPassword(self, p_username, p_existingPassword, p_newPassword):
         """Changes user's password.
@@ -167,7 +168,7 @@ class DUAM:
             return FailureCodes.INVALID_CREDENTIALS
 
         self.changeUserPassword(p_username, p_newPassword)
-        return FailureCodes.SUCCESS
+        return FailureCodes.VALID
 
     def validUser(self):
         """ Checks if current user is valid,
@@ -186,31 +187,41 @@ class DUAM:
             return False
         return True
 
-
-
-    def validRateLims(self, p_upperRateLim, p_lowerRateLim):
+    def validMisc(self, p_upperRateLim, p_lowerRateLim, p_fixedAVDelay, p_modulationSensitivity):
         """Validates users input for rate limits
         """
         checks = 0;
+        for val in [p_upperRateLim, p_lowerRateLim, p_fixedAVDelay, p_modulationSensitivity]:
+            if val is None:
+                checks += 1;
         #check p_lowerRateLim
-        for valid in frange(30,50,5):
-            if p_lowerRateLim == valid:
-                checks += 1;
-                break
-        for valid in frange(51,90,1):
-            if p_lowerRateLim == valid:
-                checks += 1;
-                break
-        for valid in frange(95,175,5):
-            if p_lowerRateLim == valid:
-                checks += 1;
-                break
-        #check p_upperRateLim
-        for valid in frange(50,175,5):
-            if p_upperRateLim == valid and p_upperRateLim >= p_lowerRateLim:
-                checks += 1;
-                break
-        if checks == 2:
+        if not (p_lowerRateLim is None):
+            for valid in frange(30,50,5):
+                if p_lowerRateLim == valid:
+                    checks += 1;
+                    break
+            for valid in frange(51,90,1):
+                if p_lowerRateLim == valid:
+                    checks += 1;
+                    break
+            for valid in frange(95,175,5):
+                if p_lowerRateLim == valid:
+                    checks += 1;
+                    break
+            #check p_upperRateLim
+        if not (p_upperRateLim is None):
+            for valid in frange(50,175,5):
+                if p_upperRateLim == valid: #and p_upperRateLim >= p_lowerRateLim: #need to implement
+                    checks += 1;
+                    break
+        if not (p_modulationSensitivity is None):
+            if p_modulationSensitivity > 0 and p_modulationSensitivity <= 16:
+                if p_modulationSensitivity is int:
+                    checks += 1;
+        if not (p_fixedAVDelay is None):
+            if p_fixedAVDelay == 150:
+                checks += 1
+        if checks == 4:
             return True
         return False
 
@@ -218,30 +229,37 @@ class DUAM:
         """Validates users input for chamber's arguments
         """
         checks = 0;
+        for val in [p_pulseAmp, p_pulseWidth, p_sensThres, p_refracPeriod]:
+            if val is None:
+                checks += 1
         #check p_pulseAmp
-        for valid in frange(500,3200,100):
-            if p_pulseAmp == valid:
-                checks += 1;
-                break
-        for valid in frange(3500,7000,500):
-            if p_pulseAmp == valid:
-                checks += 1;
-                break
+        if not (p_pulseAmp is None):
+            for valid in frange(500,3200,100):
+                if p_pulseAmp == valid:
+                    checks += 1;
+                    break
+            for valid in frange(3500,7000,500):
+                if p_pulseAmp == valid:
+                    checks += 1;
+                    break
         #check p_pulseWidth
-        for valid in frange(1,20,1):
-            if p_pulseWidth == valid:
-                checks += 1;
-                break
+        if not (p_pulseWidth is None):
+            for valid in frange(1,20,1):
+                if p_pulseWidth == valid:
+                    checks += 1;
+                    break
         #check p_sensThres
-        for valid in frange(1000,3300,10):
-            if p_sensThres == valid:
-                checks += 1;
-                break
+        if not (p_sensThres is None):
+            for valid in frange(1000,3300,10):
+                if p_sensThres == valid:
+                    checks += 1;
+                    break
         #check p_refracPeriod
-        for valid in frange(150,500,10):
-            if p_refracPeriod == valid:
-                checks += 1;
-                break
+        if not (p_refracPeriod is None):
+            for valid in frange(150,500,10):
+                if p_refracPeriod == valid:
+                    checks += 1;
+                    break
         if checks == 4: #all four arguments are valid
             return True
         return False
@@ -252,41 +270,80 @@ class DUAM:
             return False
         return True
 
+    def controlProgramData(self, programmedData):
+        #change all these to getUpperRateLimit() ...
+        #change all private naming convention
+        self.programProgramMode(programmedData.getProgramMode())
+        stateRateLim = self.programMisc(programmedData.upperRateLimit, programmedData.lowerRateLimit, programmedData.fixedAVDelay,
+                programmedData.modulationSensitivity, programmedData.rateModulation)
+        stateChamber1Para = self.programAtriaPara(programmedData.atrialAmplitude, programmedData.atrialPulseWidth, 
+                programmedData.atrialSensingThreshold, programmedData.atrialRefractoryPeriod)
+        stateChamber2Para = self.programVentriclePara(programmedData.ventricularAmplitude, programmedData.ventricularPulseWidth,
+                programmedData.ventricularSensingThreshold, programmedData.ventricularRefractoryPeriod)
+        val = programmedData.getProgramModeInt()
+        stateEval = (stateRateLim.value == 0 and stateChamber1Para.value == 0 and stateChamber2Para.value == 0)
+        if stateEval and (val == 0 or val == 2 or val == 5 or val == 7):
+            return [1, stateRateLim, stateChamber1Para]
+        elif not stateEval and (val == 0 or val == 2 or val == 5 or val == 7):
+            return [0, stateRateLim, stateChamber1Para]
+        if stateEval and (val == 1 or val == 3 or val == 6 or val == 8):
+            return [1, stateRateLim, stateChamber2Para]
+        elif not stateEval and (val == 1 or val == 3 or val == 6 or val == 8):
+            return [0, stateRateLim, stateChamber2Para]
+        if stateEval and (val == 4 or val == 9):
+            return [1, stateRateLim, stateChamber1Para, stateChamber2Para]
+        elif not stateEval and (val == 4 or val == 9):
+            return [0, stateRateLim, stateChamber1Para, stateChamber2Para]
 
-    def programProgramMode(self, p_programMode):
-        self.user.data.setProgramMode(p_programMode)
-        return FailureCodes.SUCCESS
+    def programProgramMode(self, programMode):
+        self.user.data.setProgramMode(programMode)
+        return FailureCodes.VALID
 
-    def programRateLim(self, p_upperRateLim, p_lowerRateLim):
-        """Sets current user's upper and lower rate limits in database
+    def programMisc(self, p_upperRateLim, p_lowerRateLim, p_fixedAVDelay, p_modulationSensitivity, p_rateModulation):
+        """Sets current user's upper and lower rate limits, in database
         """
-        if not self.validRateLims(p_upperRateLim, p_lowerRateLim):
-            return FailureCodes.INVALID_RATE_INPUT
-        self.user.data.setUpperRateLimit(p_upperRateLim)
-        self.user.data.setLowerRateLimit(p_lowerRateLim)
-        return FailureCodes.SUCCESS
+        if not self.validMisc(p_upperRateLim, p_lowerRateLim, p_fixedAVDelay, p_modulationSensitivity):
+            return FailureCodes.INVALID_USER_INPUT
+        if p_upperRateLim is not None:
+            self.user.data.setUpperRateLimit(p_upperRateLim)
+        if p_lowerRateLim is not None:
+            self.user.data.setLowerRateLimit(p_lowerRateLim)
+        if p_fixedAVDelay is not None:
+            self.user.data.setFixedAVDelay(p_fixedAVDelay)
+        if p_modulationSensitivity is not None:
+            self.user.data.setAccelerationFactor(p_modulationSensitivity)
+        self.user.data.setRateModulation(p_rateModulation)
+        return FailureCodes.VALID
 
     def programAtriaPara(self, p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
         """Sets current user's atrium data in database
         """
         if not self.validChamberPara(p_atriumAmp, p_atriumPulseWidth, p_atriumSensThres, p_atriumRefracPeriod):
-            return FailureCodes.INVALID_ATRIUM_INPUT
-        self.user.data.setAtrialAmplitude(p_atriumAmp)
-        self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
-        self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
-        self.user.data.setAtrialRefractoryPeriod(p_atriumRefracPeriod)
-        return FailureCodes.SUCCESS
+            return FailureCodes.INVALID_USER_INPUT
+        if p_atriumAmp is not None:
+            self.user.data.setAtrialAmplitude(p_atriumAmp)
+        if p_atriumPulseWidth is not None:
+            self.user.data.setAtrialPulseWidth(p_atriumPulseWidth)
+        if p_atriumSensThres is not None:
+            self.user.data.setAtrialSensingThreshold(p_atriumSensThres)
+        if p_atriumRefracPeriod is not None:
+            self.user.data.setAtrialRefractoryPeriod(p_atriumRefracPeriod)
+        return FailureCodes.VALID
         
     def programVentriclePara(self, p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
         """Sets current user's ventricle data in database
         """
         if not self.validChamberPara(p_ventriclePulseAmp, p_ventriclePulseWidth, p_ventricleSensThres, p_ventricleRefracPeriod):
-            return FailureCodes.INVALID_VENTRICLE_INPUT
-        self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
-        self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
-        self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
-        self.user.data.setVentricularRefractoryPeriod(p_ventricleRefracPeriod)
-        return FailureCodes.SUCCESS
+            return FailureCodes.INVALID_USER_INPUT
+        if p_ventriclePulseAmp is not None:
+            self.user.data.setVentricularAmplitude(p_ventriclePulseAmp)
+        if p_ventriclePulseWidth is not None:
+            self.user.data.setVentricularPulseWidth(p_ventriclePulseWidth)
+        if p_ventricleSensThres is not None:
+            self.user.data.setVentricularSensingThreshold(p_ventricleSensThres)
+        if p_ventricleRefracPeriod is not None:
+            self.user.data.setVentricularRefractoryPeriod(p_ventricleRefracPeriod)
+        return FailureCodes.VALID
 
     def getProgrammingValues(self):
         """Gets current user's programming values from database

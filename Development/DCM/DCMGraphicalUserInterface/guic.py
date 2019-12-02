@@ -5,6 +5,7 @@
 
 
 from DCMGraphicalUserInterface.guial import *
+from src.dcm_constants               import *
 from DCMUserAccountManager.duam      import LoginData
 from Common.datatypes                import PacemakerParameterData
 from Common.callbacks                import ApplicationCallbacks
@@ -70,7 +71,9 @@ programmingScreen = Screen(
         [
             [
             C_PROGRAM_UPPER_LIMIT_LABEL,
-            C_PROGRAM_LOWER_LIMIT_LABEL
+            C_PROGRAM_LOWER_LIMIT_LABEL,
+            C_PROGRAM_MODULATION_SENSITIVITY_LABEL,
+            C_PROGRAM_FIXED_AV_DELAY_LABEL
             ],
             [
             C_PROGRAM_ATRIUM_PULSE_AMPLITUDE,
@@ -115,7 +118,7 @@ class GUIC:
     def setCallbacks(self, callbacks):
         self.callbacks = callbacks
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
-        programmingScreen.data.setCallbacks([self.callbacks.changeProgramModeCB, self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
+        programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
         createUserMenuScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
     
     def setProgrammingValues(self, data):
@@ -158,22 +161,39 @@ class GUIC:
             entryData = self.gui.getEntryData()
             return LoginData(entryData[0], entryData[1])
 
-    def getPacemakerParameterData(self, programMode):
+    def getPacemakerParameterData(self):
         """
         Retrieves data from gui input fields on Programming Screen
         """
+        #use PacemakerParameterData class to pass data to main
         if self.currentScreen.screenName == ScreenNames.PROGRAMMING_SCREEN:
+            programMode = self.gui.getProgramMode()
             entryData = self.gui.getEntryData()
             for entryIndex in range(len(entryData)):
                 if entryData[entryIndex] == '':
-                    entryData[entryIndex] = -1;
+                    entryData[entryIndex] = None
+                elif entryData[entryIndex].isdigit():
+                    entryData[entryIndex] = int(entryData[entryIndex])
                 else:
-                    entryData[entryIndex] = float(entryData[entryIndex]);
+                    entryData[entryIndex] = -1
             if programMode == "AOO" or programMode == "AAI":
-                return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0, 0, 0, 0, 0)
-            elif programMode == "VOO" or programMode == "VVI":
-                return PacemakerParameterData(programMode, entryData[0], entryData[1], 0, 0, 0, 0, entryData[2], entryData[3], entryData[4], entryData[5], 0, 0, 0)
-                
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[2], entryData[3], entryData[4], entryData[5], None, None, None, None, None, None, 0)
+            if programMode == "VOO" or programMode == "VVI":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[2], entryData[3], entryData[4], entryData[5], None, None, 0)
+            if programMode == "AOOR" or programMode == "AAIR":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[3], entryData[4], entryData[5], entryData[6], None, None, None, None, None, entryData[2], 1)
+            if programMode == "VOOR" or programMode == "VVIR":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], None, None, None, None, entryData[3], entryData[4], entryData[5], entryData[6], None, entryData[2], 1)
+            if programMode == "DOO":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[3], entryData[4], entryData[5], entryData[6], entryData[7], entryData[8], entryData[9], entryData[10], entryData[2], None, 0)
+            if programMode == "DOOR":
+                    return PacemakerParameterData(programMode, entryData[0], entryData[1], entryData[4], entryData[5], entryData[6], entryData[7], entryData[8], entryData[9], entryData[10], entryData[11], entryData[3], entryData[2], 1)
+            
+    def drawErrorMessage(self, errorCodes, thisScreen):
+        if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):
+            self.gui.displayErrorMessageLoginS(errorCodes)
+        if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
+            self.gui.displayErrorMessageProgramS(errorCodes)
 
     def p_drawFirstScreen(self):
         """
@@ -195,49 +215,37 @@ class GUIC:
         Draw screen of type programming screen
         @param - data -> type = ProgramMenuData
         """
-
         # Get programming values
         programmingValues = data.getProgrammingValues()
-        fLabels = list(data.fieldLabels)
         programMode = programmingValues.getProgramMode()
-
+        textBoxStr = [
+                C_PROGRAM_DATA_LABEL[0],
+                str(C_PROGRAM_DATA_LABEL[1].format(programMode)),
+                str(C_PROGRAM_DATA_LABEL[2].format(
+                int(programmingValues.getUpperRateLimit()),
+                int(programmingValues.getAtrialAmplitude()),
+                int(programmingValues.getVentricularAmplitude()))),
+                str(C_PROGRAM_DATA_LABEL[3].format(
+                int(programmingValues.getLowerRateLimit()),
+                int(programmingValues.getAtrialPulseWidth()),
+                int(programmingValues.getVentricularPulseWidth()))),
+                str(C_PROGRAM_DATA_LABEL[4].format(
+                int(programmingValues.getAccelerationFactor()),
+                int(programmingValues.getAtrialSensingThreshold()),
+                int(programmingValues.getVentricularSensingThreshold()))),
+                str(C_PROGRAM_DATA_LABEL[5].format(
+                int(programmingValues.getFixedAVDelay()),        
+                int(programmingValues.getAtrialRefractoryPeriod()),
+                int(programmingValues.getVentricularRefractoryPeriod())))
+                ]
         self.gui.drawNFieldsNButtonsOneDropDownLayout(
             data.dropDownLabelText, 
             programMode,
             data.dropDownOptions, 
-            fLabels,
+            data.fieldLabels,
             data.buttonTexts,
-            data.buttonCallbacks)
-
-        # Make list of programming values
-        if programMode == "AOO" or programMode == "AAI":
-            programmingValuesList = [
-                programmingValues.getUpperRateLimit(),
-                programmingValues.getLowerRateLimit(),
-                programmingValues.getAtrialAmplitude(),
-                programmingValues.getAtrialPulseWidth(),
-                programmingValues.getAtrialSensingThreshold(),
-                programmingValues.getAtrialRefractoryPeriod(),
-                ]
-        elif programMode == "VOO" or programMode == "VVI":
-            programmingValuesList = [
-                programmingValues.getUpperRateLimit(),
-                programmingValues.getLowerRateLimit(),
-                programmingValues.getVentricularAmplitude(),
-                programmingValues.getVentricularPulseWidth(),
-                programmingValues.getVentricularSensingThreshold(),
-                programmingValues.getVentricularRefractoryPeriod(),
-                ]
-        self.gui.setNEntryData(programmingValuesList)
-
-    def p_drawErrorMessageOnScreen(self, errorCode, thisScreen):
-        if (thisScreen == ScreenNames.LOGIN_SCREEN.value) or (thisScreen == ScreenNames.CREATE_USER_SCREEN.value):
-            self.gui.displayErrorMessageLoginS(errorCode)
-
-    def p_drawErrorMessageProgramScreen(self, errorCodeRate, errorCodeChamber, thisScreen):
-        if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
-            self.gui.displayErrorMessageProgramS(errorCodeRate, errorCodeChamber)
-
+            data.buttonCallbacks,
+            textBoxStr)
  
     def p_drawCreateUserScreen(self, data): 
         """
