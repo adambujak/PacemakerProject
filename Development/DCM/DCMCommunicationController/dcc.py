@@ -6,6 +6,7 @@
 from DCMSerial.dsm     import *
 from src.dcm_constants import *
 from Common.datatypes  import *
+from struct            import *
 
 
 #############################################################
@@ -66,16 +67,11 @@ class DCC:
         data = self.p_prependDataWithStartCode(data)
         self.serialManager.write(data)
         
-        received = self.serialManager.readLine().decode('utf-8')
+        received = self.serialManager.readLine()
         if received == FailureCodes.CANNOT_OPEN_COM_PORT:
             print("Cannot Transmit Data")
-            return
-        if received.find(C_SERIAL_ACK_RECEIVE_STRING) != -1:
-            print("ACK received")
-            return True
-    
-        print("ACK not received")
-        return False
+            return FailureCodes.CANNOT_OPEN_COM_PORT
+        return True
 
     def programPacemaker(self, params):
         '''
@@ -129,24 +125,44 @@ class DCC:
         @param  None
         @retval success - True/False
         '''
-        return self.p_transmitData(C_SERIAL_ECHO_COMMAND_BYTE)
+        sendBuffer = pack(C_SERIAL_PARAMETER_ECHO_PACK, C_SERIAL_START_BYTE, C_SERIAL_ECHO_COMMAND_BYTE)
+        return self.serialManager.write(sendBuffer)
 
     def getPacemakerData(self):
         '''
         @brief  Get parameters stored on pacemaker
         @param  None
-        @retval Pacemaker Data - in byte array
+        @retval Pacemaker Data - in array
         '''
-        if (p_sendEchoCommand() == True):
-            return self.serialManager.readLine()
+        validData = False
+        while not validData:
+            if (self.p_sendEchoCommand() == True):
+                while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
+                    pass
+                readData = self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
+                readData = unpack(C_SERIAL_PARAMETER_ECHO_UNPACK, readData)
+                for i in readData:
+                    if i != 0:
+                        return readData            
         return None
 
+    def p_sendGetEgram(self):
+        '''
+        @brief  Sends echo egram values command to pacemaker
+        @param  None
+        @retval success - True/False
+        '''
+        sendBuffer = pack(C_SERIAL_EGRAM_ECHO_PACK, C_SERIAL_START_BYTE, C_SERIAL_EGRAM_START_BYTE)
+        return self.serialManager.write(sendBuffer)
+    
     def getElectrogram(self):
         '''
         @brief  Reads electrogram from pacemaker
         @param  None
         @retval Array of electrogram values
         '''
-        pass
+        while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
+            pass
+        self.egramRead = self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
         
 

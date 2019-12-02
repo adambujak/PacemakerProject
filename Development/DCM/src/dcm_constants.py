@@ -95,13 +95,21 @@ C_SERIAL_TIMEOUT                           =        1
 C_SERIAL_START_BYTE                        =        0x16
 
 C_SERIAL_PARAMETER_START_BYTE              =        0x55
+C_SERIAL_PARAMETER_BYTE_CNT                =        21
 
-C_SERIAL_EGRAM_START_BYTE                 =        0x47
-C_SERIAL_EGRAM_STOP_BYTE                  =        0x62
+C_SERIAL_EGRAM_START_BYTE                  =        0x47
+C_SERIAL_EGRAM_STOP_BYTE                   =        0x62
 
 C_SERIAL_ECHO_COMMAND_BYTE                 =        0x22
 
 C_SERIAL_ACK_RECEIVE_STRING                =       "ACK"
 
 C_SERIAL_ACK_RECEIVE_TIMEOUT               =        5
+
+C_SERIAL_PARAMETER_PROGRAM_PACK            =       "<5B2H2B5H2B"
+C_SERIAL_PARAMETER_ECHO_PACK               =       "<2B21x"
+C_SERIAL_PARAMETER_ECHO_UNPACK             =       "<3B2H2B5H2B"
+
+C_SERIAL_EGRAM_ECHO_PACK                   =       "<2B21x"
+C_SERIAL_EGRAM_ECHO_UNPACK                 =       "<2d5x"
 
