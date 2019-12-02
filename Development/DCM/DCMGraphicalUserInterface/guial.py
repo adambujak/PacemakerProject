@@ -197,12 +197,22 @@ class GUIAL:
             colVal = int(wig.grid_info().get("column"))
             if rowVal == 7 and (colVal == 2 or colVal == 4 or colVal == 6):
                 wig.destroy()
-        for i in range(1,len(errorCodes)):
-            if errorCodes[i].value == 0:
-                label = tk.Label(self.instance, text = errorCodes[i].name, bg = "green").grid(row = 7, column = 2*i)
-            else:
-                label = tk.Label(self.instance, text = errorCodes[i].name, bg = "red").grid(row = 7, column = 2*i)
-        
+            if rowVal == 7 and (colVal == 2 or colVal == 4 or colVal == 6):
+                wig.destroy()
+            # if rowVal == 7 and colVal == 4:
+            #     wig.destroy()
+        if errorCodes[0] != 11 or errorCodes[0] != 10:
+            for i in range(1,len(errorCodes)):
+                if errorCodes[i].value == 0:
+                    label = tk.Label(self.instance, text = errorCodes[i].name, bg = "green").grid(row = 7, column = 2*i)
+                else:
+                    label = tk.Label(self.instance, text = errorCodes[i].name, bg = "red").grid(row = 7, column = 2*i)
+        if errorCodes[0] == 11:
+            label = tk.Label(self.instance, text = "Successfully programed PaceMaker", bg = "green").grid(sticky="W",row = 7, column = 4, columnspan = 6)
+        if errorCodes[0] == 10:
+            label = tk.Label(self.instance, text = "Could not program PaceMaker", bg = "red").grid(sticky="W",row = 7, column = 4, columnspan = 6)
+
+
     def getEntryData(self):
         children = self.instance.winfo_children()
         output = []

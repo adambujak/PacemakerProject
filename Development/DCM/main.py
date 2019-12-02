@@ -56,10 +56,14 @@ class MainApplication:      #All print statements in MainApplication can be used
         stateError = self.accountController.controlProgramData(self.guiController.getPacemakerParameterData())
         if stateError[0] == 1:
             self.accountController.saveProgrammingValuesToDatabase()
-            x = self.accountController.getProgrammingValues()
-            self.guiController.setProgrammingValues(x)
+            programmedData = self.accountController.getProgrammingValues()
+            self.guiController.setProgrammingValues(programmedData)
             self.guiController.drawScreen(programmingScreen)
-            #self.comController.programPacemaker(programmedData)
+            if self.comController.programPacemaker(programmedData):
+                stateError = [11] #Successfully programed Pacemaker
+            else: 
+                stateError = [10] #Failed to program Pacemaker
+            self.guiController.drawErrorMessage(stateError, 1)
         else:
             self.guiController.drawErrorMessage(stateError, 1)
 
