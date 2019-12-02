@@ -219,8 +219,9 @@ class DUAM:
                 if p_modulationSensitivity is int:
                     checks += 1;
         if not (p_fixedAVDelay is None):
-            if p_fixedAVDelay == 150:
-                checks += 1
+            for valid in frange(70,200,10):
+                if valid == p_fixedAVDelay:
+                    checks += 1
         if checks == 4:
             return True
         return False
