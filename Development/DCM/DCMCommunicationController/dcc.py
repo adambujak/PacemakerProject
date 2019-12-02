@@ -80,9 +80,9 @@ class DCC:
         @retval success - True/False
         '''
         params = self.p_convertPacemakerParamsToByteArray(params)
-        if (self.p_transmitData(params) == False):
-            return False
-        
+        if (self.p_transmitData(params) == True):
+            return True
+        return False
         #ToDo: read back params to ensure proper programming
         
     def p_convertToInts(self, number, numberOfBytes):
