@@ -202,7 +202,7 @@ class GUIC:
         else:
             textBoxStr = [
                     C_PACEMAKER_DATA_LABEL[0],
-                    str(C_PROGRAM_DATA_LABEL[1].format(programmingValues.getProgramMode())),
+                    str(C_PROGRAM_DATA_LABEL[1].format(programmingValues.getProgramModeFromInt())),
                     str(C_PROGRAM_DATA_LABEL[2].format(
                     int(programmingValues.getUpperRateLimit()),
                     int(programmingValues.getAtrialAmplitude()),

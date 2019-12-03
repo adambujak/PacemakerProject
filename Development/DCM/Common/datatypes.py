@@ -39,6 +39,29 @@ class PacemakerParameterData:
             return 8
         if self.programMode == 'DOOR':
             return 9
+
+    def getProgramModeFromInt(self):
+        if self.programMode == 0:
+            return 'AOO'
+        if self.programMode == 1:
+            return 'VOO'
+        if self.programMode == 2:
+            return 'AAI'
+        if self.programMode == 3:
+            return 'VVI'
+        if self.programMode == 4:
+            return 'DOO'
+        if self.programMode == 5:
+            return 'AOOR'
+        if self.programMode == 6:
+            return 'VOOR'
+        if self.programMode == 7:
+            return 'AAIR'
+        if self.programMode == 8:
+            return 'VVIR'
+        if self.programMode == 9:
+            return 'DOOR'
+
     def getProgramMode(self):
         return self.programMode   
     def getLowerRateLimit(self):

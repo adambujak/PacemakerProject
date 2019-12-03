@@ -231,7 +231,7 @@ class GUIAL:
         else:
             for row in range(len(dataStr)):
                 tk.Label(self.instance, text = dataStr[row], anchor="w", bg="white").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
-            self.instance.geometry("790x600")
+            self.instance.geometry("790x670")
 
     def getEntryData(self):
         children = self.instance.winfo_children()
