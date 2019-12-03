@@ -69,10 +69,8 @@ class MainApplication:      #All print statements in MainApplication can be used
 
     def echoButtonCB(self):
         readData = self.comController.getPacemakerData()
-        if not(readData is None):
-            print("hi")
-            self.guiController.drawPacemakerData(readData)
-        print("bye")
+        self.guiController.drawPacemakerData(readData)
+
 
 
 

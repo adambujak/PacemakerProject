@@ -159,7 +159,8 @@ class DCC:
         '''
         validData = False
         while not validData:
-            if (self.p_sendEchoCommand() == True):
+            sent = self.p_sendEchoCommand()
+            if (sent == True):
                 while self.serialManager.hSerial.in_waiting < C_SERIAL_PARAMETER_BYTE_CNT:
                     pass
                 readData = self.serialManager.read(C_SERIAL_PARAMETER_BYTE_CNT)
@@ -167,6 +168,8 @@ class DCC:
                 for i in readData:
                     if i != 0:
                         return self.p_convertArrayToPacemakerData(readData)
+            if (sent == FailureCodes.CANNOT_OPEN_COM_PORT):
+                return False
         return None
 
     def p_sendGetEgram(self):

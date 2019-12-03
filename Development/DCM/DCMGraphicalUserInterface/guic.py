@@ -196,8 +196,31 @@ class GUIC:
         if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
             self.gui.displayErrorMessageProgramS(errorCodes)
 
-    def drawPacemakerData(self, readData):
-        self.gui.displayPacemakerData(readData)
+    def drawPacemakerData(self, programmingValues):
+        if programmingValues is False or programmingValues is None:
+            textBoxStr = ["Cannot Open Serial Port"]
+        else:
+            textBoxStr = [
+                    C_PACEMAKER_DATA_LABEL[0],
+                    str(C_PROGRAM_DATA_LABEL[1].format(programmingValues.getProgramMode())),
+                    str(C_PROGRAM_DATA_LABEL[2].format(
+                    int(programmingValues.getUpperRateLimit()),
+                    int(programmingValues.getAtrialAmplitude()),
+                    int(programmingValues.getVentricularAmplitude()))),
+                    str(C_PROGRAM_DATA_LABEL[3].format(
+                    int(programmingValues.getLowerRateLimit()),
+                    int(programmingValues.getAtrialPulseWidth()),
+                    int(programmingValues.getVentricularPulseWidth()))),
+                    str(C_PROGRAM_DATA_LABEL[4].format(
+                    int(programmingValues.getAccelerationFactor()),
+                    int(programmingValues.getAtrialSensingThreshold()),
+                    int(programmingValues.getVentricularSensingThreshold()))),
+                    str(C_PROGRAM_DATA_LABEL[5].format(
+                    int(programmingValues.getFixedAVDelay()),        
+                    int(programmingValues.getAtrialRefractoryPeriod()),
+                    int(programmingValues.getVentricularRefractoryPeriod())))
+                    ]
+        self.gui.displayPacemakerData(textBoxStr)
 
     def p_drawFirstScreen(self):
         """

@@ -98,9 +98,10 @@ class GUIAL:
         self.guiInitialized = True
         self.instance.title(self.title)
         #self.instance.configure(background = "white");
-        self.instance.geometry("790x440")
+        self.instance.geometry("790x490")
         self.instance.grid_rowconfigure(0, minsize=25)
         self.instance.grid_rowconfigure(10, minsize=25)
+        self.instance.grid_rowconfigure(17, minsize=25)
         self.instance.grid_columnconfigure(9, minsize=25)
         print('Program Screen')
         rowLabel = 11
@@ -158,6 +159,10 @@ class GUIAL:
                 wig.destroy()
             if rowVal == 7 and (colVal == 2 or colVal == 4 or colVal == 6):
                 wig.destroy()
+            if rowVal >= 17:
+                wig.destroy()
+            if rowVal == 8 and colVal == 4:
+                wig.destroy()
         if programMode == dropDownOptions[0] or programMode == dropDownOptions[1]:
             # self.instance.geometry("550x275")
             fieldInd = [[0,1], [0,1], [0,1,2,3]]
@@ -208,15 +213,25 @@ class GUIAL:
                 else:
                     label = tk.Label(self.instance, text = errorCodes[i].name, bg = "red").grid(row = 7, column = 2*i)
         if errorCodes[0] == 11:
-            label = tk.Label(self.instance, text = "Successfully programed PaceMaker", bg = "green").grid(sticky="W",row = 7, column = 4, columnspan = 6)
+            label = tk.Label(self.instance, text = "Successfully programed Pacemaker", bg = "green").grid(sticky="W",row = 7, column = 4, columnspan = 6)
         if errorCodes[0] == 10:
-            label = tk.Label(self.instance, text = "Could not program PaceMaker", bg = "red").grid(sticky="W",row = 7, column = 4, columnspan = 6)
+            label = tk.Label(self.instance, text = "Could not program Pacemaker", bg = "red").grid(sticky="W",row = 7, column = 4, columnspan = 6)
 
-    def displayPacemakerData(self, readData):
-        rowLabel = 17
-        for row in range(len(dataStr)):
-            tk.Label(self.instance, text = dataStr[row], anchor="w", bg="white").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
-        self.instance.geometry("790x600")
+    def displayPacemakerData(self, dataStr):
+        rowLabel = 18
+        for wig in self.instance.grid_slaves():
+            rowVal = int(wig.grid_info().get("row"))
+            colVal = int(wig.grid_info().get("column"))
+            if rowVal >= 17:
+                wig.destroy()
+            if rowVal == 8 and colVal == 4:
+                wig.destroy()
+        if len(dataStr) == 1:
+            tk.Label(self.instance, text = dataStr[0], anchor="w", bg="red").grid(sticky="w", row= 8, column=4, columnspan=15)
+        else:
+            for row in range(len(dataStr)):
+                tk.Label(self.instance, text = dataStr[row], anchor="w", bg="white").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
+            self.instance.geometry("790x600")
 
     def getEntryData(self):
         children = self.instance.winfo_children()

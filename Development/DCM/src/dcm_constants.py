@@ -65,12 +65,7 @@ C_PROGRAM_DATA_LABEL   				  	   =	   [												  # LABEL FOR DISPLAYING DATA
 											       ]
 
 C_PACEMAKER_DATA_LABEL   				   =      [												  # LABEL FOR DISPLAYING DATABASE VALUES
-        										   "\t\t\t\t\t\tValues currently stored on Pacemaker\t\t\t\t\t\t\t\t",
-        										   "\t\t\t\t\t\tProgram Mode: {}\t\t\t\t\t\t\t\t\t",
-        										   "\tUpper Rate Limit: {} BPM,\t\t\tAtrial Amplitude: {} mV,\t\t\t\tVentricular Amplitude: {} mV\t\t",
-       											   "\tLower Rate Limit: {} BPM,\t\t\tAtrial Pulse Width: {} ms,\t\t\t\tVentricular Pulse Width: {} ms\t\t",
-											       "\tModulation Sensitivity: {},\t\t\tAtrial Sensing Threshold: {} mV,\t\t\tVentricular Sensing Threshold: {} mV\t",
-											       "\tAV Delay: {} ms,\t\t\t\tAtrial Refractory Period: {} ms,\t\t\tVentricular Refractory Period: {} ms\t\n"			
+        										   "\t\t\t\t\t\tValues currently stored on Pacemaker\t\t\t\t\t\t\t\t",		
 											       ]
 
 
