@@ -128,6 +128,29 @@ class DCC:
         sendBuffer = pack(C_SERIAL_PARAMETER_ECHO_PACK, C_SERIAL_START_BYTE, C_SERIAL_ECHO_COMMAND_BYTE)
         return self.serialManager.write(sendBuffer)
 
+    def p_convertArrayToPacemakerData(self, array):
+        '''
+        @brief  Converts array into pacemaker data type
+        @param  array   - array to be converted
+        @retval data    - pacemaker data
+        '''
+        return PacemakerParameterData(
+            p_programMode                 = array[0],
+            p_lowerRateLimit              = array[1],
+            p_upperRateLimit              = array[2],
+            p_atrialAmplitude             = array[3],
+            p_ventricularAmplitude        = array[4],
+            p_atrialPulseWidth            = array[5],
+            p_ventricularPulseWidth       = array[6],
+            p_atrialSensingThreshold      = array[7],
+            p_ventricularSensingThreshold = array[8],
+            p_atrialRefractoryPeriod      = array[9],
+            p_ventricularRefractoryPeriod = array[10],
+            p_fixedAVDelay                = array[11],
+            p_rateModulation              = array[12],
+            p_modulationSensitivity       = array[13]
+            )
+
     def getPacemakerData(self):
         '''
         @brief  Get parameters stored on pacemaker
