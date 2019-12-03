@@ -89,7 +89,8 @@ programmingScreen = Screen(
             ]
         ],
         [
-            C_PROGRAM_BUTTON_TEXT,            
+            C_PROGRAM_BUTTON_TEXT,
+            C_PROGRAM_ECHO_BUTTON_TEXT,            
             C_PROGRAM_LOGOUT_BUTTON_TEXT  
         ],
         C_PROGRAM_DROPDOWN_LABEL,
@@ -118,7 +119,7 @@ class GUIC:
     def setCallbacks(self, callbacks):
         self.callbacks = callbacks
         loginScreen.data.setCallbacks([self.callbacks.loginButtonCB, self.callbacks.newUserButtonCB])
-        programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.logoffButtonCB])
+        programmingScreen.data.setCallbacks([self.callbacks.programButtonCB, self.callbacks.echoButtonCB, self.callbacks.logoffButtonCB])
         createUserMenuScreen.data.setCallbacks([self.callbacks.createUserButtonCB, self.callbacks.cancelButtonCB])
     
     def setProgrammingValues(self, data):
@@ -194,6 +195,9 @@ class GUIC:
             self.gui.displayErrorMessageLoginS(errorCodes)
         if (thisScreen == ScreenNames.PROGRAMMING_SCREEN.value):
             self.gui.displayErrorMessageProgramS(errorCodes)
+
+    def drawPacemakerData(self, readData):
+        self.gui.displayPacemakerData(readData)
 
     def p_drawFirstScreen(self):
         """

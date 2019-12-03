@@ -100,10 +100,10 @@ class GUIAL:
         #self.instance.configure(background = "white");
         self.instance.geometry("790x440")
         self.instance.grid_rowconfigure(0, minsize=25)
-        self.instance.grid_rowconfigure(9, minsize=25)
+        self.instance.grid_rowconfigure(10, minsize=25)
         self.instance.grid_columnconfigure(9, minsize=25)
         print('Program Screen')
-        rowLabel = 10
+        rowLabel = 11
         for row in range(len(dataStr)):
             tk.Label(self.instance, text = dataStr[row], anchor="w", bg="white").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
         tk.Label(self.instance, text=dropDownLabelText).grid(row = 1, column = 3)
@@ -147,7 +147,7 @@ class GUIAL:
         popupMenu = tk.OptionMenu(self.instance, tkvar, *programList, command = changeModeCB).grid(row = 2, column = 3)
         changeModeCB(self.programMode)
 
-        for buttonIndex in range(2):         # Draw each button
+        for buttonIndex in range(3):         # Draw each button
             btn = tk.Button(self.instance , text=buttonTexts[buttonIndex], command = buttonCallbacks[buttonIndex]).grid(row = (buttonIndex + 7), column = 3)
 
     def displayLabelEntry(self, programMode, dropDownOptions, fieldLabels):
@@ -212,6 +212,11 @@ class GUIAL:
         if errorCodes[0] == 10:
             label = tk.Label(self.instance, text = "Could not program PaceMaker", bg = "red").grid(sticky="W",row = 7, column = 4, columnspan = 6)
 
+    def displayPacemakerData(self, readData):
+        rowLabel = 17
+        for row in range(len(dataStr)):
+            tk.Label(self.instance, text = dataStr[row], anchor="w", bg="white").grid(sticky="w", row= rowLabel + row, column=0, columnspan=15)
+        self.instance.geometry("790x600")
 
     def getEntryData(self):
         children = self.instance.winfo_children()

@@ -67,11 +67,13 @@ class MainApplication:      #All print statements in MainApplication can be used
         else:
             self.guiController.drawErrorMessage(stateError, 1)
 
-    # def changeProgramModeCB(self, programMode):
-    #     stateProgramMode = self.accountController.programProgramMode(programMode)
-    #     if stateProgramMode.value == 0:
-    #         self.accountController.saveProgrammingValuesToDatabase()
-    #         self.guiController.drawScreen(programmingScreen)
+    def echoButtonCB(self):
+        readData = self.comController.getPacemakerData()
+        if not(readData is None):
+            print("hi")
+            self.guiController.drawPacemakerData(readData)
+        print("bye")
+
 
 
 def main():
@@ -85,7 +87,8 @@ def main():
         app.newUserButtonCB,
         app.createUserButtonCB, 
         app.cancelButtonCB, 
-        app.programButtonCB)
+        app.programButtonCB,
+        app.echoButtonCB)
 
     app.setCallbacks(callbacks)
 
