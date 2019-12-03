@@ -107,4 +107,19 @@ class PacemakerParameterData:
         self.rateModulation=val
 
     def printData(self):
-        print("User Program Data", self.lowerRateLimit, self.upperRateLimit, self.atrialAmplitude)
+        print("User Program Data", 
+            "\nprogram mode: ", self.programMode,                
+            "\nlowerRateLimit: ", self.lowerRateLimit,             
+            "\nupperRateLimit: ", self.upperRateLimit,             
+            "\natrialAmplitude: ", self.atrialAmplitude,            
+            "\natrialPulseWidth: ", self.atrialPulseWidth,           
+            "\natrialSensingThreshold: ", self.atrialSensingThreshold,     
+            "\natrialRefractoryPeriod: ", self.atrialRefractoryPeriod,     
+            "\nventricularAmplitude: ", self.ventricularAmplitude,       
+            "\nventricularPulseWidth: ", self.ventricularPulseWidth,      
+            "\nventricularSensingThreshold: ", self.ventricularSensingThreshold,
+            "\nventricularRefractoryPeriod: ", self.ventricularRefractoryPeriod,
+            "\nfixedAVDelay: ", self.fixedAVDelay,               
+            "\nmodulationSensitivity: ", self.modulationSensitivity,      
+            "\nrateModulation: ", self.rateModulation
+            )             
