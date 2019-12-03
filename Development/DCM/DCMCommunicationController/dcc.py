@@ -166,7 +166,7 @@ class DCC:
                 readData = unpack(C_SERIAL_PARAMETER_ECHO_UNPACK, readData)
                 for i in readData:
                     if i != 0:
-                        return readData            
+                        return self.p_convertArrayToPacemakerData(readData)
         return None
 
     def p_sendGetEgram(self):
